@@ -5,7 +5,7 @@ LitteraleManager::Handler LitteraleManager::handler=LitteraleManager::Handler();
 
 
 LitteraleManager& LitteraleManager::getInstance(){
-    if (handler.instance==nullptr) handler.instance=new ExpressionManager;
+    if (handler.instance==nullptr) handler.instance=new LitteraleManager;
     return *handler.instance;
 }
 
@@ -16,9 +16,9 @@ void LitteraleManager::libererInstance(){
 
 
 
-Litterale& LitteraleManager::addLitterale(Litterale v){
+Litterale& LitteraleManager::addLitterale(Litterale& v){
     lit.resize(nb+1);
-    lit[nb++]=new Literale(v);
+    lit[nb++]=new Litterale(v);
     return *lit[nb-1];
 }
 
@@ -34,7 +34,7 @@ void LitteraleManager::removeLitterale(Litterale& e){
 
 LitteraleManager::~LitteraleManager(){
     for(unsigned int i=0; i<nb; i++) delete lit[i];
-    delete[] lit;
+    lit.clear();
 }
 
 
@@ -55,7 +55,7 @@ void Pile::pop(){
     modificationEtat();
 }
 
-void Pile::affiche(QTextStream& f) const{
+/*void Pile::affiche(QTextStream& f) const{
     f<<"********************************************* \n";
     f<<"M : "<<message<<"\n";
     f<<"---------------------------------------------\n";
@@ -65,10 +65,11 @@ void Pile::affiche(QTextStream& f) const{
     }
     f<<"---------------------------------------------\n";
 }
+*/
 
 
 Pile::~Pile(){
-    delete[] PileLit;
+    PileLit.clear();
 }
 
 Litterale& Pile::top() const {
@@ -97,18 +98,18 @@ bool estUnNombre(const QString s){
 
 void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
     if (estUnLitterale(c)){
-        expAff.push(expMng.addExpression(c.toInt()));
+        LitAff.push(LitMng.addExpression(c.toInt()));
     }else{
 
         if (estUnOperateur(c)){
-            if (expAff.taille()>=2) {
-                Litterale v2=expAff.top();
-                LitMng.removeExpression(LitAff.top());
+            if (LitAff.getNbLitterale()>=2) {
+                Litterale& v2=LitAff.top();
+                LitMng.removeLitterale(LitAff.top());
                 LitAff.pop();
-                Litterale v1=LitAff.top();
-                LitMng.removeExpression(LitAff.top());
+                Litterale& v1=LitAff.top();
+                LitMng.removeLitterale(LitAff.top());
                 LitAff.pop();
-                Litterale res;
+                Litterale& res;
                 if (c=="+") res=v1+v2;
                 if (c=="-") res=v1-v2;
                 if (c=="*") res=v1*v2;
@@ -119,7 +120,7 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
                         res=v1;
                     }
                 }
-                Litterale& e=LitMng.addExpression(res);
+                Litterale& e=LitMng.addLitterale(res);
                 LitAff.push(e);
             }else{
                 LitAff.setMessage("Erreur : pas assez d'arguments");

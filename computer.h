@@ -20,12 +20,15 @@ public:
 class Litterale {
 
 
-    Litterale(const Expression& e);
-    Litterale& operator=(const Expression& e);
+    Litterale(const Litterale& e);
+    Litterale& operator=(const Litterale& e);
     friend class LitteraleManager;
+
 public:
-    virtual void afficher(std::ostream& f=std::cout)=0
-    virtual bool isNull()const =0
+    virtual QString afficher()=0;
+    virtual bool isNull()const =0;
+    Litterale(){}
+
 };
 
 class Entier : public Litterale{
@@ -33,7 +36,7 @@ class Entier : public Litterale{
 
 public :
     Entier(int a ): nombre(a){}
-    void afficher(std::ostream& f=std::cout){
+    QString afficher(){
         // faire la fonction
     }
     bool isNull()const {return nombre==0;}
@@ -56,7 +59,7 @@ public:
         simplification();
 
     }
-    void afficher(std::ostream& f=std::cout){
+     QString afficher(){
     // faire la fonction
     }
     void simplification(){
@@ -78,7 +81,7 @@ public:
 class Reel : public Litterale {
     double nombre;
 public :
-    void afficher(std::ostream& f=std::cout){
+    QString afficher(){
     // faire la fonction penser au .
     }
     Reel(double d):nombre(d){}
@@ -93,7 +96,7 @@ class Complexe : public Litterale{
     T reel;
     P imaginaire;
 public:
-    void afficher(std::ostream& f=std::cout){
+    QString afficher(){
     // faire la fonction penser au $
     }
     Complexe( T a, P b):reel(a),imaginaire(b){}
@@ -112,11 +115,14 @@ public:
         }
         else throw ComputerException("Nom d'atome impossible, commencez par une majuscule pls");
     }
+    QString afficher(){
+
+    }
 };
 class Expression : public Litterale{
     QString expression;
 public:
-    Expression(Qstring s): expression(s){}
+    Expression(QString s): expression(s){}
 
 };
 
@@ -128,10 +134,10 @@ class Programme : public Litterale{
 
 class LitteraleManager {
     QVector<Litterale*> lit;
-    unsigned int nb;
 
 
-    LitteraleManager():exps(nullptr),nb(0),nbMax(0){}
+
+    LitteraleManager():{ lit.clear();}
     ~LitteraleManager();
     LitteraleManager(const LitteraleManager& m);
     LitteraleManager& operator=(const LitteraleManager& m);
@@ -146,21 +152,10 @@ class LitteraleManager {
 public:
     Litterale& addLitterale(Litterale v);
     void removeLitterale(Litterale& e);
+    unsigned int getNbLiterrale(){return lit.count();}
     static LitteraleManager& getInstance();
     static void libererInstance();
 
-    class iterator {
-        QVector<Litterale*> current;
-        iterator(Litterale* u):current(u){}
-        friend class LitteraleManager;
-    public:
-        iterator():current(0){}
-        Litterale& operator*() const { return **current; }
-        bool operator!=(iterator it) const { return current!=it.current; }
-        iterator& operator++(){ ++current; return *this; }
-    };
-    iterator begin() { return iterator(lit.begin()); }
-    iterator end() { return iterator(lit.end()); }
 };
 
 
@@ -170,36 +165,24 @@ class Pile : public QObject {
     Q_OBJECT
 
     QStack<Litterale*> PileLit;
-    unsigned int nb;
+
     QString message;
 
     unsigned int nbAffiche;
 public:
-    Pile():PileLit(nullptr),nb(0),message(""),nbAffiche(4){}
+    Pile():message(""),nbAffiche(4){PileLit.clear(); }
     ~Pile();
     void push(Litterale& e);
     void pop();
-    bool estVide() const { return nb==0; }
-    unsigned int taille() const { return nb; }
+    bool estVide() const { return this->getNbLitterale()==0; }
+
     void affiche(QTextStream& f) const;
     Litterale& top() const;
     void setNbLitteraleToAffiche(unsigned int n) { nb=n; }
     unsigned int getNbLitteraleToAffiche() const { return nbAffiche; }
     void setMessage(const QString& m) { message=m; modificationEtat(); }
     QString getMessage() const { return message; }
-
-    class iterator {
-        std::deque<Litterale*> current;
-        iterator(Litterale* u):current(u){}
-        friend class LitteraleManager;
-    public:
-        iterator():current(0){}
-        Litterale& operator*() const { return **current; }
-        bool operator!=(iterator it) const { return current!=it.current; }
-        iterator& operator++(){ ++current; return *this; }
-    };
-    iterator begin() { return iterator(PileLit.begin()); }
-    iterator end() { return iterator(PileLit.end()); }
+    unsigned int getNbLitterale(){return PileLit.count();}
 
 signals:
     void modificationEtat();

@@ -65,7 +65,7 @@ void QComputer::refresh(){
 
     unsigned int nb=0;
     for (Pile::iterator it=pile->begin();it!=pile->end()&&nb<pile->getNbLitteraleToAffiche();++it){
-        vuePile->item(pile->getLitteraleToAffiche()-nb-1,0)->setText((*it).toString());
+        vuePile->item(pile->getLitteraleToAffiche()-nb-1,0)->setText((*it).afficher());
         nb++;
     }
 

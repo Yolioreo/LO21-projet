@@ -1,4 +1,5 @@
-#include <QApplication>
+
+
 #include "qcomputer.h"
 #include "computer.h"
 
