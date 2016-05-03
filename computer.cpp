@@ -16,25 +16,24 @@ void LitteraleManager::libererInstance(){
 
 
 
-Litterale& LitteraleManager::addLitterale(Litterale& v){
-    lit.resize(nb+1);
-    lit[nb++]=new Litterale(v);
-    return *lit[nb-1];
+Litterale* LitteraleManager::addLitterale(Litterale* v){
+
+    lit.push_back(v);
+    return lit.back();
 }
 
-void LitteraleManager::removeLitterale(Litterale& e){
-    unsigned int i=0;
-    while(i<nb && lit[i]!=&e) i++;
-    if (i==nb) throw ComputerException("elimination d'une Expression inexistante");
-    lit.erase(lit.begin()+i);
-    nb--;
-    lit.resize(nb);
+void LitteraleManager::removeLitterale(Litterale* e){
+    unsigned int i=lit.indexOf(e,0);
+    if (i==-1) throw ComputerException("elimination d'une Expression inexistante");
+
+    lit.remove(i); // pas optimisé mais c'est pas grave
+
+
 
 }
 
 LitteraleManager::~LitteraleManager(){
-    for(unsigned int i=0; i<nb; i++) delete lit[i];
-    lit.clear();
+    // MEMENTO
 }
 
 
@@ -45,12 +44,10 @@ LitteraleManager::~LitteraleManager(){
 void Pile::push(Litterale& e){
     // checker si c'est une fraction et denominateur =1
     PileLit.push(&e);
-    nb++;
     modificationEtat();
 }
 
 void Pile::pop(){
-    nb--;
     PileLit.pop();
     modificationEtat();
 }
@@ -74,7 +71,7 @@ Pile::~Pile(){
 
 Litterale& Pile::top() const {
 
-    if (nb==0) throw ComputerException("aucune expression sur la pile");
+    if (PileLit.size()==0) throw ComputerException("aucune expression sur la pile");
     return *(PileLit.top());
 }
 
@@ -97,34 +94,36 @@ bool estUnNombre(const QString s){
 
 
 void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
-    if (estUnLitterale(c)){
-        LitAff.push(LitMng.addExpression(c.toInt()));
-    }else{
+//    if (estUnLitterale(c)){
+//        LitAff.push(LitMng.addLitterale(c.toInt()));
+//    }else{
 
-        if (estUnOperateur(c)){
-            if (LitAff.getNbLitterale()>=2) {
-                Litterale& v2=LitAff.top();
-                LitMng.removeLitterale(LitAff.top());
-                LitAff.pop();
-                Litterale& v1=LitAff.top();
-                LitMng.removeLitterale(LitAff.top());
-                LitAff.pop();
-                Litterale& res;
-                if (c=="+") res=v1+v2;
-                if (c=="-") res=v1-v2;
-                if (c=="*") res=v1*v2;
-                if (c=="/") {
-                    if (v2!=0) res=v1/v2;
-                    else {
-                        LitAff.setMessage("Erreur : division par zéro");
-                        res=v1;
-                    }
-                }
-                Litterale& e=LitMng.addLitterale(res);
-                LitAff.push(e);
-            }else{
-                LitAff.setMessage("Erreur : pas assez d'arguments");
-            }
-        }else LitAff.setMessage("Erreur : commande inconnue");
-    }
+//        if (estUnOperateur(c)){
+//            if (LitAff.getNbLitterale()>=2) {
+//                Litterale& v2=LitAff.top();
+//                LitMng.removeLitterale(LitAff.top());
+//                LitAff.pop();
+//                Litterale& v1=LitAff.top();
+//                LitMng.removeLitterale(LitAff.top());
+//                LitAff.pop();
+//                Litterale& res;
+//                if (c=="+") res=v1+v2;
+//                if (c=="-") res=v1-v2;
+//                if (c=="*") res=v1*v2;
+//                if (c=="/") {
+//                    if (v2!=0) res=v1/v2;
+//                    else {
+//                        LitAff.setMessage("Erreur : division par zéro");
+//                        res=v1;
+//                    }
+//                }
+//                Litterale& e=LitMng.addLitterale(res);
+//                LitAff.push(e);
+//            }else{
+//                LitAff.setMessage("Erreur : pas assez d'arguments");
+//            }
+//        }else LitAff.setMessage("Erreur : commande inconnue");
+//    }
+
+
 }
