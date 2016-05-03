@@ -137,7 +137,7 @@ class LitteraleManager {
 
 
 
-    LitteraleManager():{ lit.clear();}
+    LitteraleManager(){ lit.clear();}
     ~LitteraleManager();
     LitteraleManager(const LitteraleManager& m);
     LitteraleManager& operator=(const LitteraleManager& m);
@@ -150,8 +150,8 @@ class LitteraleManager {
     };
     static Handler handler;
 public:
-    Litterale& addLitterale(Litterale v);
-    void removeLitterale(Litterale& e);
+    Litterale* addLitterale(Litterale* v);
+    void removeLitterale(Litterale* e);
     unsigned int getNbLiterrale(){return lit.count();}
     static LitteraleManager& getInstance();
     static void libererInstance();
@@ -174,11 +174,11 @@ public:
     ~Pile();
     void push(Litterale& e);
     void pop();
-    bool estVide() const { return this->getNbLitterale()==0; }
+    bool estVide() const { return PileLit.empty(); }
 
     void affiche(QTextStream& f) const;
     Litterale& top() const;
-    void setNbLitteraleToAffiche(unsigned int n) { nb=n; }
+    void setNbLitteraleToAffiche(unsigned int n) { nbAffiche=n; }
     unsigned int getNbLitteraleToAffiche() const { return nbAffiche; }
     void setMessage(const QString& m) { message=m; modificationEtat(); }
     QString getMessage() const { return message; }
