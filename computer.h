@@ -38,6 +38,9 @@ public :
     Entier(int a ): nombre(a){}
     QString afficher(){
         // faire la fonction
+        QString temp="";
+        temp=temp+nombre ;
+        return temp;
     }
     bool isNull()const {return nombre==0;}
 
@@ -60,7 +63,7 @@ public:
 
     }
      QString afficher(){
-    // faire la fonction
+    return numerateur+"/"+denominateur;
     }
     void simplification(){
 
@@ -74,7 +77,7 @@ public:
 
     }
     bool isNull() const {return numerateur==0;}
-
+    bool isNotRationnel(){return denominateur==1;}
 };
 
 
@@ -82,7 +85,7 @@ class Reel : public Litterale {
     double nombre;
 public :
     QString afficher(){
-    // faire la fonction penser au .
+    return QString::number(nombre);
     }
     Reel(double d):nombre(d){}
     bool isNull() const {return nombre==0;}
@@ -97,7 +100,7 @@ class Complexe : public Litterale{
     P imaginaire;
 public:
     QString afficher(){
-    // faire la fonction penser au $
+    return reel.afficher()+"$"+imaginaire.afficher();
     }
     Complexe( T a, P b):reel(a),imaginaire(b){}
     bool isNull() const {return (reel==0)&&(imaginaire==0);}
@@ -116,14 +119,16 @@ public:
         else throw ComputerException("Nom d'atome impossible, commencez par une majuscule pls");
     }
     QString afficher(){
-
+    return atome;
     }
 };
 class Expression : public Litterale{
     QString expression;
 public:
     Expression(QString s): expression(s){}
-
+    QString afficher(){
+    return expression;
+    }
 };
 
 class Programme : public Litterale{
@@ -137,7 +142,7 @@ class LitteraleManager {
 
 
 
-    LitteraleManager():{ lit.clear();}
+    LitteraleManager(){ lit.clear();}
     ~LitteraleManager();
     LitteraleManager(const LitteraleManager& m);
     LitteraleManager& operator=(const LitteraleManager& m);
@@ -150,8 +155,8 @@ class LitteraleManager {
     };
     static Handler handler;
 public:
-    Litterale& addLitterale(Litterale v);
-    void removeLitterale(Litterale& e);
+    Litterale* addLitterale(const QString& v);
+    void removeLitterale(Litterale* e);
     unsigned int getNbLiterrale(){return lit.count();}
     static LitteraleManager& getInstance();
     static void libererInstance();
@@ -164,21 +169,23 @@ public:
 class Pile : public QObject {
     Q_OBJECT
 
-    QStack<Litterale*> PileLit;
+
 
     QString message;
 
     unsigned int nbAffiche;
 public:
+    QStack<Litterale*> PileLit;
+
     Pile():message(""),nbAffiche(4){PileLit.clear(); }
     ~Pile();
     void push(Litterale& e);
     void pop();
-    bool estVide() const { return this->getNbLitterale()==0; }
+    bool estVide() const { return PileLit.isEmpty(); }
 
     void affiche(QTextStream& f) const;
     Litterale& top() const;
-    void setNbLitteraleToAffiche(unsigned int n) { nb=n; }
+    void setNbLitteraleToAffiche(unsigned int n) { nbAffiche=n; }
     unsigned int getNbLitteraleToAffiche() const { return nbAffiche; }
     void setMessage(const QString& m) { message=m; modificationEtat(); }
     QString getMessage() const { return message; }
@@ -195,6 +202,8 @@ public:
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){}
     void commande(const QString& c);
 
+    void commandeEx(const QString &c);
+    void commandeP(const QString &c);
 };
 
 bool estUnOperateur(const QString s);
@@ -204,5 +213,6 @@ bool estUnRationnel(const QString s);
 bool estUnReel(const QString s);
 bool estUnComplexe(const QString s);
 bool estUnAtome(const QString s);
+bool estUnExpression(const QString s);
 bool estUnProgramme(const QString s);
 #endif

@@ -15,8 +15,9 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
 
     for(unsigned int i=0;i<pile->getNbLitteraleToAffiche();i++){
         vuePile->setItem(i,0,new QTableWidgetItem(""));
-        vuePile->item(i,0)->setBackground(Qt::red);
+
     }
+
     vuePile->horizontalHeader()->setVisible(false);
     vuePile->horizontalHeader()->setStretchLastSection(true);
 
@@ -43,18 +44,94 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     message->setStyleSheet("background: black; color : white");
 
 
+
+    QLineEdit instruction(this);
+    instruction.setMaxLength(180);
+
+    QPushButton* button0=new QPushButton("0",this);
+    QPushButton* button1=new QPushButton("1",this);
+    QPushButton* button2=new QPushButton("2",this);
+    QPushButton* button3=new QPushButton("3",this);
+    QPushButton* button4=new QPushButton("4",this);
+    QPushButton* button5=new QPushButton("5",this);
+    QPushButton* button6=new QPushButton("6",this);
+    QPushButton* button7=new QPushButton("7",this);
+    QPushButton* button8=new QPushButton("8",this);
+    QPushButton* button9=new QPushButton("9",this);
+    QPushButton* buttonP=new QPushButton("+",this);
+    QPushButton* buttonM=new QPushButton("-",this);
+    QPushButton* buttonF=new QPushButton("*",this);
+    QPushButton* buttonD=new QPushButton("/",this);
+    QPushButton* button$=new QPushButton("$",this);
+    QPushButton* buttonE=new QPushButton("Entrée",this);
+    QPushButton* buttonA=new QPushButton("Annuler",this);
+
+    button0->setFixedSize(90,30);
+    button1->setFixedSize(30,30);
+    button2->setFixedSize(30,30);
+    button3->setFixedSize(30,30);
+    button4->setFixedSize(30,30);
+    button5->setFixedSize(30,30);
+    button6->setFixedSize(30,30);
+    button7->setFixedSize(30,30);
+    button8->setFixedSize(30,30);
+    button9->setFixedSize(30,30);
+    buttonE->setFixedSize(80,40);
+
+    ligne1.addWidget(button7);
+    ligne1.addWidget(button4);
+    ligne1.addWidget(button1);
+
+    ligne2.addWidget(button8);
+    ligne2.addWidget(button5);
+    ligne2.addWidget(button2);
+
+    ligne3.addWidget(button9);
+    ligne3.addWidget(button6);
+    ligne3.addWidget(button3);
+
+      chiffre.addLayout(&ligne1);
+    chiffre.addLayout(&ligne2);
+    chiffre.addLayout(&ligne3);
+
+    finalC.addLayout(&chiffre);
+    finalC.addWidget(button0);
+
+
+    op.addWidget(buttonP);
+    op.addWidget(buttonM);
+    op.addWidget(buttonF);
+    op.addWidget(buttonD);
+    op.addWidget(button$);
+
+    op.addWidget(buttonE);
+    op.addWidget(buttonA);
+
+
+    Compo.addLayout(&finalC);
+    Compo.addLayout(&op);
+
+    Fini.addWidget(&instruction);
+    Fini.addLayout(&Compo);
+    couche->addLayout(&Fini);
+
+
     connect(commande,SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
 
     connect(pile,SIGNAL(modificationEtat()),this,SLOT(refresh()));
 
 
+
 }
 QComputer::~QComputer(){
 
+    qDebug()<< "Destruction";
     delete controleur;
     delete pile;
+
 }
 void QComputer::refresh(){
+
 
     message->setText(pile->getMessage());
 
@@ -64,10 +141,11 @@ void QComputer::refresh(){
 
 
     unsigned int nb=0;
-    for (Pile::iterator it=pile->begin();it!=pile->end()&&nb<pile->getNbLitteraleToAffiche();++it){
-        vuePile->item(pile->getLitteraleToAffiche()-nb-1,0)->setText((*it).afficher());
+    for (Litterale* it=pile->PileLit.begin();(it!=pile->PileLit.end()&&(nb<(pile->getNbLitteraleToAffiche())));++it){
+       vuePile->item(pile->getNbLitteraleToAffiche()-nb-1,0)->setText(it->afficher());
         nb++;
     }
+    qDebug()<< "Ta mere suce";
 
 }
 void QComputer::getNextCommande(){
