@@ -155,7 +155,11 @@ class LitteraleManager {
     };
     static Handler handler;
 public:
+<<<<<<< HEAD
     Litterale* addLitterale(const QString& v);
+=======
+    Litterale* addLitterale(Litterale* v);
+>>>>>>> origin/master
     void removeLitterale(Litterale* e);
     unsigned int getNbLiterrale(){return lit.count();}
     static LitteraleManager& getInstance();
@@ -181,7 +185,11 @@ public:
     ~Pile();
     void push(Litterale& e);
     void pop();
+<<<<<<< HEAD
     bool estVide() const { return PileLit.isEmpty(); }
+=======
+    bool estVide() const { return PileLit.empty(); }
+>>>>>>> origin/master
 
     void affiche(QTextStream& f) const;
     Litterale& top() const;

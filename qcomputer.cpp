@@ -141,8 +141,13 @@ void QComputer::refresh(){
 
 
     unsigned int nb=0;
+<<<<<<< HEAD
     for (Litterale* it=pile->PileLit.begin();(it!=pile->PileLit.end()&&(nb<(pile->getNbLitteraleToAffiche())));++it){
        vuePile->item(pile->getNbLitteraleToAffiche()-nb-1,0)->setText(it->afficher());
+=======
+    for (Pile::iterator it=pile->begin();it!=pile->end()&&nb<pile->getNbLitteraleToAffiche();++it){
+        vuePile->item(pile->getNbLitteraleToAffiche()-nb-1,0)->setText((*it).afficher());
+>>>>>>> origin/master
         nb++;
     }
     qDebug()<< "Ta mere suce";

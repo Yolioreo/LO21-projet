@@ -16,10 +16,16 @@ void LitteraleManager::libererInstance(){
 
 
 
+<<<<<<< HEAD
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
     Entier* YO=new Entier(v.toInt());
     lit.push_back(YO);
+=======
+Litterale* LitteraleManager::addLitterale(Litterale* v){
+
+    lit.push_back(v);
+>>>>>>> origin/master
     return lit.back();
 }
 
@@ -263,6 +269,7 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
 //        }else LitAff.setMessage("Erreur : commande inconnue");
 //    }
 
+<<<<<<< HEAD
    // if (estUneExpression(c))commandeEx(c);
     //if(estUnProgramme(c))commandeP(c);
 
@@ -297,4 +304,7 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
         }
 
     }
+=======
+
+>>>>>>> origin/master
 }
