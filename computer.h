@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QStack>
 #include <QVector>
+#include <qstring.h>
 
 using namespace std;
 

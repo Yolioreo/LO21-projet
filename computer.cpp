@@ -77,7 +77,7 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
 }
 
 void LitteraleManager::removeLitterale(Litterale* e){
-    unsigned int i=lit.indexOf(e,0);
+    int i=lit.indexOf(e,0);
     if (i==-1) throw ComputerException("elimination d'une Expression inexistante");
 
     lit.remove(i); // pas optimisé mais c'est pas grave
@@ -169,7 +169,7 @@ bool estUnRationnel(const QString s){
     if (compteanomalie!=1) return false;
     compteanomalie=0;
     int j=i+1;
-    for (j;j<s.size();j++)
+    for (j=i+1;j<s.size();j++)
     {
         if(s[j]<'0'||s[j]>'9')
             compteanomalie++;
@@ -184,7 +184,7 @@ bool estUnReel(const QString s){
     int compteanomalie=0;
     bool test2=false;// on cherche le /
     int i=0;
-    for(i;i<s.size();i++)
+    for(i=0;i<s.size();i++)
     {
         if(s[i]<'0'||s[i]>'9')
             compteanomalie++;
@@ -211,7 +211,7 @@ bool estUnComplexe(const QString s){
     int compteanomalie=0;
     bool test2=false;// on cherche le /
     int i=0;
-    for(i;i<s.size();i++)
+    for(i=0;i<s.size();i++)
     {
         if(s[i]<'0'||s[i]>'9')
             compteanomalie++;
@@ -225,7 +225,7 @@ bool estUnComplexe(const QString s){
     if (compteanomalie!=1) return false;
     compteanomalie=0;
     int j=i+1;
-    for (j;j<s.size();j++)
+    for (j=i+1;j<s.size();j++)
     {
         if(s[j]<'0'||s[j]>'9')
             compteanomalie++;
@@ -241,13 +241,13 @@ bool estUnAtome(QString s){
     bool test=true;
     for(int i=0;i<s.size();i++)
     {
-        if(!((s[i]>'0')&&(s[i]<'9')||((s[i]>'A')&&(s[i]<'Z')))){
+        if(!(((s[i]>'0')&&(s[i]<'9'))||((s[i]>'A')&&(s[i]<'Z')))){
                 test=false;
                 break;
         }
 
     }
-    if (test=true){
+    if (test==true){
         if(s.compare("DIV")==0||s.compare("NEG")==0||s.compare("NUM")==0||s.compare("DEN")==0||s.compare("RE")==0|| s.compare("IM")==0)
     {
             test=false;
@@ -259,12 +259,12 @@ bool estUnAtome(QString s){
 
 bool estUneExpression(const QString s){
 
-    return ((s[0]=="'")&&(s[s.size()]=="'"));
+    return ((s[0]=='\'')&&(s[s.size()]=='\''));
 }
 
 bool estUnProgramme(const QString s){
 
-    return ((s[0]=="[")&&(s[s.size()]=="]"));
+    return ((s[0]=='[')&&(s[s.size()]==']'));
 }
 
 void Controleur::commandeEx(const QString& s) //gerer le cas d'une expression
