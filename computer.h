@@ -37,10 +37,8 @@ class Entier : public Litterale{
 public :
     Entier(int a ): nombre(a){}
     QString afficher(){
-        // faire la fonction
-        QString temp="";
-        temp=temp+nombre ;
-        return temp;
+
+        return QString::number(nombre);
     }
     bool isNull()const {return nombre==0;}
 
@@ -94,15 +92,16 @@ public :
 
 };
 
-template<class T, class P>
-class Complexe : public Litterale{
+template<class T> class Complexe : public Litterale{
     T reel;
-    P imaginaire;
+    T imaginaire;
 public:
     QString afficher(){
-    return reel.afficher()+"$"+imaginaire.afficher();
+        QString r=QString::number(reel),i=QString::number(imaginaire);
+
+    return r+"$"+i;
     }
-    Complexe( T a, P b):reel(a),imaginaire(b){}
+    Complexe(T a,T b): reel(a),imaginaire(b){}
     bool isNull() const {return (reel==0)&&(imaginaire==0);}
 
 };
@@ -155,11 +154,7 @@ class LitteraleManager {
     };
     static Handler handler;
 public:
-<<<<<<< HEAD
     Litterale* addLitterale(const QString& v);
-=======
-    Litterale* addLitterale(Litterale* v);
->>>>>>> origin/master
     void removeLitterale(Litterale* e);
     unsigned int getNbLiterrale(){return lit.count();}
     static LitteraleManager& getInstance();
@@ -183,13 +178,9 @@ public:
 
     Pile():message(""),nbAffiche(4){PileLit.clear(); }
     ~Pile();
-    void push(Litterale& e);
+    void push(Litterale* e);
     void pop();
-<<<<<<< HEAD
     bool estVide() const { return PileLit.isEmpty(); }
-=======
-    bool estVide() const { return PileLit.empty(); }
->>>>>>> origin/master
 
     void affiche(QTextStream& f) const;
     Litterale& top() const;
@@ -224,3 +215,4 @@ bool estUnAtome(const QString s);
 bool estUnExpression(const QString s);
 bool estUnProgramme(const QString s);
 #endif
+

@@ -16,16 +16,63 @@ void LitteraleManager::libererInstance(){
 
 
 
-<<<<<<< HEAD
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
-    Entier* YO=new Entier(v.toInt());
-    lit.push_back(YO);
-=======
-Litterale* LitteraleManager::addLitterale(Litterale* v){
+    if (estUnEntier(v))
+    {
+        Entier* YO=new Entier(v.toInt());
 
-    lit.push_back(v);
->>>>>>> origin/master
+        lit.push_back(YO);
+        qDebug ("C'est un entier");
+    }
+    if (estUnReel(v))
+    {
+        Reel* YO=new Reel(v.toDouble());
+
+        lit.push_back(YO);
+        qDebug ("C'est un reel");
+    }
+    if (estUnRationnel(v))
+    {   qDebug ("C'est un rationnel");
+        int i=0;
+        QString n="",d="";
+        while(v[i]!='/'){
+            n.push_back(v[i]);
+            i++;
+        }
+        i++;
+        while(v[i]=='\0'){
+            d.push_back(v[i]);
+            i++;
+        }
+
+
+        Rationnel* YO=new Rationnel(n.toInt(),d.toInt());
+
+        lit.push_back(YO);
+        qDebug ("C'est un rationnel");
+    }
+    if (estUnComplexe(v))
+    {   int i=0;
+        QString n="",d="";
+        while(v[i]!='$'){
+            n.push_back(v[i]);
+            i++;
+        }
+        i++;
+        while(v[i]=='\0'){
+            d.push_back(v[i]);
+            i++;
+        }
+
+
+        Complexe<double> *YO=new Complexe<double>(n.toDouble(),d.toDouble());
+        qDebug ("C'est un complexe");
+
+        lit.push_back(YO);
+    }
+
+
     return lit.back();
 }
 
@@ -40,17 +87,12 @@ void LitteraleManager::removeLitterale(Litterale* e){
 }
 
 LitteraleManager::~LitteraleManager(){
-    // MEMENTO
+    // MEMENTO et destruction de tous les littéraux
 }
 
-
-
-
-
-
-void Pile::push(Litterale& e){
+void Pile::push(Litterale* e){
     // checker si c'est une fraction et denominateur =1
-    PileLit.push(&e);
+    PileLit.push(e);
     modificationEtat();
 }
 
@@ -269,14 +311,13 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
 //        }else LitAff.setMessage("Erreur : commande inconnue");
 //    }
 
-<<<<<<< HEAD
    // if (estUneExpression(c))commandeEx(c);
     //if(estUnProgramme(c))commandeP(c);
 
     if (estUnLitterale(c)){
         //checker cas d'un atome correspond à une opération
-        qDebug("salut");
-       LitAff.push(*LitMng.addLitterale(c));
+        qDebug("C'est un litterale");
+       LitAff.push(LitMng.addLitterale(c));
 
     }else{
         if (estUnOperateur(c)){
@@ -304,7 +345,4 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
         }
 
     }
-=======
-
->>>>>>> origin/master
 }
