@@ -48,35 +48,41 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     QLineEdit instruction(this);
     instruction.setMaxLength(180);
 
-    QPushButton* button0=new QPushButton("0",this);
-    QPushButton* button1=new QPushButton("1",this);
-    QPushButton* button2=new QPushButton("2",this);
-    QPushButton* button3=new QPushButton("3",this);
-    QPushButton* button4=new QPushButton("4",this);
-    QPushButton* button5=new QPushButton("5",this);
-    QPushButton* button6=new QPushButton("6",this);
-    QPushButton* button7=new QPushButton("7",this);
-    QPushButton* button8=new QPushButton("8",this);
-    QPushButton* button9=new QPushButton("9",this);
-    QPushButton* buttonP=new QPushButton("+",this);
-    QPushButton* buttonM=new QPushButton("-",this);
-    QPushButton* buttonF=new QPushButton("*",this);
-    QPushButton* buttonD=new QPushButton("/",this);
-    QPushButton* button$=new QPushButton("$",this);
-    QPushButton* buttonE=new QPushButton("Entrée",this);
-    QPushButton* buttonA=new QPushButton("Annuler",this);
+    button0=new QPushButton("0",this);
+    button1=new QPushButton("1",this);
+    button2=new QPushButton("2",this);
+    button3=new QPushButton("3",this);
+    button4=new QPushButton("4",this);
+    button5=new QPushButton("5",this);
+    button6=new QPushButton("6",this);
+    button7=new QPushButton("7",this);
+    button8=new QPushButton("8",this);
+    button9=new QPushButton("9",this);
+    buttonP=new QPushButton("+",this);
+    buttonM=new QPushButton("-",this);
+    buttonF=new QPushButton("*",this);
+    buttonD=new QPushButton("/",this);
+    button$=new QPushButton("$",this);
+    buttonE=new QPushButton("Entrée",this);
+    buttonA=new QPushButton("Annuler",this);
+    buttonPG=new QPushButton("[",this);
+    buttonPD=new QPushButton("]",this);
+    buttonG=new QPushButton("'",this);
+    buttonES=new QPushButton("ESPACE",this);
 
-    button0->setFixedSize(90,30);
-    button1->setFixedSize(30,30);
-    button2->setFixedSize(30,30);
-    button3->setFixedSize(30,30);
-    button4->setFixedSize(30,30);
-    button5->setFixedSize(30,30);
-    button6->setFixedSize(30,30);
-    button7->setFixedSize(30,30);
-    button8->setFixedSize(30,30);
-    button9->setFixedSize(30,30);
+
+    button0->setFixedSize(40,40);
+    button1->setFixedSize(40,40);
+    button2->setFixedSize(40,40);
+    button3->setFixedSize(40,40);
+    button4->setFixedSize(40,40);
+    button5->setFixedSize(40,40);
+    button6->setFixedSize(40,40);
+    button7->setFixedSize(40,40);
+    button8->setFixedSize(40,40);
+    button9->setFixedSize(40,40);
     buttonE->setFixedSize(80,40);
+    buttonA->setFixedSize(80,40);
 
     ligne1.addWidget(button7);
     ligne1.addWidget(button4);
@@ -97,16 +103,21 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     finalC.addLayout(&chiffre);
     finalC.addWidget(button0);
 
+    Parenthese.addWidget(buttonPG);
 
+    Parenthese.addWidget(buttonPD);
     op.addWidget(buttonP);
     op.addWidget(buttonM);
     op.addWidget(buttonF);
     op.addWidget(buttonD);
     op.addWidget(button$);
 
-    op.addWidget(buttonE);
-    op.addWidget(buttonA);
-
+    op.addLayout(&Parenthese);
+    op.addWidget(buttonG);
+    entre.addWidget(buttonE);
+    entre.addWidget(buttonA);
+    op.addLayout(&entre);
+    op.addWidget(buttonES);
 
     Compo.addLayout(&finalC);
     Compo.addLayout(&op);
@@ -115,19 +126,50 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     Fini.addLayout(&Compo);
     couche->addLayout(&Fini);
 
-
+    // Entrée par touche ou  clavier
     connect(commande,SIGNAL(returnPressed()),this,SLOT(getNextCommande()));
+    connect(buttonE,SIGNAL(clicked()),this,SLOT(getNextCommande()));
 
+    // correspondance entre les chiffre et les caractère
+    connect(button0,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button1,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button2,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button3,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button4,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button5,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button6,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button7,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button8,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button9,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(buttonP,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(buttonM,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(buttonF,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(button$,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(buttonD,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(buttonPD,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(buttonPG,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+    connect(buttonG,SIGNAL(clicked()),this,SLOT(ajoute_chiffre()));
+
+    // actualisation de la pile
     connect(pile,SIGNAL(modificationEtat()),this,SLOT(refresh()));
+
+
+
 
 
 
 }
 QComputer::~QComputer(){
 
-    qDebug()<< "Destruction";
+    qDebug()<< "Destruction du controleur et de la pile ";
     delete controleur;
-    delete pile;
+
+
+
+
+
+
+
 
 }
 void QComputer::refresh(){
@@ -154,13 +196,35 @@ void QComputer::getNextCommande(){
     QString c=commande->text();
     QTextStream stream(&c);
     QString com;
+    if (c!=""){
+        if (estUneExpression(c))
+            controleur->commandeEx(c);
+        else
+        {   if (estUnProgramme(c))
 
-    do{
-        stream>>com;
-        if (com!="")controleur->commande(com);
-    }while(com!="");
+                controleur->commandeP(c);
+
+            else{
+
+                    do{
+                        stream>>com;
+                        if (com!="")controleur->commande(com);
+                    }while(com!="");
+            }
+        }
 
 
-
+    }
+    else pile->setMessage("Pas d'argument sur la pile");
     commande->clear();
+}
+
+void QComputer::ajoute_chiffre(){
+
+    QPushButton* btn = qobject_cast<QPushButton*>(sender());
+
+        if(btn==nullptr) {
+            return;
+        }
+        commande->insert(btn->text());
 }

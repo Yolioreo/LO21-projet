@@ -2,11 +2,13 @@
 #define _COMPUTER_H
 
 #include <QString>
+#include <QStringList>
 #include <QTextStream>
 #include <QObject>
 #include <QDebug>
 #include <QStack>
 #include <QVector>
+#include <QException>
 #include <qstring.h>
 
 using namespace std;
@@ -29,6 +31,7 @@ public:
     virtual QString afficher()=0;
     virtual bool isNull()const =0;
     Litterale(){}
+    virtual ~Litterale(){}
 
 };
 
@@ -42,6 +45,7 @@ public :
         return QString::number(nombre);
     }
     bool isNull()const {return nombre==0;}
+    ~Entier(){qDebug("On détruit un entier");}
 
 
 };
@@ -50,20 +54,6 @@ class Rationnel : public Litterale{
     int numerateur;
     int denominateur;
 public:
-    Rationnel(int n, int d){
-        setRationnel(n,d);
-    }
-
-    void setRationnel(int n, int d){
-        numerateur=n;
-        if (d!=0) denominateur=d;
-        else throw ComputerException("Division par zéro");
-        simplification();
-
-    }
-     QString afficher(){
-    return numerateur+"/"+denominateur;
-    }
     void simplification(){
 
                 if (numerateur==0) { denominateur=1; return; }
@@ -75,6 +65,29 @@ public:
                 if (denominateur<0) { denominateur=-denominateur; numerateur=-numerateur; }
 
     }
+    void setRationnel(int n, int d){
+        qDebug ("on est dans le set");
+        numerateur=n;
+        if (d!=0) denominateur=d;
+        else{
+            qDebug ("d =0");
+
+
+        }
+        qDebug ("On va simplifier le rationnel");
+        simplification();
+
+    }
+    Rationnel(int n, int d){
+        qDebug ("On va set le rationnel");
+        setRationnel(n,d);
+    }
+
+
+     QString afficher(){
+    return QString::number(numerateur)+"/"+QString::number(denominateur);
+    }
+
     bool isNull() const {return numerateur==0;}
     bool isNotRationnel(){return denominateur==1;}
 };
@@ -137,7 +150,9 @@ class Programme : public Litterale{
 
 
 
-class LitteraleManager {
+class LitteraleManager : public QObject {
+    Q_OBJECT
+
     QVector<Litterale*> lit;
 
 
@@ -160,6 +175,11 @@ public:
     unsigned int getNbLiterrale(){return lit.count();}
     static LitteraleManager& getInstance();
     static void libererInstance();
+signals :
+    void erreurDivZero();
+
+
+
 
 };
 
@@ -174,10 +194,14 @@ class Pile : public QObject {
     QString message;
 
     unsigned int nbAffiche;
+    friend class LitteraleManager;
 public:
     QStack<Litterale*> PileLit;
 
-    Pile():message(""),nbAffiche(4){PileLit.clear(); }
+    Pile():message(""),nbAffiche(4){
+        PileLit.clear();
+
+    }
     ~Pile();
     void push(Litterale* e);
     void pop();
@@ -193,13 +217,20 @@ public:
 
 signals:
     void modificationEtat();
+public slots:
+    void afficheDivZero(){setMessage("Impossible il y a une division par zéro");}
+
 };
 
-class Controleur {
+class Controleur : public QObject{
+    Q_OBJECT
+
     LitteraleManager& LitMng;
     Pile& LitAff;
 public:
-    Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){}
+    Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
+        connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
+    }
     void commande(const QString& c);
 
     void commandeEx(const QString &c);
@@ -213,7 +244,7 @@ bool estUnRationnel(const QString s);
 bool estUnReel(const QString s);
 bool estUnComplexe(const QString s);
 bool estUnAtome(const QString s);
-bool estUnExpression(const QString s);
+bool estUneExpression(const QString s);
 bool estUnProgramme(const QString s);
 #endif
 

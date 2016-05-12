@@ -15,6 +15,7 @@
 #include <QHeaderView>
 #include <QDebug>
 #include "computer.h"
+
 class QComputer : public QWidget{
 
     Q_OBJECT
@@ -26,7 +27,7 @@ class QComputer : public QWidget{
     Controleur* controleur;
 
     QVBoxLayout Fini,ligne1,ligne2,ligne3,finalC,op;
-    QHBoxLayout chiffre,Compo;
+    QHBoxLayout chiffre,Compo,Parenthese,entre;
 
     QPushButton* button0;
     QPushButton* button1;
@@ -45,6 +46,11 @@ class QComputer : public QWidget{
     QPushButton* button$;
     QPushButton* buttonE;
     QPushButton* buttonA;
+    QPushButton* buttonPG;
+    QPushButton* buttonPD;
+    QPushButton* buttonG;
+    QPushButton* buttonES;
+
 
 
 
@@ -52,6 +58,7 @@ public:
     explicit QComputer(QWidget *parent = 0);
     virtual ~QComputer();
 public slots:
+    void ajoute_chiffre();
     void refresh();
     void getNextCommande();
 };
