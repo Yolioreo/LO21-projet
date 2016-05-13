@@ -144,29 +144,6 @@ bool estUnEntier(const QString s){
 }
 
 bool estUnRationnel(const QString s){
-    //int compteanomalie=0;
-
-//    int i=0;
-//    for(i=0;i<s.size();i++)
-//    {
-//        if(s[i]<'0'||s[i]>'9')
-//            compteanomalie++;
-//        if (s[i]=='/')
-//        {
-//            test2=true;
-//            break;
-//        }
-
-//    }
-//    if (compteanomalie!=1) return false;
-//    compteanomalie=0;
-//    int j;
-//    for (j=i+1;j<s.size();j++)
-//    {
-//        if(s[j]<'0'||s[j]>'9')
-//            compteanomalie++;
-//    }
-//    if (compteanomalie!=0) return false;
 
     bool test=false;
     QRegExp r("^(\\d+)/(\\d+)$");
@@ -184,29 +161,7 @@ bool estUnReel(const QString s){
 }
 
 bool estUnComplexe(const QString s){
-//    int compteanomalie=0;
-//    bool test2=false;// on cherche le /
-//    int i;
-//    for(i=0;i<s.size();i++)
-//    {
-//        if(s[i]<'0'||s[i]>'9')
-//            compteanomalie++;
-//        if (s[i]=='$')
-//        {
-//            test2=true;
-//            break;
-//        }
 
-//    }
-//    if (compteanomalie!=1) return false;
-//    compteanomalie=0;
-//    int j;
-//    for (j=i+1;j<s.size();j++)
-//    {
-//        if(s[j]<'0'||s[j]>'9')
-//            compteanomalie++;
-//    }
-//    if (compteanomalie!=0) return false;
     bool test=false;
     QRegExp r("^(\\d+)(\\${1})(\\d+)$");
     if(s.contains(r))
