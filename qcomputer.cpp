@@ -165,7 +165,6 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
 QComputer::~QComputer(){
 
     delete pile;
-    qDebug()<< "Destruction du controleur et de la pile ";
     delete controleur;
 }
 void QComputer::refresh(){

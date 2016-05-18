@@ -1,4 +1,5 @@
 QT += widgets
+QT += core
 
 SOURCES += \
     main.cpp \
@@ -9,11 +10,9 @@ SOURCES += \
 HEADERS += \
     computer.h \
     qcomputer.h \
-<<<<<<< HEAD
-    operande.h
-=======
-    ui_interface_graphique.h
+    operande.h \
+    ui_interface_graphique.h \
 
 FORMS += \
     interface_graphique.ui
->>>>>>> origin/master
+

@@ -14,13 +14,14 @@ public:
     virtual bool verifierPile(){return false;}
 
 
+
 };
 
 class addition : public operande{
 
 public:
     int typeoperande()const {return 1;}
-    void operator() (){qDebug()<<"ALLEZ SIL TE PLAIT";}
+    void operator() (){qDebug("Test");}
 };
 
 

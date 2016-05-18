@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD
-<!-- Written by QtCreator 3.6.1, 2016-05-18T16:43:42. -->
-=======
-<!-- Written by QtCreator 3.6.1, 2016-05-17T14:19:21. -->
->>>>>>> origin/master
+<!-- Written by QtCreator 3.6.1, 2016-05-18T20:09:09. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -288,11 +284,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">LO21-Projet-Soetaert_Gignon</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">LO21-Projet-Soetaert_Gignon2</value>
-<<<<<<< HEAD
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/Shirogane/Documents/GitHub/LO21-projet/LO21-Projet-Soetaert_Gignon.pro</value>
-=======
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/ladyn/Documents/LO21-Projet/LO21-Projet-Soetaert_Gignon.pro</value>
->>>>>>> origin/master
     <value type="bool" key="QmakeProjectManager.QmakeRunConfiguration.UseLibrarySearchPath">true</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">LO21-Projet-Soetaert_Gignon.pro</value>

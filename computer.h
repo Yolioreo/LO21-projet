@@ -12,6 +12,7 @@
 #include <qstring.h>
 #include <QMap>
 #include "operande.h"
+
 using namespace std;
 
 class ComputerException {
@@ -260,13 +261,14 @@ class Controleur : public QObject{
     QMap<QString,operande*> faire;
 
 public:
+    void initialisationMap();
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
         connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
         initialisationMap();
 
     }
 
-    void initialisationMap();
+
     void commande(const QString& c);
 
     void commandeEx(const QString &c);
