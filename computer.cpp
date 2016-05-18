@@ -206,6 +206,10 @@ bool estUnReel(const QString s){
 }
 
 bool estUnComplexe(const QString s){
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     bool test=false;
     QRegExp r("\\$");
     if(s.contains(r))

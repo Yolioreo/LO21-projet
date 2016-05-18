@@ -19,16 +19,32 @@
 class QComputer : public QWidget{
 
     Q_OBJECT
+  //Widget gérant les onglets calculatrice, variable, programme
+  QTabWidget* onglets;
+  //widget affichant les message d'erreur
     QLineEdit* message;
+    //widget permettant d'afficher la pile
     QTableWidget* vuePile;
+    //widget où l'utilisateur entre ses commandes
     QLineEdit* commande;
+
+
+    QVBoxLayout* Variables;
+    QVBoxLayout* Programmes;
+
+
+
+
     QVBoxLayout* couche;
+    //pile dans laquelle on stockent les littéraux
     Pile* pile;
+    //gére les opérations
     Controleur* controleur;
 
     QVBoxLayout Fini,ligne1,ligne2,ligne3,finalC,op;
     QHBoxLayout chiffre,Compo,Parenthese,entre;
 
+    //bouton clavier chiffres et opérateurs
     QPushButton* button0;
     QPushButton* button1;
     QPushButton* button2;
@@ -50,7 +66,7 @@ class QComputer : public QWidget{
     QPushButton* buttonPD;
     QPushButton* buttonG;
     QPushButton* buttonES;
-
+    QPushButton* buttonBS;
 
 
 
