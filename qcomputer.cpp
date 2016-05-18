@@ -154,6 +154,8 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     connect(pile,SIGNAL(modificationEtat()),this,SLOT(refresh()));
 
 
+    //connect(controleur,SIGNAL(jeconnaispas(QString&)),pile,SLOT(affiche(QString&))
+
 
 
 
@@ -161,16 +163,9 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
 }
 QComputer::~QComputer(){
 
+    delete pile;
     qDebug()<< "Destruction du controleur et de la pile ";
     delete controleur;
-
-
-
-
-
-
-
-
 }
 void QComputer::refresh(){
 
@@ -196,27 +191,23 @@ void QComputer::getNextCommande(){
     QString c=commande->text();
     QTextStream stream(&c);
     QString com;
+    stream>>com;
+    if(estUneExpression(c)&&(!estUneExpression(com)))controleur->commande(c);
+    if(estUnProgramme(c)&&(!estUnProgramme(com)))controleur->commande(c);
+    stream<<com;
     if (c!=""){
-        if (estUneExpression(c))
-            controleur->commandeEx(c);
-        else
-        {   if (estUnProgramme(c))
 
-                controleur->commandeP(c);
 
-            else{
-
-                    do{
-                        stream>>com;
-                        if (com!="")controleur->commande(com);
-                    }while(com!="");
-            }
-        }
+        do{
+            stream>>com;
+            if (com!="")controleur->commande(com);
+        }while(com!="");
 
 
     }
-    else pile->setMessage("Pas d'argument sur la pile");
+    else pile->setMessage("Pas d'argument à interpréter");
     commande->clear();
+
 }
 
 void QComputer::ajoute_chiffre(){
@@ -226,5 +217,10 @@ void QComputer::ajoute_chiffre(){
         if(btn==nullptr) {
             return;
         }
+        if(btn->text()=="ESPACE") commande->insert(" ");
+        else{
         commande->insert(btn->text());
+
+        }
 }
+

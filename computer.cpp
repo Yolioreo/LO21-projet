@@ -19,18 +19,20 @@ void LitteraleManager::libererInstance(){
 
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
+   Litterale* YO;
+
     if (estUnEntier(v))
     {
-        Entier* YO=new Entier(v.toInt());
+        YO=new Entier(v.toInt());
 
-        lit.push_back(YO);
+
         qDebug ("C'est un entier");
     }
     if (estUnReel(v))
     {
-        Reel* YO=new Reel(v.toDouble());
+        YO=new Reel(v.toDouble());
 
-        lit.push_back(YO);
+
         qDebug ("C'est un reel");
     }
     if (estUnRationnel(v))
@@ -40,9 +42,7 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
         r=v.split("/"); // on sépare les deux parties autour du "/"
 
         if(r[1].toInt()!=0){
-        Rationnel* YO=new Rationnel(r[0].toInt(),r[1].toInt());
-        lit.push_back(YO);
-        return lit.back();
+            YO=new Rationnel(r[0].toInt(),r[1].toInt());
         }
         else
         {   qDebug("denominateur nul");
@@ -53,47 +53,44 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
 
 
     }
-    if (estUnComplexe(v))
-    {
-        QStringList r=v.split("$"); // on sépare les deux parties autour du "/"
-        Complexe<double> *YO=new Complexe<double>(r[0].toDouble(),r[1].toDouble());
-        qDebug ("C'est un complexe");
+    if (estUneExpression(v)){
+        YO =new Expression(v);
+        qDebug ("C'est une expression");
 
-        lit.push_back(YO);
     }
-    if (estUnAtome(v)){
-        lit.push_back(new Entier(666));// simple test temporaire
-    }
+    if (estUnProgramme(v)){
+        YO=new Programme(v);
+        qDebug ("C'est un programme");
 
-    return lit.back();
+    }
+    nb++;
+    return YO;
 }
 
 void LitteraleManager::removeLitterale(Litterale* e){
-    int i=lit.indexOf(e,0);
-    if (i==-1) throw ComputerException("elimination d'une Expression inexistante");
-
-    lit.remove(i); // pas optimisé mais c'est pas grave
-
-
-
+    delete e;
 }
 
 LitteraleManager::~LitteraleManager(){
     // MEMENTO et destruction de tous les littéraux
 
+
 }
 
 void Pile::push(Litterale* e){
     // checker si c'est une fraction et denominateur =1
+
     if(e!=nullptr)
     {
     PileLit.push_front(e);
+    nb++;
     modificationEtat();
     }
 }
 
 void Pile::pop(){
-    PileLit.pop();
+    PileLit.pop_front();
+    nb--;
     modificationEtat();
 }
 
@@ -111,30 +108,76 @@ void Pile::pop(){
 
 
 Pile::~Pile(){
-
+    PileLit.clear();
 }
 
-Litterale& Pile::top() const {
+Litterale* Pile::top() const {
 
     if (PileLit.size()==0) throw ComputerException("aucune expression sur la pile");
-    return *(PileLit.top());
+    return (PileLit.front());
 }
 
 
 
-bool estUnOperateur(const QString s){
+bool estUnOperateurNum(const QString s){
+
     if (s=="+") return true;
     if (s=="-") return true;
     if (s=="*") return true;
     if (s=="/") return true;
     if (s=="$") return true;
+    if (s=="DIV") return true;
+    if (s=="NEG") return true;
+    if (s=="NUM") return true;
+    if (s=="DEN") return true;
+    if (s=="IM") return true;
+    if (s=="RE") return true;
+    return false;
+}
+bool estUnOperateur2(const QString s){
+    if (s=="+") return true;
+    if (s=="-") return true;
+    if (s=="*") return true;
+    if (s=="/") return true;
+    if (s=="$") return true;
+    if (s=="DIV") return true;
+    return false;
+}
+bool estUnOperateur1(const QString s){
+    if (s=="NEG") return true;
+    if (s=="NUM") return true;
+    if (s=="DEN") return true;
+    if (s=="IM") return true;
+    if (s=="RE") return true;
+    if (s=="NOT") return true;
     return false;
 }
 
 
-bool estUnLitterale(const QString s){
+bool estUnOperateurLog(const QString s){
 
-   return (estUnAtome(s)||estUnComplexe(s)||estUnEntier(s)||estUnRationnel(s)||estUnReel(s));
+    if (s=="=") return true;
+    if (s=="!=") return true;
+    if (s=="=<") return true;
+    if (s=="=>") return true;
+    if (s=="<") return true;
+    if (s==">") return true;
+    if (s=="AND") return true;
+    if (s=="OR") return true;
+    if (s=="NOT") return true;
+
+
+    return false;
+}
+bool estUnOperateur(const QString s){
+    return (estUnOperateurLog(s)||estUnOperateurNum(s));
+}
+
+
+
+bool estUnLitteraleNum(const QString s){
+
+   return (estUnEntier(s)||estUnRationnel(s)||estUnReel(s));
 }
 
 bool estUnEntier(const QString s){
@@ -144,29 +187,6 @@ bool estUnEntier(const QString s){
 }
 
 bool estUnRationnel(const QString s){
-    //int compteanomalie=0;
-
-//    int i=0;
-//    for(i=0;i<s.size();i++)
-//    {
-//        if(s[i]<'0'||s[i]>'9')
-//            compteanomalie++;
-//        if (s[i]=='/')
-//        {
-//            test2=true;
-//            break;
-//        }
-
-//    }
-//    if (compteanomalie!=1) return false;
-//    compteanomalie=0;
-//    int j;
-//    for (j=i+1;j<s.size();j++)
-//    {
-//        if(s[j]<'0'||s[j]>'9')
-//            compteanomalie++;
-//    }
-//    if (compteanomalie!=0) return false;
 
     bool test=false;
     QRegExp r("^(\\d+)/(\\d+)$");
@@ -179,36 +199,15 @@ bool estUnRationnel(const QString s){
 bool estUnReel(const QString s){
 
     bool test=false;
-    if(s.toDouble(&test))return test;
+    QRegExp r("^(\\d+).(\\d+)$");
+    if(s.contains(r))
+            test=true;
     return test;
 }
 
 bool estUnComplexe(const QString s){
-//    int compteanomalie=0;
-//    bool test2=false;// on cherche le /
-//    int i;
-//    for(i=0;i<s.size();i++)
-//    {
-//        if(s[i]<'0'||s[i]>'9')
-//            compteanomalie++;
-//        if (s[i]=='$')
-//        {
-//            test2=true;
-//            break;
-//        }
-
-//    }
-//    if (compteanomalie!=1) return false;
-//    compteanomalie=0;
-//    int j;
-//    for (j=i+1;j<s.size();j++)
-//    {
-//        if(s[j]<'0'||s[j]>'9')
-//            compteanomalie++;
-//    }
-//    if (compteanomalie!=0) return false;
     bool test=false;
-    QRegExp r("^(\\d+)(\\${1})(\\d+)$");
+    QRegExp r("\\$");
     if(s.contains(r))
             test=true;
     return test;
@@ -241,16 +240,30 @@ bool estUnProgramme(const QString s){
     return ((s[0]=='[')&&(s[s.size()-1]==']'));
 }
 
+/*///////////// méthodes du controleur /////////////*/
+
+
+
+void Controleur::initialisationMap(){
+
+      faire["+"]=new addition;
+//    faire["-"]=&soustraction;
+//    faire["/"]=&division;
+//    faire["*"]=&multiplication;
+//    faire["$"]=&complexe;
+
+}
+
 void Controleur::commandeEx(const QString& s) //gerer le cas d'une expression
 {
-    qDebug ("expression");
+    qDebug (" Gestion de l'expression");
 
 }
 
 
 void Controleur::commandeP(const QString& s)//gerer le cas d'un Programme
 {
-    qDebug ("Programme");
+    qDebug ("Gestion du Programme");
 }
 
 
@@ -286,38 +299,126 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
 //        }else LitAff.setMessage("Erreur : commande inconnue");
 //    }
 
-   if (estUneExpression(c))commandeEx(c);
-    if(estUnProgramme(c))commandeP(c);
 
-    if (estUnLitterale(c)){
-        //checker cas d'un atome correspond à une opération
-        qDebug("C'est un litterale");
+
+    if (estUnLitteraleNum(c)||estUneExpression(c)||estUnProgramme(c)){
+
+        qDebug("C'est un litterale, une expression ou un programme");
        LitAff.push(LitMng.addLitterale(c));
 
     }else{
-        if (estUnOperateur(c)){
-            if(LitAff.getNbLitterale()>=2){
-
-
-                Litterale& T1=LitAff.top();
-                LitMng.removeLitterale(&LitAff.top());
-                LitAff.pop();
-                Litterale& T2=LitAff.top();
-                LitMng.removeLitterale(&LitAff.top());
-                LitAff.pop();
-                // IL gérer ces fonctions DE FONCTIONS POUR CHAQUES CAS ou alors templates méthodes mais riqué
-//                if (c=="+") division(T1,T2);
-//                if (c=="-") soustraction(T1,T2);
-//                if (c=="*") multplication(T1,T2);
-//                if (c=="/") division(T1,T2);
-//                if(c=="$")complexisation(T1,T2);
-
-            }else{
-                LitAff.setMessage("Erreur : Pas assez d'arguments");
+        /*if (estUnOperateur(c)){
+            qDebug("C'est un opérateur");
+            if(LitAff.getNbLitterale()==0){
+                LitAff.setMessage("Erreur : Il n'y a pas d'argument dans la pile");
+            return;
             }
-        }else{
-            LitAff.setMessage("Erreur : commande inconnue");
-        }
 
+            Litterale* L2=LitAff.top();
+
+
+            qDebug("On vient de récupérer le top");
+            //LitMng.removeLitterale((LitAff.top()));
+
+
+            qDebug("On a détruit dans pile");
+
+            if (estUnLitteraleNum(L2->afficher())||estUnComplexe(L2->afficher())){
+                qDebug("le premier argument est un numérique ");
+                if(estUnOperateurNum(c)){
+                    qDebug("loperateur est numérique ");
+                    if((LitAff.getNbLitterale()>=2)&&(estUnOperateur2(c))){
+                        LitAff.pop();
+                        Litterale* L1=LitAff.top();
+                        LitAff.pop();
+                        qDebug("On vient de récupérer le top");
+                        //LitMng.removeLitterale(LitAff.top());
+
+
+
+                        if(estUnLitteraleNum(L1->afficher())||estUnComplexe(L1->afficher())){
+
+                            if(c=="+") addition(L1,L2);
+                            if(c=="-")  soustraction(L1,L2);;
+                            if(c=="*") multiplication(L1,L2);;
+                            if(c=="/")division(L1,L2);
+                            if(c=="DIV") divisionE(L1,L2);
+                            if(c=="$") {
+
+                                if(estUnComplexe(L2->afficher())&&estUnComplexe(L1->afficher()))complexise(L1,L2);
+                                else LitAff.setMessage("Opération impossible Il y a deja un complexe");
+                            }
+
+                            return; // j'ai fini tout bien
+
+                        }else{
+                            if(estUnProgramme(L1->afficher())||estUnComplexe(L1->afficher())){
+                                LitAff.push(LitMng.addLitterale(L1->afficher()));
+                                LitAff.push(LitMng.addLitterale(L2->afficher()));
+                                LitAff.setMessage("Erreur : Opération impossible le deuxième élément");
+                                return;
+                            }
+                            if(estUneExpression(L1->afficher())){    // C'est pas mon taff c'est celui de commandeEX
+                                LitAff.push(LitMng.addLitterale(L1->afficher()));
+                                LitAff.push(LitMng.addLitterale(L2->afficher()));
+                                commandeP(c);
+                                return;
+                            }
+                        }
+                    }
+
+                    if(LitAff.getNbLitterale()>=1&&estUnOperateur1(c)){
+
+                        if(c=="NEG") negationne(L2);
+                        if(c=="NUM") Numerateur(L2);
+                        if(c=="DEN" ) Denominateur(L2);
+
+                        if(c=="RE"){
+
+                            if(estUnComplexe(L2->afficher()))Reelise(L2);
+                            else LitAff.setMessage("Opération impossible ce n'est pas un complexe");
+                        }
+                        if(c=="IM"){
+
+                            if(estUnComplexe(L2->afficher()))Imagine(L2);
+                            else LitAff.setMessage("Opération impossible ce n'est pas un complexe");
+                        }
+
+                        return ; // j'ai fini tout bien
+                    }
+                    qDebug("Si je suis la j'ai riens reconnu");
+                    // si on arrive ici c'est pas ouf
+                    //LitAff.push(LitMng.addLitterale(L2->afficher()));
+                    LitAff.setMessage("Opération impossible sur cet/ces éléments");
+                }
+                // faire le cas d'opérateur sur la pile, opérateurs logiques
+            }else{
+               if(estUnProgramme(L2->afficher())){
+                   LitAff.pop();
+                   LitAff.setMessage("Erreur : Opération impossible sur le premier");
+                   LitAff.push(LitMng.addLitterale(L2->afficher()));
+                   return;
+               }
+               if(estUneExpression(L2->afficher())){
+                   LitAff.pop();
+                   LitAff.push(LitMng.addLitterale(L2->afficher()));
+                   commandeP(c);
+                   return;
+               }
+
+            }
+
+
+        }  */
+
+        if(faire.contains(c)){
+            qDebug()<<"On est la";
+            faire[c]->operator ()();
+        }else{
+
+            LitAff.setMessage("Erreur : commande inconnue");
+
+        }
     }
 }
+

@@ -10,7 +10,8 @@
 #include <QVector>
 #include <QException>
 #include <qstring.h>
-
+#include <QMap>
+#include "operande.h"
 using namespace std;
 
 class ComputerException {
@@ -29,13 +30,34 @@ class Litterale {
 
 public:
     virtual QString afficher()=0;
+    double getRNumerateur() const {return 0;}
+    double getRDenominateur() const {return 0;}
+    double getINumerateur() const {return 0;}
+    double getIDenominateur() const {return 0;}
     virtual bool isNull()const =0;
     Litterale(){}
     virtual ~Litterale(){}
 
+
 };
 
-class Entier : public Litterale{
+class LitteraleNum : public Litterale{
+
+    LitteraleNum(const Litterale& e);
+    LitteraleNum& operator=(const LitteraleNum& e);
+    friend class LitteraleManager;
+public:
+    LitteraleNum(){}
+    virtual QString afficher()=0;
+
+    virtual bool isNull() const =0;
+    virtual ~LitteraleNum(){}
+
+
+
+};
+
+class Entier : public LitteraleNum{
     int  nombre;
 
 public :
@@ -47,10 +69,14 @@ public :
     bool isNull()const {return nombre==0;}
     ~Entier(){qDebug("On détruit un entier");}
 
+    double getRNumerateur() const {return nombre;}
+    double getNDenominateur() const {return 1;}
+
+
 
 };
 
-class Rationnel : public Litterale{
+class Rationnel : public LitteraleNum{
     int numerateur;
     int denominateur;
 public:
@@ -66,20 +92,15 @@ public:
 
     }
     void setRationnel(int n, int d){
-        qDebug ("on est dans le set");
+
         numerateur=n;
-        if (d!=0) denominateur=d;
-        else{
-            qDebug ("d =0");
+        denominateur=d;
 
-
-        }
-        qDebug ("On va simplifier le rationnel");
         simplification();
 
     }
     Rationnel(int n, int d){
-        qDebug ("On va set le rationnel");
+
         setRationnel(n,d);
     }
 
@@ -90,10 +111,14 @@ public:
 
     bool isNull() const {return numerateur==0;}
     bool isNotRationnel(){return denominateur==1;}
+
+    double getRNumerateur() const {return numerateur;}
+    double getRDenominateur() const {return denominateur;}
+
+
 };
 
-
-class Reel : public Litterale {
+class Reel : public LitteraleNum {
     double nombre;
 public :
     QString afficher(){
@@ -101,63 +126,70 @@ public :
     }
     Reel(double d):nombre(d){}
     bool isNull() const {return nombre==0;}
+    double getRNumerateur() const {return nombre;}
+    double getRDenominateur() const {return 1;}
+
 
 
 
 };
 
-template<class T> class Complexe : public Litterale{
-    T reel;
-    T imaginaire;
+class Complexe : public Litterale{
+    LitteraleNum& reel;
+    LitteraleNum& imaginaire;
 public:
     QString afficher(){
-        QString r=QString::number(reel),i=QString::number(imaginaire);
 
-    return r+"$"+i;
+    return reel.afficher()+"$"+reel.afficher();
     }
-    Complexe(T a,T b): reel(a),imaginaire(b){}
-    bool isNull() const {return (reel==0)&&(imaginaire==0);}
+    Complexe(LitteraleNum& a,LitteraleNum& b): reel(a),imaginaire(b){}
+    bool isNull() const {return (reel.isNull())&&(imaginaire.isNull());}
 
+    double getRNumerateur() const {return reel.getRNumerateur();}
+    double getRDenominateur() const {return reel.getRDenominateur();}
+    double getINumerateur() const {return imaginaire.getRNumerateur();}
+    double getIDenominateur() const {return imaginaire.getRDenominateur();}
 };
 
-class Atome : public Litterale
-{
+class Atome : public Litterale{
     QString atome;
 public:
-    Atome(QString a) {
-        if ((a[0]>='A')&&(a[0]<='Z'))
-        {
-            atome=a;
-        }
-        else throw ComputerException("Nom d'atome impossible, commencez par une majuscule pls");
-    }
+    Atome(QString a): atome(a){}
     QString afficher(){
     return atome;
     }
+    bool isNull(){return atome.isEmpty();}
+
 };
+
 class Expression : public Litterale{
     QString expression;
 public:
-    Expression(QString s): expression(s){}
+    Expression(const QString& s): expression(s){}
     QString afficher(){
     return expression;
     }
+    bool isNull() const {return expression.isEmpty();}
+    ~Expression(){}
 };
 
 class Programme : public Litterale{
-
+    QString programme;
+public:
+    Programme(QString s): programme(s){}
+    QString afficher(){
+    return programme;
+    }
+    bool isNull() const {return programme.isEmpty();}
 };
-
-
 
 class LitteraleManager : public QObject {
     Q_OBJECT
 
-    QVector<Litterale*> lit;
 
+    unsigned int nb;
 
-
-    LitteraleManager(){ lit.clear();}
+    LitteraleManager(){ }
     ~LitteraleManager();
     LitteraleManager(const LitteraleManager& m);
     LitteraleManager& operator=(const LitteraleManager& m);
@@ -172,7 +204,7 @@ class LitteraleManager : public QObject {
 public:
     Litterale* addLitterale(const QString& v);
     void removeLitterale(Litterale* e);
-    unsigned int getNbLiterrale(){return lit.count();}
+    unsigned int getNbLiterrale(){return nb;}
     static LitteraleManager& getInstance();
     static void libererInstance();
 signals :
@@ -183,22 +215,19 @@ signals :
 
 };
 
-
-
-
 class Pile : public QObject {
     Q_OBJECT
 
 
 
     QString message;
-
+    unsigned int nb;
     unsigned int nbAffiche;
     friend class LitteraleManager;
 public:
     QStack<Litterale*> PileLit;
 
-    Pile():message(""),nbAffiche(4){
+    Pile():message(""),nbAffiche(4),nb(0){
         PileLit.clear();
 
     }
@@ -208,12 +237,12 @@ public:
     bool estVide() const { return PileLit.isEmpty(); }
 
     void affiche(QTextStream& f) const;
-    Litterale& top() const;
+    Litterale* top() const;
     void setNbLitteraleToAffiche(unsigned int n) { nbAffiche=n; }
     unsigned int getNbLitteraleToAffiche() const { return nbAffiche; }
     void setMessage(const QString& m) { message=m; modificationEtat(); }
     QString getMessage() const { return message; }
-    unsigned int getNbLitterale(){return PileLit.count();}
+    unsigned int getNbLitterale(){return nb;}
 
 signals:
     void modificationEtat();
@@ -227,18 +256,31 @@ class Controleur : public QObject{
 
     LitteraleManager& LitMng;
     Pile& LitAff;
+
+    QMap<QString,operande*> faire;
+
 public:
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
         connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
+        initialisationMap();
+
     }
+
+    void initialisationMap();
     void commande(const QString& c);
 
     void commandeEx(const QString &c);
     void commandeP(const QString &c);
-};
 
+
+
+};
+bool estUnOperateurNum(const QString s);
+bool estUnOperateur1(const QString s);
+bool estUnOperateur2(const QString s);
+bool estUnOperateurLog(const QString s);
 bool estUnOperateur(const QString s);
-bool estUnLitterale(const QString s);
+bool estUnLitteraleNum(const QString s);
 bool estUnEntier(const QString s);
 bool estUnRationnel(const QString s);
 bool estUnReel(const QString s);
