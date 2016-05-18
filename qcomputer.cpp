@@ -6,8 +6,7 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     this->setWindowTitle("Calculatrice");
 
     pile= new Pile;
-    controleur =
-    new Controleur(LitteraleManager::getInstance(),*pile);
+    controleur =new Controleur(LitteraleManager::getInstance(),*pile);
 
     message = new QLineEdit(this);
     vuePile = new QTableWidget(pile->getNbLitteraleToAffiche(),1,this);
@@ -69,6 +68,7 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     buttonPD=new QPushButton("]",this);
     buttonG=new QPushButton("'",this);
     buttonES=new QPushButton("ESPACE",this);
+    buttonBS=new QPushButton("BACKSPACE",this);
 
 
     button0->setFixedSize(40,40);
@@ -83,6 +83,7 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     button9->setFixedSize(40,40);
     buttonE->setFixedSize(80,40);
     buttonA->setFixedSize(80,40);
+    buttonBS->setFixedSize(40,40);
 
     ligne1.addWidget(button7);
     ligne1.addWidget(button4);
@@ -96,7 +97,7 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     ligne3.addWidget(button6);
     ligne3.addWidget(button3);
 
-      chiffre.addLayout(&ligne1);
+    chiffre.addLayout(&ligne1);
     chiffre.addLayout(&ligne2);
     chiffre.addLayout(&ligne3);
 

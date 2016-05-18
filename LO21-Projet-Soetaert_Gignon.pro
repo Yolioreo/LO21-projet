@@ -7,4 +7,8 @@ SOURCES += \
 
 HEADERS += \
     computer.h \
-    qcomputer.h
+    qcomputer.h \
+    ui_interface_graphique.h
+
+FORMS += \
+    interface_graphique.ui

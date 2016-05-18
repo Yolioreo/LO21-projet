@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>431</width>
+    <height>611</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="GereurOnglet">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>411</width>
+      <height>531</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="CalculatriceTab">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <attribute name="title">
+      <string>Calculatrice</string>
+     </attribute>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>10</y>
+        <width>391</width>
+        <height>481</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QWidget" name="wCommandePile" native="true">
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>371</width>
+            <height>181</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLineEdit" name="wAffichageErreur"/>
+           </item>
+           <item>
+            <widget class="QTableView" name="wAffichagePil"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="wAffichageCommande"/>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="wClavier" native="true">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>30</x>
+            <y>0</y>
+            <width>341</width>
+            <height>231</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="clavier">
+           <item>
+            <layout class="QVBoxLayout" name="clavierChiffre">
+             <item>
+              <layout class="QHBoxLayout" name="ligne123">
+               <item>
+                <widget class="QPushButton" name="bouton1">
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bouton2">
+                 <property name="text">
+                  <string>2</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bouton3">
+                 <property name="text">
+                  <string>3</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="ligne456">
+               <item>
+                <widget class="QPushButton" name="bouton4">
+                 <property name="text">
+                  <string>4</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bouton5">
+                 <property name="text">
+                  <string>5</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bouton6">
+                 <property name="text">
+                  <string>6</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="ligne789">
+               <item>
+                <widget class="QPushButton" name="bouton7">
+                 <property name="text">
+                  <string>7</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bouton8">
+                 <property name="text">
+                  <string>8</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bouton9">
+                 <property name="text">
+                  <string>9</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="ligne0BS">
+               <item>
+                <widget class="QPushButton" name="bouton0">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="boutonBS">
+                 <property name="text">
+                  <string>&lt;=</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="clavierOperateur">
+             <item>
+              <widget class="QPushButton" name="boutonP">
+               <property name="text">
+                <string>+</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="boutonM">
+               <property name="text">
+                <string>-</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="boutonF">
+               <property name="text">
+                <string>*</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="boutonD">
+               <property name="text">
+                <string>/</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="boutonC">
+               <property name="text">
+                <string>$</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="boutonNEG">
+               <property name="text">
+                <string>NEG</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="boutonDIV">
+               <property name="text">
+                <string>DIV</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="boutonEntree">
+               <property name="text">
+                <string>Entrée</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="VariableTab">
+     <attribute name="title">
+      <string>Variable</string>
+     </attribute>
+     <widget class="QTableView" name="TableauVarAffi">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>271</width>
+        <height>411</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="ProgrammeTab">
+     <attribute name="title">
+      <string>Programme</string>
+     </attribute>
+     <widget class="QPlainTextEdit" name="wAffichageProgramme">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>271</width>
+        <height>421</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>431</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuOption">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <widget class="QMenu" name="menuOptions_d_affichage">
+     <property name="title">
+      <string>Options d'affichage</string>
+     </property>
+     <addaction name="actionChanger_la_couleur"/>
+    </widget>
+    <addaction name="actionAffichage_clavier"/>
+    <addaction name="actionActivation_Bip_Sonore"/>
+    <addaction name="menuOptions_d_affichage"/>
+   </widget>
+   <addaction name="menuOption"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAffichage_clavier">
+   <property name="text">
+    <string>Affichage clavier</string>
+   </property>
+  </action>
+  <action name="actionActivation_Bip_Sonore">
+   <property name="text">
+    <string>Activation Bip Sonore</string>
+   </property>
+  </action>
+  <action name="actionChanger_la_couleur">
+   <property name="text">
+    <string>Changer la couleur </string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionAffichage_clavier</sender>
+   <signal>changed()</signal>
+   <receiver>wClavier</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>216</x>
+     <y>437</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
