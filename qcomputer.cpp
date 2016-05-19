@@ -6,7 +6,9 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
     this->setWindowTitle("Calculatrice");
 
     pile= new Pile;
-    controleur =new Controleur(LitteraleManager::getInstance(),*pile);
+    Manager=new LitteraleManager;
+
+    controleur =&Controleur::getInstance(*Manager,*pile);
 
     message = new QLineEdit(this);
     vuePile = new QTableWidget(pile->getNbLitteraleToAffiche(),1,this);
@@ -165,7 +167,7 @@ QComputer::QComputer(QWidget* parent):QWidget(parent){
 QComputer::~QComputer(){
 
     delete pile;
-    delete controleur;
+    Controleur::libererInstance();
 }
 void QComputer::refresh(){
 

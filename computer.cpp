@@ -2,40 +2,51 @@
 #include <algorithm>
 #include <QRegExp>
 
-LitteraleManager::Handler LitteraleManager::handler=LitteraleManager::Handler();
 
+//LitteraleManager::Handler LitteraleManager::handler=LitteraleManager::Handler();
 
-LitteraleManager& LitteraleManager::getInstance(){
-    if (handler.instance==nullptr) handler.instance=new LitteraleManager;
-    return *handler.instance;
-}
+//LitteraleManager& LitteraleManager::getInstance(){
+//    if (handler.instance==nullptr) handler.instance=new LitteraleManager;
+//    return *handler.instance;
+//}
 
-void LitteraleManager::libererInstance(){
+//void LitteraleManager::libererInstance(){
+//    delete handler.instance;
+//    handler.instance=nullptr;
+//}
+
+Controleur::Handler1 Controleur::handler=Controleur::Handler1();
+
+void Controleur::libererInstance(){
     delete handler.instance;
     handler.instance=nullptr;
 }
 
+Controleur& Controleur::getInstance(LitteraleManager& Mng,Pile& stack){
+    if (handler.instance==nullptr) handler.instance=new Controleur(Mng,stack);
+    return *handler.instance;
+}
 
 
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
    Litterale* YO;
 
-    if (estUnEntier(v))
+    if (estUnEntier(v)&&(!v.contains("$")))
     {
         YO=new Entier(v.toInt());
 
 
         qDebug ("C'est un entier");
     }
-    if (estUnReel(v))
+    if (estUnReel(v)&&(!v.contains("$")))
     {
         YO=new Reel(v.toDouble());
 
 
         qDebug ("C'est un reel");
     }
-    if (estUnRationnel(v))
+    if (estUnRationnel(v)&&(!v.contains("$")))
     {   qDebug ("C'est un rationnel");
 
         QStringList r;
@@ -49,6 +60,43 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
             erreurDivZero();
             return nullptr;
         }
+
+
+
+    }
+    if(estUnComplexe(v)){
+        QStringList ReIm,RE,IM;
+        ReIm=v.split("$");
+        qDebug ("C'est un complexe");
+
+        RE=ReIm[0].split("/");
+        IM=ReIm[1].split("/");
+        LitteraleNum* r;
+        LitteraleNum* i;
+
+        qDebug()<<RE[0]<<IM[0];
+
+        if(IM.count()==2){
+            if(IM[1]=="1")i=new Reel(IM[0].toDouble());
+            else i=new Rationnel(IM[0].toInt(),IM[1].toInt());
+
+        }
+        else{
+            qDebug()<<(IM[0].toDouble());
+            i=new Reel(IM[0].toDouble());
+        }
+
+        if(RE.count()==2){
+            if(RE[1]=="1")r=new Reel(RE[0].toDouble());
+            else r=new Rationnel(RE[0].toInt(),RE[1].toInt());
+
+        }
+        else{
+            qDebug()<<RE[0].toDouble();
+            r=new Reel(RE[0].toDouble());
+        }
+
+        YO=new Complexe(*r,*i);
 
 
 
@@ -207,10 +255,10 @@ bool estUnReel(const QString s){
 
 bool estUnComplexe(const QString s){
     bool test=false;
-    QRegExp r("\\$");
-    if(s.contains(r))
+
+    if(s.contains('$'))
             test=true;
-    return test;
+
     return test;
 }
 
@@ -301,7 +349,7 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
 
 
 
-    if (estUnLitteraleNum(c)||estUneExpression(c)||estUnProgramme(c)){
+    if (estUnComplexe(c)||estUnLitteraleNum(c)||estUneExpression(c)||estUnProgramme(c)){
 
         qDebug("C'est un litterale, une expression ou un programme");
        LitAff.push(LitMng.addLitterale(c));

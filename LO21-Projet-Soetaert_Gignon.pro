@@ -5,14 +5,14 @@ SOURCES += \
     main.cpp \
     computer.cpp \
     qcomputer.cpp \
-    operande.cpp
+    operande.cpp \
 
 HEADERS += \
-    computer.h \
-    qcomputer.h \
     operande.h \
+    computer.h \
+    qcomputer.h \ 
     ui_interface_graphique.h \
 
 FORMS += \
-    interface_graphique.ui
+    interface_graphique.ui \
 

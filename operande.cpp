@@ -1,5 +1,5 @@
 #include "operande.h"
-/*void addition::operator() (){
+void addition::operator() (){
 
 
 

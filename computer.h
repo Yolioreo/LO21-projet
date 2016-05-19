@@ -141,7 +141,7 @@ class Complexe : public Litterale{
 public:
     QString afficher(){
 
-    return reel.afficher()+"$"+reel.afficher();
+    return reel.afficher()+"$"+imaginaire.afficher();
     }
     Complexe(LitteraleNum& a,LitteraleNum& b): reel(a),imaginaire(b){}
     bool isNull() const {return (reel.isNull())&&(imaginaire.isNull());}
@@ -189,20 +189,10 @@ class LitteraleManager : public QObject {
 
 
     unsigned int nb;
-
-    LitteraleManager(){ }
-    ~LitteraleManager();
-    LitteraleManager(const LitteraleManager& m);
-    LitteraleManager& operator=(const LitteraleManager& m);
-
-    struct Handler{
-        LitteraleManager* instance;
-        Handler():instance(nullptr){}
-        // destructeur appelé à la fin du programme
-        ~Handler(){ delete instance; }
-    };
-    static Handler handler;
 public:
+    LitteraleManager():nb(0){}
+    ~LitteraleManager();
+
     Litterale* addLitterale(const QString& v);
     void removeLitterale(Litterale* e);
     unsigned int getNbLiterrale(){return nb;}
@@ -260,13 +250,29 @@ class Controleur : public QObject{
 
     QMap<QString,operande*> faire;
 
-public:
-    void initialisationMap();
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
         connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
         initialisationMap();
 
     }
+
+    struct Handler1{
+        Controleur* instance;
+        Handler1():instance(nullptr){}
+        // destructeur appelé à la fin du programme
+        ~Handler1(){ delete instance; }
+    };
+    static Handler1 handler;
+    ~Controleur(){}
+
+
+    Controleur(const Controleur& m);
+    Controleur& operator=(const Controleur& m);
+public:
+    void initialisationMap();
+    static Controleur& getInstance(LitteraleManager& Mng,Pile& stack);
+    static void libererInstance();
+
 
 
     void commande(const QString& c);

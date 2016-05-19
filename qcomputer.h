@@ -38,6 +38,7 @@ class QComputer : public QWidget{
     QVBoxLayout* couche;
     //pile dans laquelle on stockent les littéraux
     Pile* pile;
+    LitteraleManager* Manager;
     //gére les opérations
     Controleur* controleur;
 
