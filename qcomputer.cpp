@@ -3,7 +3,7 @@
 #include <QDebug>
 QComputer::QComputer(QWidget* parent):QWidget(parent){
 
-    this->setWindowTitle("Calculatrice");
+    this->setWindowTitle("Calculatrice"); //retranscrit
 
     pile= new Pile;
     controleur =new Controleur(LitteraleManager::getInstance(),*pile);
