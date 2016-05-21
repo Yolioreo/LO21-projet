@@ -524,16 +524,19 @@ public:
 
 namespace Ui {
     class MainWindow: public Ui_MainWindow {
+        Q_OBJECT
         //pile dans laquelle on stockent les littéraux
         Pile* pile;
         //gére les opérations
         Controleur* controleur;
+        // gère la création et destruction de littéraux
+        LitteraleManager* Manager;
     public:
         explicit MainWindow(QWidget *parent = 0);
         virtual ~MainWindow();
         void connections();
     public slots:
-        void ajoute_chiffre();
+        void ajoute_text();
         void refresh();
         void getNextCommande();
     };
