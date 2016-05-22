@@ -271,7 +271,22 @@ class Controleur : public QObject{
 public:
     void initialisationMap();
     static Controleur& getInstance(LitteraleManager& Mng,Pile& stack);
+    static Controleur& getInstance();
     static void libererInstance();
+
+    unsigned int getNbLitterale(){
+        return LitAff.getNbLitterale();
+    }
+
+    void push(Litterale* e){ LitAff.push(e);}
+    Litterale* top(){ return LitAff.top();}
+    void pop(){LitAff.pop();}
+    void setMessage(const QString& s) const {LitAff.setMessage(s);}
+
+    Litterale* addLitterale(QString& e){return LitMng.addLitterale(e);}
+    Litterale* removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
+
+
 
 
 

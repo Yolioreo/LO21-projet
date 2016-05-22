@@ -26,6 +26,10 @@ Controleur& Controleur::getInstance(LitteraleManager& Mng,Pile& stack){
     if (handler.instance==nullptr) handler.instance=new Controleur(Mng,stack);
     return *handler.instance;
 }
+Controleur& Controleur::getInstance(){
+    return *handler.instance;
+}
+
 
 
 Litterale* LitteraleManager::addLitterale(const QString& v){
@@ -298,7 +302,7 @@ void Controleur::initialisationMap(){
 //    faire["-"]=&soustraction;
 //    faire["/"]=&division;
 //    faire["*"]=&multiplication;
-//    faire["$"]=&complexe;
+      faire["$"]=new complexise;
 
 }
 

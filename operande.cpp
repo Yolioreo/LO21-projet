@@ -1,62 +1,165 @@
 #include "operande.h"
+#include "computer.h"
+
+bool operande::verifierNumArite2(){
+
+    bool test=false;
+    Controleur* controle=&Controleur::getInstance();
+
+
+    if(controle->getNbLitterale()<2){
+        controle->setMessage("Erreur : Il n'y a pas d'argument dans la pile");
+        return false;
+    }
+
+     Litterale* L2=controle->top();
+     controle->pop();
+     Litterale* L1=controle->top();
+     controle->pop();
+
+     if(estUnLitteraleNum(L1->afficher())||estUnComplexe(L1->afficher())||estUneExpression(L1->afficher())){ // test sur le 1er élément de la pile
+
+            if(estUnLitteraleNum(L2->afficher())||estUnComplexe(L2->afficher())||estUneExpression(L2->afficher()))// test sur le 2ème élément de la pile
+            test=true;
+     }
+
+     controle->push(L1);
+
+     controle->push(L2);
+
+     return test;
+
+
+}
+
+bool operande::verifierNumArite1(){
+
+    bool test=false;
+    Controleur* controle=&Controleur::getInstance();
+
+
+    if(controle->getNbLitterale()<1){
+        controle->setMessage("Erreur : Il n'y a pas d'argument dans la pile");
+        return false;
+    }
+
+     Litterale* L2=controle->top();
+     controle->pop();
+
+     if(estUnLitteraleNum(L2->afficher())||estUnComplexe(L2->afficher())||estUneExpression(L2->afficher()))// test sur le 1er élément de la pile
+        test=true;
+
+     controle->push(L2);
+
+     return test;
+
+
+}
+
 void addition::operator() (){
 
 
 
-
-            double tempN,tempD,tempIN,tempID,tempRN,tempRD;
+            Controleur* controle=&Controleur::getInstance();
+            double tempIN,tempID,tempRN,tempRD;
             QString a;
 
-
+            if (!verifierNumArite2()){
+                return;
+            }
             qDebug("On est dans addition");
 
-//            LitMng.removeLitterale(L2);
-//            qDebug("Destruction 1");
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+            //faire de le cas d'une expression
 
-//            LitMng.removeLitterale(L1);
-//            qDebug("Destruction 2");
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+            double IN1=L1->getINumerateur();
+            double ID1=L1->getIDenominateur();
 
-//            if(estUnComplexe(L2->afficher())||estUnComplexe(L1->afficher())){
-//                if(estUnComplexe(L2->afficher())&&estUnComplexe(L1->afficher())){
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+            double IN2=L2->getINumerateur();
+            double ID2=L2->getIDenominateur();
 
-//                    tempRN=L1->getRNumerateur()*L2->getRDenominateur()+L2->getRNumerateur()*L1->getRDenominateur();
-//                    tempRD=L1->getRDenominateur()*(L2->getRDenominateur());
-//                    tempIN=L1->getINumerateur()*L2->getIDenominateur()+L2->getINumerateur()*L1->getIDenominateur();
-//                    tempID=L1->getIDenominateur()*(L2->getIDenominateur());
-//                }else{
-//                    if(estUnComplexe(L2->afficher())){
+            //partie reel
+            tempRN=RN1*RD2+RN2*RD1;
+            tempRD=RD1*RD2;
+            //partie imaginaire
+            tempIN=IN1*ID2+IN2*ID1;
+            tempID=ID1*ID2;
 
-//                        tempRN=L1->getRNumerateur()*L2->getRDenominateur()+L2->getRNumerateur()*L1->getRDenominateur();
-//                        tempRD=L1->getRDenominateur()*(L2->getRDenominateur());
-//                        tempIN=L2->getINumerateur();
-//                        tempID=L2->getIDenominateur();
-//                    }else{
-//                        tempRN=L2->getRNumerateur()*L1->getRDenominateur()+L1->getRNumerateur()*L2->getRDenominateur();
-//                        tempRD=L2->getRDenominateur()*(L1->getRDenominateur());
-//                        tempIN=L1->getINumerateur();
-//                        tempID=L1->getIDenominateur();
-//                    }
+            if(tempIN==0){ // c'est pas un complexe
+                if(tempRD==1)// c'est pas un rationnel
+                {
+                 a=QString::number(tempRN);
+
+                }
+                else{
+                    a=QString::number(tempRN)+"/"+QString::number(tempRD);
+
+                }
+            }else{
+
+                if(tempRD==1)// c'est pas un rationnelR
+                {
+
+                    if(tempID==1)// c'est pas un rationnelI
+                    {
+                     a=QString::number(tempRN)+"$"+QString::number(tempIN);
+
+                    }
+                    else{
+                        a=QString::number(tempRN)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
+
+                    }
+
+                }
+                else{
+
+                    if(tempID==1)// c'est pas un rationnelI
+                    {
+                     a=QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN);
+
+                    }
+                    else{
+
+                        a=QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
+
+                    }
+
+                }
+
+            }
 
 
-//                }
-//                if ((tempRD==1)&&(tempID!=1))
-//                a=QString::number(tempRN)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
-//                else {
-//                     if((tempRD!=1)&&(tempID==1)) a=QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN);
-//                     else a=QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
-//                }
+            controle->push(controle->addLitterale(a));
 
-//                LitAff.push(LitMng.addLitterale(a));
-//            }
-//            else
-//            {   qDebug("addition sans complexe");
-//                tempRN=L1->getRNumerateur()*L2->getRDenominateur()+L2->getRNumerateur()*L1->getRDenominateur();
-//                tempRD=L1->getRDenominateur()*(L2->getRDenominateur());
-//                if(tempD==1)a=QString::number(tempN);
-//                else a=QString::number(tempN)+"/"+QString::number(tempD);
-//            }
-//            LitAff.push(LitMng.addLitterale(a));
+
+
+
+
 
 
 }
 //*/
+void complexise::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+
+    if (!verifierNumArite2()){
+        return;
+    }
+    qDebug("On est dans la complexisation");
+
+    Litterale* L2=controle->top();
+    controle->pop();
+    Litterale* L1=controle->top();
+    controle->pop();
+    QString a=L1->afficher()+"$"+L2->afficher();
+    controle->push(controle->addLitterale(a));
+
+}
