@@ -218,7 +218,7 @@ class Pile : public QObject {
 public:
     QStack<Litterale*> PileLit;
 
-    Pile():message(""),nbAffiche(4),nb(0){
+    Pile():message(""),nb(0),nbAffiche(4){
         PileLit.clear();
 
     }
@@ -284,7 +284,7 @@ public:
     void setMessage(const QString& s) const {LitAff.setMessage(s);}
 
     Litterale* addLitterale(QString& e){return LitMng.addLitterale(e);}
-    Litterale* removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
+    void removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
 
 
 

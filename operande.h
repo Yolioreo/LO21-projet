@@ -23,8 +23,8 @@ public:
     virtual void operator() () =0;
     virtual bool verifierNumArite2();
     virtual bool verifierNumArite1();
-    virtual bool verifierL();
-    virtual bool verifierPile();
+    virtual bool verifierL(){}
+    virtual bool verifierPile(){}
 
 
 };
