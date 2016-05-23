@@ -529,8 +529,7 @@ namespace Ui {
         Pile* pile;
         //gére les opérations
         Controleur* controleur;
-        // gère la création et destruction de littéraux
-        LitteraleManager* Manager;
+
     public:
         explicit MainWindow(QWidget *parent = 0);
         virtual ~MainWindow();

@@ -73,7 +73,10 @@ void addition::operator() (){
             controle->pop();
             Litterale* L1=controle->top();
             controle->pop();
+
+
             //faire de le cas d'une expression
+
 
             double RN1=L1->getRNumerateur();
             double RD1=L1->getRDenominateur();
