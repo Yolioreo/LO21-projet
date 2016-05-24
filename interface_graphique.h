@@ -547,11 +547,13 @@ namespace Ui {
         LitteraleManager* manager;
     public:
         MainWindow(QWidget *parent = nullptr) : QMainWindow(parent){
+
           pile=new Pile;
           manager=new LitteraleManager;
           controleur=&Controleur::getInstance(*manager,*pile);
           Ui_MainWindow::setupUi(this);
           connections();
+
         }
         virtual ~MainWindow(){Controleur::libererInstance();}
         void connections();

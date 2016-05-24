@@ -49,6 +49,15 @@ public:
 
 };
 
+
+
+class multiplication : public operande{
+public:
+    int typeoperande() const {return 4;}
+    void operator() ();
+
+};
+
 class complexise : public operande{
 public:
     int typeoperande() const {return 4;}

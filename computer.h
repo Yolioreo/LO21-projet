@@ -31,10 +31,10 @@ class Litterale {
 
 public:
     virtual QString afficher()=0;
-    double getRNumerateur() const {return 0;}
-    double getRDenominateur() const {return 0;}
-    double getINumerateur() const {return 0;}
-    double getIDenominateur() const {return 0;}
+    virtual double getRNumerateur() const {return 0;}
+    virtual double getRDenominateur() const {return 1;}
+    virtual double getINumerateur() const {return 0;}
+    virtual double getIDenominateur() const {return 1;}
     virtual bool isNull()const =0;
     Litterale(){}
     virtual ~Litterale(){}
@@ -71,7 +71,7 @@ public :
     ~Entier(){qDebug("On détruit un entier");}
 
     double getRNumerateur() const {return nombre;}
-    double getNDenominateur() const {return 1;}
+    double getRDenominateur() const {return 1;}
 
 
 
@@ -277,7 +277,7 @@ public:
     unsigned int getNbLitterale(){
         return LitAff.getNbLitterale();
     }
-
+    bool faitpartiedeMap(const QString s){return faire.contains(s);}
     void push(Litterale* e){ LitAff.push(e);}
     Litterale* top(){ return LitAff.top();}
     void pop(){LitAff.pop();}
