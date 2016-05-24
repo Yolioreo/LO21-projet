@@ -56,6 +56,54 @@ bool operande::verifierNumArite1(){
 
 }
 
+QString operande::creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID){
+
+
+    if(tempIN==0){ // c'est pas un complexe
+        if(tempRD==1)// c'est pas un rationnel
+        {
+         return QString::number(tempRN);
+
+        }
+        else{
+            return QString::number(tempRN)+"/"+QString::number(tempRD);
+
+        }
+    }else{
+
+        if(tempRD==1)// c'est pas un rationnelR
+        {
+
+            if(tempID==1)// c'est pas un rationnelI
+            {
+             return QString::number(tempRN)+"$"+QString::number(tempIN);
+
+            }
+            else{
+                return QString::number(tempRN)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
+
+            }
+
+        }
+        else{
+
+            if(tempID==1)// c'est pas un rationnelI
+            {
+             return QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN);
+
+            }
+            else{
+
+               return QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
+
+            }
+
+        }
+
+    }
+
+}
+
 void addition::operator() (){
 
 
@@ -95,51 +143,10 @@ void addition::operator() (){
             tempIN=IN1*ID2+IN2*ID1;
             tempID=ID1*ID2;
 
-            if(tempIN==0){ // c'est pas un complexe
-                if(tempRD==1)// c'est pas un rationnel
-                {
-                 a=QString::number(tempRN);
-
-                }
-                else{
-                    a=QString::number(tempRN)+"/"+QString::number(tempRD);
-
-                }
-            }else{
-
-                if(tempRD==1)// c'est pas un rationnelR
-                {
-
-                    if(tempID==1)// c'est pas un rationnelI
-                    {
-                     a=QString::number(tempRN)+"$"+QString::number(tempIN);
-
-                    }
-                    else{
-                        a=QString::number(tempRN)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
-
-                    }
-
-                }
-                else{
-
-                    if(tempID==1)// c'est pas un rationnelI
-                    {
-                     a=QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN);
-
-                    }
-                    else{
-
-                        a=QString::number(tempRN)+"/"+QString::number(tempRD)+"$"+QString::number(tempIN)+"/"+QString::number(tempID);
-
-                    }
-
-                }
-
-            }
 
 
-            controle->push(controle->addLitterale(a));
+
+            controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
 
 
 
