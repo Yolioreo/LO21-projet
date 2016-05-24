@@ -17,12 +17,24 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTableView>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <QAbstractTableModel>
 #include "computer.h"
 
 QT_BEGIN_NAMESPACE
+
+class CommandLine : public QLineEdit{
+  Q_OBJECT
+public :
+  CommandLine(QWidget* parent=nullptr) : QLineEdit(parent){}
+public slots :
+  void ajoute_commande();
+  void slotBackspace();
+  void slotSpace();
+};
+
 
 class Ui_MainWindow
 {
@@ -39,8 +51,8 @@ public:
     QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout;
     QLineEdit *wAffichageErreur;
-    QTableView *wAffichagePil;
-    QLineEdit *wAffichageCommande;
+    QTableWidget *wAffichagePil;
+    CommandLine *wAffichageCommande;
     QWidget *wClavier;
     QGridLayout *gridLayout_4;
     QVBoxLayout *clavierOperateur;
@@ -92,10 +104,11 @@ public:
     QHBoxLayout *ligne0BS;
     QPushButton *bouton0;
     QPushButton *boutonBS;
+    QPushButton *boutonEspace;
     QPushButton *boutonEntree;
     QWidget *VariableTab;
     QGridLayout *gridLayout_5;
-    QTableView *TableauVarAffi;
+    QTableWidget *TableauVarAffi;
     QWidget *ProgrammeTab;
     QGridLayout *gridLayout_6;
     QPlainTextEdit *wAffichageProgramme;
@@ -124,8 +137,8 @@ public:
         GereurOnglet->setObjectName(QStringLiteral("GereurOnglet"));
         CalculatriceTab = new QWidget();
         CalculatriceTab->setObjectName(QStringLiteral("CalculatriceTab"));
-        CalculatriceTab->setEnabled(false);
-        CalculatriceTab->setAutoFillBackground(true);
+        CalculatriceTab->setEnabled(true);
+        CalculatriceTab->setAutoFillBackground(false);
         gridLayout_2 = new QGridLayout(CalculatriceTab);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         wCommandePile = new QWidget(CalculatriceTab);
@@ -140,12 +153,12 @@ public:
 
         verticalLayout->addWidget(wAffichageErreur);
 
-        wAffichagePil = new QTableView(wCommandePile);
+        wAffichagePil = new QTableWidget(wCommandePile);
         wAffichagePil->setObjectName(QStringLiteral("wAffichagePil"));
 
         verticalLayout->addWidget(wAffichagePil);
 
-        wAffichageCommande = new QLineEdit(wCommandePile);
+        wAffichageCommande = new CommandLine(wCommandePile);
         wAffichageCommande->setObjectName(QStringLiteral("wAffichageCommande"));
 
         verticalLayout->addWidget(wAffichageCommande);
@@ -158,7 +171,7 @@ public:
 
         wClavier = new QWidget(CalculatriceTab);
         wClavier->setObjectName(QStringLiteral("wClavier"));
-        wClavier->setEnabled(false);
+        wClavier->setEnabled(true);
         gridLayout_4 = new QGridLayout(wClavier);
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         clavierOperateur = new QVBoxLayout();
@@ -392,7 +405,7 @@ public:
         ligne0BS->setObjectName(QStringLiteral("ligne0BS"));
         bouton0 = new QPushButton(wClavier);
         bouton0->setObjectName(QStringLiteral("bouton0"));
-        bouton0->setEnabled(false);
+        bouton0->setEnabled(true);
 
         ligne0BS->addWidget(bouton0);
 
@@ -400,6 +413,11 @@ public:
         boutonBS->setObjectName(QStringLiteral("boutonBS"));
 
         ligne0BS->addWidget(boutonBS);
+
+        boutonEspace = new QPushButton(wClavier);
+        boutonEspace->setObjectName(QStringLiteral("boutonBS"));
+
+        ligne0BS->addWidget(boutonEspace);
 
 
         clavierChiffre->addLayout(ligne0BS);
@@ -421,7 +439,7 @@ public:
         VariableTab->setObjectName(QStringLiteral("VariableTab"));
         gridLayout_5 = new QGridLayout(VariableTab);
         gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
-        TableauVarAffi = new QTableView(VariableTab);
+        TableauVarAffi = new QTableWidget(VariableTab);
         TableauVarAffi->setObjectName(QStringLiteral("TableauVarAffi"));
 
         gridLayout_5->addWidget(TableauVarAffi, 0, 0, 1, 1);
@@ -460,12 +478,7 @@ public:
         menuOptions_d_affichage->addAction(actionChanger_la_couleur);
 
         retranslateUi(MainWindow);
-        QObject::connect(actionAffichage_clavier, SIGNAL(trigerred()), wClavier, SLOT(hide()));
 
-        GereurOnglet->setCurrentIndex(0);
-
-
-        QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
     void retranslateUi(QMainWindow *MainWindow)
@@ -512,6 +525,7 @@ public:
         bouton9->setText(QApplication::translate("MainWindow", "9", 0));
         bouton0->setText(QApplication::translate("MainWindow", "0", 0));
         boutonBS->setText(QApplication::translate("MainWindow", "BACKSPACE", 0));
+        boutonEspace->setText(QApplication::translate("MainWindow", "SPACE", 0));
         boutonEntree->setText(QApplication::translate("MainWindow", "Entr\303\251e", 0));
         GereurOnglet->setTabText(GereurOnglet->indexOf(CalculatriceTab), QApplication::translate("MainWindow", "Calculatrice", 0));
         GereurOnglet->setTabText(GereurOnglet->indexOf(VariableTab), QApplication::translate("MainWindow", "Variable", 0));
@@ -523,19 +537,25 @@ public:
 };
 
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {
-        Q_OBJECT
+    class MainWindow: public QMainWindow, public Ui_MainWindow {
+      Q_OBJECT
         //pile dans laquelle on stockent les littéraux
         Pile* pile;
         //gére les opérations
         Controleur* controleur;
-
+        //gére les expressions
+        LitteraleManager* manager;
     public:
-        explicit MainWindow(QWidget *parent = 0);
-        virtual ~MainWindow();
+        MainWindow(QWidget *parent = nullptr) : QMainWindow(parent){
+          pile=new Pile;
+          manager=new LitteraleManager;
+          controleur=&Controleur::getInstance(*manager,*pile);
+          Ui_MainWindow::setupUi(this);
+          connections();
+        }
+        virtual ~MainWindow(){Controleur::libererInstance();}
         void connections();
     public slots:
-        void ajoute_text();
         void refresh();
         void getNextCommande();
     };

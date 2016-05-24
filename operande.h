@@ -28,6 +28,7 @@ public:
     QString creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID);
 
 
+
 };
 
 class addition : public operande{
