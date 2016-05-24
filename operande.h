@@ -40,6 +40,15 @@ public:
 
 };
 
+class soustraction : public operande{
+
+public:
+    int typeoperande()const {return 2;}
+    void operator() ();
+
+
+};
+
 class complexise : public operande{
 public:
     int typeoperande() const {return 4;}
