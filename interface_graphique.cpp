@@ -57,10 +57,12 @@ void Ui::MainWindow::refresh(){
 void Ui::MainWindow::connections(){
 
   //affichage optionel du clavier
-  QObject::connect(actionAffichage_clavier, SIGNAL(trigerred()), wClavier, SLOT(hide()));
+  connect(actionAffichage_clavier, SIGNAL(triggered()), wClavier, SLOT(hide()));
   GereurOnglet->setCurrentIndex(0);
 
   //affichage de la pile
+  wAffichagePil->setRowCount(pile->getNbLitteraleToAffiche());
+  wAffichagePil->setColumnCount(1);
   for(unsigned int i=0;i<pile->getNbLitteraleToAffiche();i++){
       wAffichagePil->setItem(i,0,new QTableWidgetItem(""));
     }
@@ -74,6 +76,7 @@ void Ui::MainWindow::connections(){
   wAffichagePil->setEditTriggers(QAbstractItemView::NoEditTriggers);
   wAffichagePil->horizontalHeader()->setVisible(false);
   wAffichagePil->horizontalHeader()->setStretchLastSection(true);
+  wAffichagePil->show();
 
   //affichage des erreurs
   wAffichageErreur->setReadOnly(true);

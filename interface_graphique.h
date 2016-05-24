@@ -137,8 +137,8 @@ public:
         GereurOnglet->setObjectName(QStringLiteral("GereurOnglet"));
         CalculatriceTab = new QWidget();
         CalculatriceTab->setObjectName(QStringLiteral("CalculatriceTab"));
-        CalculatriceTab->setEnabled(false);
-        CalculatriceTab->setAutoFillBackground(true);
+        CalculatriceTab->setEnabled(true);
+        CalculatriceTab->setAutoFillBackground(false);
         gridLayout_2 = new QGridLayout(CalculatriceTab);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         wCommandePile = new QWidget(CalculatriceTab);
@@ -171,7 +171,7 @@ public:
 
         wClavier = new QWidget(CalculatriceTab);
         wClavier->setObjectName(QStringLiteral("wClavier"));
-        wClavier->setEnabled(false);
+        wClavier->setEnabled(true);
         gridLayout_4 = new QGridLayout(wClavier);
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         clavierOperateur = new QVBoxLayout();
@@ -405,7 +405,7 @@ public:
         ligne0BS->setObjectName(QStringLiteral("ligne0BS"));
         bouton0 = new QPushButton(wClavier);
         bouton0->setObjectName(QStringLiteral("bouton0"));
-        bouton0->setEnabled(false);
+        bouton0->setEnabled(true);
 
         ligne0BS->addWidget(bouton0);
 
@@ -537,7 +537,7 @@ public:
 };
 
 namespace Ui {
-    class MainWindow: protected QMainWindow, public Ui_MainWindow {
+    class MainWindow: public QMainWindow, public Ui_MainWindow {
       Q_OBJECT
         //pile dans laquelle on stockent les littéraux
         Pile* pile;
