@@ -31,10 +31,10 @@ class Litterale {
 
 public:
     virtual QString afficher()=0;
-    double getRNumerateur() const {return 0;}
-    double getRDenominateur() const {return 0;}
-    double getINumerateur() const {return 0;}
-    double getIDenominateur() const {return 0;}
+    virtual double getRNumerateur() const {return 0;}
+    virtual double getRDenominateur() const {return 1;}
+    virtual double getINumerateur() const {return 0;}
+    virtual double getIDenominateur() const {return 1;}
     virtual bool isNull()const =0;
     Litterale(){}
     virtual ~Litterale(){}
@@ -54,8 +54,6 @@ public:
     virtual bool isNull() const =0;
     virtual ~LitteraleNum(){}
 
-
-
 };
 
 class Entier : public LitteraleNum{
@@ -71,10 +69,7 @@ public :
     ~Entier(){qDebug("On détruit un entier");}
 
     double getRNumerateur() const {return nombre;}
-    double getNDenominateur() const {return 1;}
-
-
-
+    double getRDenominateur() const {return 1;}
 };
 
 class Rationnel : public LitteraleNum{
@@ -285,17 +280,12 @@ public:
 
     Litterale* addLitterale(QString& e){return LitMng.addLitterale(e);}
     void removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
-
-
-
-
-
     void commande(const QString& c);
 
     void commandeEx(const QString &c);
     void commandeP(const QString &c);
-
-
+public slots :
+    void slotOperator(); // à définir
 
 };
 bool estUnOperateurNum(const QString s);
