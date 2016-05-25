@@ -260,7 +260,6 @@ void division::operator() (){
             if (!verifierNumArite2()){
                 return;
             }
-            qDebug("On est dans addition");
 
             Litterale* L2=controle->top();
             controle->pop();
@@ -283,12 +282,13 @@ void division::operator() (){
 
             //partie reel
             tempRN=RD2*RD2*ID2*ID2*(RN2*RN1*ID1*ID2+IN1*IN2*RD1*RD2);
-            tempRD=RD1*RD2*ID1*ID2*(RN2*RN2*ID2*ID2-IN2*IN2*RD2*RD2);
+            tempRD=RD1*RD2*ID1*ID2*RN2*RN2*ID2*ID2+RD1*RD2*ID1*ID2*IN2*IN2*RD2*RD2;
             //partie imaginaire
-            tempIN=RD2*RD2*ID2*ID2*(IN1*RN2*RD1*ID2-RN1*IN2*ID1*RD2);
+            tempIN=RD2*RD2*ID2*ID2*IN1*RN2*RD1*ID2-RD2*RD2*ID2*ID2*RN1*IN2*ID1*RD2;
             tempID=tempRD;
 
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
+            qDebug("push marche");
 }
 
 void complexise::operator ()(){

@@ -36,7 +36,7 @@ Controleur& Controleur::getInstance(){
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
    Litterale* YO;
-
+    qDebug()<<v;
     if (estUnEntier(v)&&(!v.contains("$")))
     {
         YO=new Entier(v.toInt());
@@ -100,7 +100,7 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
             qDebug()<<RE[0].toDouble();
             r=new Reel(RE[0].toDouble());
         }
-
+        qDebug("je suis passé par là");
         YO=new Complexe(*r,*i);
 
 
@@ -259,11 +259,12 @@ bool estUnReel(const QString s){
 }
 
 bool estUnComplexe(const QString s){
+    qDebug()<<s;
     bool test=false;
-    QRegExp r("^(-?)(\\d+)([.||/]?)(\\d*)(\\$)(-?)(\\d+)([.||/]?)(\\d*)$");
+    QRegExp r("^(-?)(\\d+)([.||/]?)(-?)(\\d*)(\\$)(-?)(\\d+)([.||/]?)(-?)(\\d*)$");
     if(s.contains(r))
             test=true;
-
+    qDebug()<<test;
     return test;
 }
 
