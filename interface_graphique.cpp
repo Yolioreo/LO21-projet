@@ -25,17 +25,31 @@ void Ui::MainWindow::getNextCommande(){
     QString c=wAffichageCommande->text();
     QTextStream stream(&c);
     QString com;
-    stream>>com;
-    if(estUneExpression(c)&&(!estUneExpression(com)))controleur->commande(c);
-    if(estUnProgramme(c)&&(!estUnProgramme(com)))controleur->commande(c);
-    stream<<com;
-    if (c!=""){
-        do{
-            stream>>com;
-            if (com!="")controleur->commande(com);
-        }while(com!="");
+
+    if(c==""){
+        pile->setMessage("Pas d'argument à interpréter");
+        return;
     }
-    else pile->setMessage("Pas d'argument à interpréter");
+    if(estUneExpression(c)){
+        controleur->commande(c);
+        wAffichageCommande->clear();
+        return;
+    }
+    if(estUnProgramme(c)){
+        controleur->commande(c);
+        wAffichageCommande->clear();
+        return ;
+    }
+
+
+
+    do{
+        stream>>com;
+
+        if (com!="")controleur->commande(com);
+    }while(com!="");
+
+
     wAffichageCommande->clear();
 }
 

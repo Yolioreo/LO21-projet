@@ -27,6 +27,7 @@ Controleur& Controleur::getInstance(LitteraleManager& Mng,Pile& stack){
     return *handler.instance;
 }
 Controleur& Controleur::getInstance(){
+    if(handler.instance==nullptr)qDebug()<<"Problème de passage de singleton";
     return *handler.instance;
 }
 
@@ -131,7 +132,7 @@ LitteraleManager::~LitteraleManager(){
 
 void Pile::push(Litterale* e){
     // checker si c'est une fraction et denominateur =1
-
+    // checker si c'est un complexe
     if(e!=nullptr)
     {
     PileLit.push_front(e);
@@ -259,8 +260,8 @@ bool estUnReel(const QString s){
 
 bool estUnComplexe(const QString s){
     bool test=false;
-
-    if(s.contains('$'))
+    QRegExp r("^(\\d+)([.||/]?)(\\d*)(\\$)(\\d+)([.||/]?)(\\d*)$");
+    if(s.contains(r))
             test=true;
 
     return test;
@@ -269,15 +270,13 @@ bool estUnComplexe(const QString s){
 
 bool estUnAtome(QString s){
 
+    Controleur* controle=&Controleur::getInstance();
+    if(controle->faitpartiedeMap(s))return false;
+
     bool test=false;
     QRegExp rx("^[A-Z][A-Z0-9]{,5}$");
     if(s.contains(rx))test=true;
-    if (test==true){
-        if(s.compare("DIV")==0||s.compare("NEG")==0||s.compare("NUM")==0||s.compare("DEN")==0||s.compare("RE")==0|| s.compare("IM")==0)
-    {
-            test=false;
-    }
-    }
+
     return test;
 }
 
@@ -299,9 +298,9 @@ bool estUnProgramme(const QString s){
 void Controleur::initialisationMap(){
 
       faire["+"]=new addition;
-//    faire["-"]=&soustraction;
-//    faire["/"]=&division;
-//    faire["*"]=&multiplication;
+      faire["-"]=new soustraction;
+      //faire["/"]=new division;
+      faire["*"]=new multiplication;
       faire["$"]=new complexise;
 
 }
@@ -355,7 +354,7 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
 
     if (estUnComplexe(c)||estUnLitteraleNum(c)||estUneExpression(c)||estUnProgramme(c)){
 
-        qDebug("C'est un litterale, une expression ou un programme");
+
        LitAff.push(LitMng.addLitterale(c));
 
     }else{
@@ -464,7 +463,7 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
         }  */
 
         if(faire.contains(c)){
-            qDebug()<<"On est la";
+
             faire[c]->operator ()();
         }else{
 

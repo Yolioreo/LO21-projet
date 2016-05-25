@@ -1,5 +1,6 @@
 #include "operande.h"
 #include "computer.h"
+#include "interface_graphique.h"
 
 bool operande::verifierNumArite2(){
 
@@ -16,6 +17,7 @@ bool operande::verifierNumArite2(){
      controle->pop();
      Litterale* L1=controle->top();
      controle->pop();
+
 
      if(estUnLitteraleNum(L1->afficher())||estUnComplexe(L1->afficher())||estUneExpression(L1->afficher())){ // test sur le 1er élément de la pile
 
@@ -123,6 +125,7 @@ void addition::operator() (){
             controle->pop();
 
 
+
             //faire de le cas d'une expression
 
 
@@ -135,6 +138,8 @@ void addition::operator() (){
             double RD2=L2->getRDenominateur();
             double IN2=L2->getINumerateur();
             double ID2=L2->getIDenominateur();
+
+
 
             //partie reel
             tempRN=RN1*RD2+RN2*RD1;
@@ -190,24 +195,57 @@ void soustraction::operator() (){
             double ID2=L2->getIDenominateur();
 
             //partie reel
-            tempRN=RN1*RD2+RN2*RD1;
+            tempRN=RN1*RD2-RN2*RD1;
             tempRD=RD1*RD2;
             //partie imaginaire
-            tempIN=IN1*ID2+IN2*ID1;
+            tempIN=IN1*ID2-IN2*ID1;
             tempID=ID1*ID2;
 
+            controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
+}
+
+void multiplication::operator() (){
 
 
+
+            Controleur* controle=&Controleur::getInstance();
+            double tempIN,tempID,tempRN,tempRD;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+            qDebug("On est dans addition");
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+            double IN1=L1->getINumerateur();
+            double ID1=L1->getIDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+            double IN2=L2->getINumerateur();
+            double ID2=L2->getIDenominateur();
+
+            //partie reel
+            tempRN=RN1*RN2*ID1*ID2-IN1*IN2*RD1*RD2;
+            tempRD=RD1*RD2*ID1*ID2;
+            //partie imaginaire
+            tempIN=RN1*IN2*ID1*RD2+IN1*RN2*RD1*ID2;
+            tempID=tempRD;
 
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
-
-
-
-
-
-
-
 }
+
 void complexise::operator ()(){
 
     Controleur* controle=&Controleur::getInstance();

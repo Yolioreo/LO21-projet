@@ -272,7 +272,7 @@ public:
     unsigned int getNbLitterale(){
         return LitAff.getNbLitterale();
     }
-
+    bool faitpartiedeMap(const QString s){return faire.contains(s);}
     void push(Litterale* e){ LitAff.push(e);}
     Litterale* top(){ return LitAff.top();}
     void pop(){LitAff.pop();}
