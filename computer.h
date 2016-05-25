@@ -54,8 +54,6 @@ public:
     virtual bool isNull() const =0;
     virtual ~LitteraleNum(){}
 
-
-
 };
 
 class Entier : public LitteraleNum{
@@ -72,9 +70,6 @@ public :
 
     double getRNumerateur() const {return nombre;}
     double getRDenominateur() const {return 1;}
-
-
-
 };
 
 class Rationnel : public LitteraleNum{
@@ -285,17 +280,12 @@ public:
 
     Litterale* addLitterale(QString& e){return LitMng.addLitterale(e);}
     void removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
-
-
-
-
-
     void commande(const QString& c);
 
     void commandeEx(const QString &c);
     void commandeP(const QString &c);
-
-
+public slots :
+    void slotOperator(); // à définir
 
 };
 bool estUnOperateurNum(const QString s);
