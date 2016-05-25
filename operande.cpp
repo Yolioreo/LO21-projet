@@ -58,7 +58,7 @@ bool operande::verifierNumArite1(){
 
 }
 
-QString operande::creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID){
+const QString operande::creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID){
 
 
     if(tempIN==0){ // c'est pas un complexe
@@ -243,6 +243,49 @@ void multiplication::operator() (){
             tempRD=RD1*RD2*ID1*ID2;
             //partie imaginaire
             tempIN=RN1*IN2*ID1*RD2+IN1*RN2*RD1*ID2;
+            tempID=tempRD;
+
+            controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
+}
+
+
+void division::operator() (){
+
+
+
+            Controleur* controle=&Controleur::getInstance();
+            double tempIN,tempID,tempRN,tempRD;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+            qDebug("On est dans addition");
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+            double IN1=L1->getINumerateur();
+            double ID1=L1->getIDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+            double IN2=L2->getINumerateur();
+            double ID2=L2->getIDenominateur();
+
+            //partie reel
+            tempRN=RD2*RD2*ID2*ID2*(RN2*RN1*ID1*ID2+IN1*IN2*RD1*RD2);
+            tempRD=RD1*RD2*ID1*ID2*(RN2*RN2*ID2*ID2-IN2*IN2*RD2*RD2);
+            //partie imaginaire
+            tempIN=RD2*RD2*ID2*ID2*(IN1*RN2*RD1*ID2-RN1*IN2*ID1*RD2);
             tempID=tempRD;
 
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));

@@ -25,7 +25,7 @@ public:
     virtual bool verifierNumArite1();
     virtual bool verifierL(){return false ;}
     virtual bool verifierPile(){return false ;}
-    QString creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID);
+    const QString creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID);
 
 
 
@@ -52,6 +52,13 @@ public:
 
 
 class multiplication : public operande{
+public:
+    int typeoperande() const {return 4;}
+    void operator() ();
+
+};
+
+class division : public operande{
 public:
     int typeoperande() const {return 4;}
     void operator() ();

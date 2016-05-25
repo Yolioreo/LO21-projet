@@ -299,7 +299,7 @@ void Controleur::initialisationMap(){
 
       faire["+"]=new addition;
       faire["-"]=new soustraction;
-      //faire["/"]=new division;
+      faire["/"]=new division;
       faire["*"]=new multiplication;
       faire["$"]=new complexise;
       faire["NEG"]= new NEG;
