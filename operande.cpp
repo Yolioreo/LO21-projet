@@ -68,7 +68,9 @@ QString operande::creationStringLitterale(int tempRN, int tempRD, int tempIN, in
 
         }
         else{
+
             return QString::number(tempRN)+"/"+QString::number(tempRD);
+
 
         }
     }else{
@@ -261,5 +263,26 @@ void complexise::operator ()(){
     controle->pop();
     QString a=L1->afficher()+"$"+L2->afficher();
     controle->push(controle->addLitterale(a));
+
+}
+void NEG::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+
+    if (!verifierNumArite1()){
+        return;
+    }
+    qDebug("negation");
+
+    Litterale* L2=controle->top();
+    controle->pop();
+
+    double RN2=L2->getRNumerateur();
+    double RD2=L2->getRDenominateur();
+    double IN2=L2->getINumerateur();
+    double ID2=L2->getIDenominateur();
+
+qDebug("negation");
+    controle->push(controle->addLitterale(creationStringLitterale(-RN2,RD2,-IN2,ID2)));
 
 }

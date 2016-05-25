@@ -60,9 +60,15 @@ public:
 
 class complexise : public operande{
 public:
-    int typeoperande() const {return 4;}
+    int typeoperande() const {return 5;}
     void operator() ();
 
+};
+
+class NEG : public operande{
+public :
+    int typeoperande() const {return 6;}
+    void operator() ();
 };
 
 

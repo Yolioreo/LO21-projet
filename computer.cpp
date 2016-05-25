@@ -242,7 +242,7 @@ bool estUnEntier(const QString s){
 bool estUnRationnel(const QString s){
 
     bool test=false;
-    QRegExp r("^(\\d+)/(\\d+)$");
+    QRegExp r("^(-?)(\\d+)/(-?)(\\d+)$");
     if(s.contains(r))
             test=true;
     return test;
@@ -252,7 +252,7 @@ bool estUnRationnel(const QString s){
 bool estUnReel(const QString s){
 
     bool test=false;
-    QRegExp r("^(\\d+).(\\d+)$");
+    QRegExp r("^(-?)(\\d+).(-?)(\\d+)$");
     if(s.contains(r))
             test=true;
     return test;
@@ -260,7 +260,7 @@ bool estUnReel(const QString s){
 
 bool estUnComplexe(const QString s){
     bool test=false;
-    QRegExp r("^(\\d+)([.||/]?)(\\d*)(\\$)(\\d+)([.||/]?)(\\d*)$");
+    QRegExp r("^(-?)(\\d+)([.||/]?)(\\d*)(\\$)(-?)(\\d+)([.||/]?)(\\d*)$");
     if(s.contains(r))
             test=true;
 
@@ -302,6 +302,7 @@ void Controleur::initialisationMap(){
       //faire["/"]=new division;
       faire["*"]=new multiplication;
       faire["$"]=new complexise;
+      faire["NEG"]= new NEG;
 
 }
 
