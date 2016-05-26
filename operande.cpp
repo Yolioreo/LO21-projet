@@ -308,6 +308,7 @@ void complexise::operator ()(){
     controle->push(controle->addLitterale(a));
 
 }
+
 void NEG::operator ()(){
 
     Controleur* controle=&Controleur::getInstance();
@@ -327,5 +328,61 @@ void NEG::operator ()(){
 
 qDebug("negation");
     controle->push(controle->addLitterale(creationStringLitterale(-RN2,RD2,-IN2,ID2)));
+
+}
+
+void DEN::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+
+    if (!verifierNumArite1()){
+        return;
+    }
+    qDebug("denumérateur");
+
+    Litterale* L2=controle->top();
+    controle->pop();
+    double tempD;
+    double RD2=L2->getRDenominateur();
+    double ID2=L2->getIDenominateur();
+    if (RD2!=ID2)
+      tempD=RD2*ID2;
+    else
+      tempD=RD2;
+
+qDebug("dénumérateur");
+    controle->push(controle->addLitterale(creationStringLitterale(tempD,1,0,1)));
+
+}
+
+void NUM::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+
+    if (!verifierNumArite1()){
+        return;
+    }
+    qDebug("numérateur");
+
+    Litterale* L2=controle->top();
+    controle->pop();
+
+    double tempRN;
+    double tempIN;
+    double RN2=L2->getRNumerateur();
+    double RD2=L2->getRDenominateur();
+    double IN2=L2->getINumerateur();
+    double ID2=L2->getIDenominateur();
+    if (RD2==ID2){
+      tempIN=IN2;
+      tempRN=RN2;
+      }
+    else{
+        tempIN=IN2*RD2;
+        tempRN=RN2*ID2;
+      }
+
+qDebug("numérateur");
+    controle->push(controle->addLitterale(creationStringLitterale(tempRN,1,tempIN,1)));
 
 }

@@ -304,6 +304,8 @@ void Controleur::initialisationMap(){
       faire["*"]=new multiplication;
       faire["$"]=new complexise;
       faire["NEG"]= new NEG;
+      faire["DEN"]= new DEN;
+      faire["NUM"]= new NUM;
 
 }
 

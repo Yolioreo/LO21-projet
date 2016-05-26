@@ -78,6 +78,16 @@ public :
     void operator() ();
 };
 
+class DEN : public operande{
+public :
+    int typeoperande() const {return 6;}
+    void operator() ();
+};
 
+class NUM : public operande{
+public :
+    int typeoperande() const {return 6;}
+    void operator() ();
+};
 
 #endif // OPERANDE_H
