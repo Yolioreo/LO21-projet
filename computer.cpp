@@ -306,6 +306,8 @@ void Controleur::initialisationMap(){
       faire["NEG"]= new NEG;
       faire["DEN"]= new DEN;
       faire["NUM"]= new NUM;
+      faire["DIV"]= new DIV;
+      faire["MOD"]= new MOD;
 
 }
 

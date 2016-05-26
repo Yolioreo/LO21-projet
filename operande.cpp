@@ -386,3 +386,65 @@ qDebug("numérateur");
     controle->push(controle->addLitterale(creationStringLitterale(tempRN,1,tempIN,1)));
 
 }
+
+void DIV::operator() (){
+
+
+            Controleur* controle=&Controleur::getInstance();
+            QString a;
+            qDebug("div");
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher()))
+              return;
+
+            //faire de le cas d'une expression
+
+
+            double E1=L1->getRNumerateur();
+
+            double E2=L2->getRNumerateur();
+
+            double resultatDIV=floor(E1/E2);
+
+            controle->push(controle->addLitterale(creationStringLitterale(resultatDIV,1,0,1)));
+}
+
+void MOD::operator() (){
+
+
+            Controleur* controle=&Controleur::getInstance();
+            QString a;
+            qDebug("div");
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher()))
+              return;
+
+            //faire de le cas d'une expression
+
+
+            int E1=L1->getRNumerateur();
+
+            int E2=L2->getRNumerateur();
+
+            int resultatMOD=E1%E2;
+
+            controle->push(controle->addLitterale(creationStringLitterale(resultatMOD,1,0,1)));
+}

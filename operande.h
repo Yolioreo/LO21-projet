@@ -90,4 +90,16 @@ public :
     void operator() ();
 };
 
+class DIV : public operande{
+public :
+    int typeoperande() const {return 6;}
+    void operator() ();
+};
+
+class MOD : public operande{
+public :
+    int typeoperande() const {return 6;}
+    void operator() ();
+};
+
 #endif // OPERANDE_H
