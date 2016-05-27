@@ -288,7 +288,7 @@ void division::operator() (){
             tempID=tempRD;
 
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
-            qDebug("push marche");
+
 }
 
 void complexise::operator ()(){
@@ -403,8 +403,11 @@ void DIV::operator() (){
             Litterale* L1=controle->top();
             controle->pop();
 
-            if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher()))
-              return;
+            if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher())){
+                controle->push(L1);
+                controle->push(L2);
+                return;
+              }
 
             //faire de le cas d'une expression
 
@@ -434,8 +437,11 @@ void MOD::operator() (){
             Litterale* L1=controle->top();
             controle->pop();
 
-            if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher()))
-              return;
+            if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher())){
+                controle->push(L1);
+                controle->push(L2);
+                return;
+              }
 
             //faire de le cas d'une expression
 
@@ -447,4 +453,120 @@ void MOD::operator() (){
             int resultatMOD=E1%E2;
 
             controle->push(controle->addLitterale(creationStringLitterale(resultatMOD,1,0,1)));
+}
+
+void difference::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+            double IN1=L1->getINumerateur();
+            double ID1=L1->getIDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+            double IN2=L2->getINumerateur();
+            double ID2=L2->getIDenominateur();
+
+            if((RN1!=RN2)||(RD1!=RD2)||(ID1!=ID2)||(IN1!=IN2))
+              test=1;
+            else
+              test=0;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
+void egalite::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+            double IN1=L1->getINumerateur();
+            double ID1=L1->getIDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+            double IN2=L2->getINumerateur();
+            double ID2=L2->getIDenominateur();
+
+            if((RN1==RN2)&&(RD1==RD2)&&(ID1==ID2)&&(IN1==IN2))
+              test=1;
+            else
+              test=0;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
+void inferieur::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if (estUnComplexe(L2->afficher())||estUnComplexe(L1->afficher())){
+                controle->push(L1);
+                controle->push(L2);
+                return;
+              }
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+
+            if((RN1/RD1)<(RN2/RD2))
+              test=1;
+            else
+              test=0;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
 }

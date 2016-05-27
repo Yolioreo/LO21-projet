@@ -80,25 +80,43 @@ public :
 
 class DEN : public operande{
 public :
-    int typeoperande() const {return 6;}
+    int typeoperande() const {return 7;}
     void operator() ();
 };
 
 class NUM : public operande{
 public :
-    int typeoperande() const {return 6;}
+    int typeoperande() const {return 8;}
     void operator() ();
 };
 
 class DIV : public operande{
 public :
-    int typeoperande() const {return 6;}
+    int typeoperande() const {return 9;}
     void operator() ();
 };
 
 class MOD : public operande{
 public :
-    int typeoperande() const {return 6;}
+    int typeoperande() const {return 10;}
+    void operator() ();
+};
+
+class difference : public operande{
+public :
+    int typeoperande() const {return 11;}
+    void operator() ();
+};
+
+class egalite : public operande{
+public :
+    int typeoperande() const {return 12;}
+    void operator() ();
+};
+
+class inferieur : public operande{
+public :
+    int typeoperande() const {return 13;}
     void operator() ();
 };
 

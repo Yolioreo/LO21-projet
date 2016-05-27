@@ -308,6 +308,9 @@ void Controleur::initialisationMap(){
       faire["NUM"]= new NUM;
       faire["DIV"]= new DIV;
       faire["MOD"]= new MOD;
+      faire["!="]= new difference;
+      faire["="]= new egalite;
+      faire["<"]= new inferieur;
 
 }
 
