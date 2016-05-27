@@ -285,7 +285,7 @@ public:
     void commandeEx(const QString &c);
     void commandeP(const QString &c);
 public slots :
-    void slotOperator(); // à définir
+    //void slotOperator(); // à définir
 
 };
 bool estUnOperateurNum(const QString s);
