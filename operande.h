@@ -25,7 +25,7 @@ public:
     virtual bool verifierNumArite1();
     virtual bool verifierL(){return false ;}
     virtual bool verifierPile(){return false ;}
-    QString creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID);
+    const QString creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID);
 
 
 
@@ -58,6 +58,13 @@ public:
 
 };
 
+class division : public operande{
+public:
+    int typeoperande() const {return 4;}
+    void operator() ();
+
+};
+
 class complexise : public operande{
 public:
     int typeoperande() const {return 5;}
@@ -71,6 +78,74 @@ public :
     void operator() ();
 };
 
+class DEN : public operande{
+public :
+    int typeoperande() const {return 7;}
+    void operator() ();
+};
 
+class NUM : public operande{
+public :
+    int typeoperande() const {return 8;}
+    void operator() ();
+};
+
+class DIV : public operande{
+public :
+    int typeoperande() const {return 9;}
+    void operator() ();
+};
+
+class MOD : public operande{
+public :
+    int typeoperande() const {return 10;}
+    void operator() ();
+};
+
+class difference : public operande{
+public :
+    int typeoperande() const {return 11;}
+    void operator() ();
+};
+
+class egalite : public operande{
+public :
+    int typeoperande() const {return 12;}
+    void operator() ();
+};
+
+class inferieur : public operande{
+public :
+    int typeoperande() const {return 13;}
+    void operator() ();
+};
+
+class dup : public operande{
+public :
+    int typeoperande() const {return 18;}
+    void operator() ();
+};
+class drop : public operande{
+public :
+    int typeoperande() const {return 19;}
+    void operator() ();
+};
+class Swap : public operande{
+public :
+    int typeoperande() const {return 20;}
+    void operator() ();
+};
+
+class clear : public operande{
+public :
+    int typeoperande() const {return 21;}
+    void operator() ();
+};
+
+class lastop : public operande{
+public:
+    int typeoperande() const {return 23;}
+    void operator() ();
+};
 
 #endif // OPERANDE_H

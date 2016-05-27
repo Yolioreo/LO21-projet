@@ -36,7 +36,7 @@ Controleur& Controleur::getInstance(){
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
    Litterale* YO;
-
+    qDebug()<<v;
     if (estUnEntier(v)&&(!v.contains("$")))
     {
         YO=new Entier(v.toInt());
@@ -100,7 +100,7 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
             qDebug()<<RE[0].toDouble();
             r=new Reel(RE[0].toDouble());
         }
-
+        qDebug("je suis passé par là");
         YO=new Complexe(*r,*i);
 
 
@@ -259,11 +259,12 @@ bool estUnReel(const QString s){
 }
 
 bool estUnComplexe(const QString s){
+    qDebug()<<s;
     bool test=false;
-    QRegExp r("^(-?)(\\d+)([.||/]?)(\\d*)(\\$)(-?)(\\d+)([.||/]?)(\\d*)$");
+    QRegExp r("^(-?)(\\d+)([.||/]?)(-?)(\\d*)(\\$)(-?)(\\d+)([.||/]?)(-?)(\\d*)$");
     if(s.contains(r))
             test=true;
-
+    qDebug()<<test;
     return test;
 }
 
@@ -299,10 +300,22 @@ void Controleur::initialisationMap(){
 
       faire["+"]=new addition;
       faire["-"]=new soustraction;
-      //faire["/"]=new division;
+      faire["/"]=new division;
       faire["*"]=new multiplication;
       faire["$"]=new complexise;
       faire["NEG"]= new NEG;
+      faire["DEN"]= new DEN;
+      faire["NUM"]= new NUM;
+      faire["DIV"]= new DIV;
+      faire["MOD"]= new MOD;
+      faire["!="]= new difference;
+      faire["="]= new egalite;
+      faire["<"]= new inferieur;
+      faire["DUP"]= new dup;
+      faire["DROP"]= new drop;
+      faire["SWAP"]= new Swap;
+      faire["CLEAR"]= new clear;
+      faire["LASTOP"]= new lastop;
 
 }
 
@@ -466,6 +479,7 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
         if(faire.contains(c)){
 
             faire[c]->operator ()();
+            lastoperande=c;
         }else{
 
             LitAff.setMessage("Erreur : commande inconnue");

@@ -244,6 +244,7 @@ class Controleur : public QObject{
     Pile& LitAff;
 
     QMap<QString,operande*> faire;
+    QString lastoperande;
 
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
         connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
@@ -277,15 +278,17 @@ public:
     Litterale* top(){ return LitAff.top();}
     void pop(){LitAff.pop();}
     void setMessage(const QString& s) const {LitAff.setMessage(s);}
-
-    Litterale* addLitterale(QString& e){return LitMng.addLitterale(e);}
+    QString getLastOperande(){return lastoperande;}
+    Litterale* addLitterale(QString e){return LitMng.addLitterale(e);}
     void removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
     void commande(const QString& c);
 
     void commandeEx(const QString &c);
     void commandeP(const QString &c);
+
 public slots :
     //void slotOperator(); // à définir
+
 
 };
 bool estUnOperateurNum(const QString s);
