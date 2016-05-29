@@ -310,7 +310,13 @@ void Controleur::initialisationMap(){
       faire["MOD"]= new MOD;
       faire["!="]= new difference;
       faire["="]= new egalite;
-      faire["<"]= new inferieur;
+      faire["<"]= new inferieur; 
+      faire[">"]= new superieur;
+      faire["<="]= new inferieur;
+      faire[">="]= new superieur;
+      faire["AND"]= new AND;
+      faire["OR"]= new OR;
+      faire["NOT"]= new NOT;
       faire["DUP"]= new dup;
       faire["DROP"]= new drop;
       faire["SWAP"]= new Swap;
