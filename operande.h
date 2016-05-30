@@ -46,7 +46,7 @@ class soustraction : public operande{
 public:
     int typeoperande()const {return 2;}
     void operator() ();
-
+    void soustractionExpression(Litterale* L1,Litterale* L2);
 
 };
 
@@ -56,6 +56,7 @@ class multiplication : public operande{
 public:
     int typeoperande() const {return 4;}
     void operator() ();
+    void multiplicationExpression(Litterale* L1,Litterale* L2);
 
 };
 
@@ -63,8 +64,10 @@ class division : public operande{
 public:
     int typeoperande() const {return 4;}
     void operator() ();
+    void divisionExpression(Litterale* L1,Litterale* L2);
 
 };
+
 
 class complexise : public operande{
 public:

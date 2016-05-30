@@ -2,29 +2,6 @@
 #include "computer.h"
 #include "interface_graphique.h"
 
-void addition::additionExpression(Litterale* L1,Litterale* L2){
-  Controleur* controle=&Controleur::getInstance();
-  QString retour;
-  QString S1;
-  QString S2;
-
-  if (estUneExpression(L1->afficher())){
-      S1=L1->afficher().left(L1->afficher().size()-1);
-    }
-  else{
-      S1="'"+L1->afficher();
-    }
-  if (estUneExpression(L2->afficher())){
-      S2=L2->afficher().right(L2->afficher().size()-1);
-    }
-  else{
-      S2=L2->afficher()+"'";
-    }
-
-  retour=S1+"+"+S2;
-
-  controle->push(controle->addLitterale(retour));
-}
 
 
 bool operande::verifierNumArite2(){
@@ -184,12 +161,37 @@ void addition::operator() (){
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
 
 
-
-
-
-
-
 }
+
+void addition::additionExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"+"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
+
 //*/
 
 void soustraction::operator() (){
@@ -212,6 +214,10 @@ void soustraction::operator() (){
 
 
             //faire de le cas d'une expression
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->soustractionExpression(L1,L2);
+              return;
+            }
 
 
             double RN1=L1->getRNumerateur();
@@ -234,6 +240,36 @@ void soustraction::operator() (){
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
 }
 
+
+void soustraction::soustractionExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"-"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
+
 void multiplication::operator() (){
 
 
@@ -254,6 +290,10 @@ void multiplication::operator() (){
 
 
             //faire de le cas d'une expression
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->multiplicationExpression(L1,L2);
+              return;
+            }
 
 
             double RN1=L1->getRNumerateur();
@@ -277,6 +317,35 @@ void multiplication::operator() (){
 }
 
 
+void multiplication::multiplicationExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"*"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
+
 void division::operator() (){
 
 
@@ -296,7 +365,10 @@ void division::operator() (){
 
 
             //faire de le cas d'une expression
-
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->divisionExpression(L1,L2);
+              return;
+            }
 
             double RN1=L1->getRNumerateur();
             double RD1=L1->getRDenominateur();
@@ -318,6 +390,36 @@ void division::operator() (){
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
 
 }
+
+
+void division::divisionExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"/"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
 
 void complexise::operator ()(){
 
