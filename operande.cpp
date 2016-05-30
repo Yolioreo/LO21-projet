@@ -2,6 +2,31 @@
 #include "computer.h"
 #include "interface_graphique.h"
 
+void addition::additionExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1;
+  QString S2;
+
+  if (estUneExpression(L1->afficher())){
+      S1=L1->afficher().left(L1->afficher().size()-1);
+    }
+  else{
+      S1="'"+L1->afficher();
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=L2->afficher().right(L2->afficher().size()-1);
+    }
+  else{
+      S2=L2->afficher()+"'";
+    }
+
+  retour=S1+"+"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
+
 bool operande::verifierNumArite2(){
 
     bool test=false;
@@ -129,7 +154,10 @@ void addition::operator() (){
 
 
             //faire de le cas d'une expression
-
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->additionExpression(L1,L2);
+              return;
+            }
 
             double RN1=L1->getRNumerateur();
             double RD1=L1->getRDenominateur();

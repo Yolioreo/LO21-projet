@@ -36,6 +36,7 @@ class addition : public operande{
 public:
     int typeoperande()const {return 1;}
     void operator() ();
+    void additionExpression(Litterale* L1,Litterale* L2);
 
 
 };

@@ -36,6 +36,7 @@ Controleur& Controleur::getInstance(){
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
    Litterale* YO;
+   qDebug("dans add litterale");
     qDebug()<<v;
     if (estUnEntier(v)&&(!v.contains("$")))
     {
