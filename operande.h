@@ -36,6 +36,7 @@ class addition : public operande{
 public:
     int typeoperande()const {return 1;}
     void operator() ();
+    void additionExpression(Litterale* L1,Litterale* L2);
 
 
 };
@@ -45,7 +46,7 @@ class soustraction : public operande{
 public:
     int typeoperande()const {return 2;}
     void operator() ();
-
+    void soustractionExpression(Litterale* L1,Litterale* L2);
 
 };
 
@@ -55,6 +56,7 @@ class multiplication : public operande{
 public:
     int typeoperande() const {return 4;}
     void operator() ();
+    void multiplicationExpression(Litterale* L1,Litterale* L2);
 
 };
 
@@ -62,8 +64,10 @@ class division : public operande{
 public:
     int typeoperande() const {return 4;}
     void operator() ();
+    void divisionExpression(Litterale* L1,Litterale* L2);
 
 };
+
 
 class complexise : public operande{
 public:
@@ -120,31 +124,67 @@ public :
     void operator() ();
 };
 
-class dup : public operande{
+class superieur : public operande{
+public :
+    int typeoperande() const {return 14;}
+    void operator() ();
+};
+
+class inferieurOuEgale : public operande{
+public :
+    int typeoperande() const {return 15;}
+    void operator() ();
+};
+
+class superieurOuEgale : public operande{
+public :
+    int typeoperande() const {return 16;}
+    void operator() ();
+};
+
+class AND : public operande{
+public :
+    int typeoperande() const {return 17;}
+    void operator() ();
+};
+
+class OR : public operande{
 public :
     int typeoperande() const {return 18;}
     void operator() ();
 };
-class drop : public operande{
+
+class NOT : public operande{
 public :
     int typeoperande() const {return 19;}
     void operator() ();
 };
-class Swap : public operande{
+
+class dup : public operande{
 public :
     int typeoperande() const {return 20;}
+    void operator() ();
+};
+class drop : public operande{
+public :
+    int typeoperande() const {return 21;}
+    void operator() ();
+};
+class Swap : public operande{
+public :
+    int typeoperande() const {return 22;}
     void operator() ();
 };
 
 class clear : public operande{
 public :
-    int typeoperande() const {return 21;}
+    int typeoperande() const {return 23;}
     void operator() ();
 };
 
 class lastop : public operande{
 public:
-    int typeoperande() const {return 23;}
+    int typeoperande() const {return 24;}
     void operator() ();
 };
 

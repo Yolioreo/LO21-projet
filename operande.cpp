@@ -2,6 +2,8 @@
 #include "computer.h"
 #include "interface_graphique.h"
 
+
+
 bool operande::verifierNumArite2(){
 
     bool test=false;
@@ -129,7 +131,10 @@ void addition::operator() (){
 
 
             //faire de le cas d'une expression
-
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->additionExpression(L1,L2);
+              return;
+            }
 
             double RN1=L1->getRNumerateur();
             double RD1=L1->getRDenominateur();
@@ -156,12 +161,37 @@ void addition::operator() (){
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
 
 
-
-
-
-
-
 }
+
+void addition::additionExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"+"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
+
 //*/
 
 void soustraction::operator() (){
@@ -184,6 +214,10 @@ void soustraction::operator() (){
 
 
             //faire de le cas d'une expression
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->soustractionExpression(L1,L2);
+              return;
+            }
 
 
             double RN1=L1->getRNumerateur();
@@ -206,6 +240,36 @@ void soustraction::operator() (){
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
 }
 
+
+void soustraction::soustractionExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"-"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
+
 void multiplication::operator() (){
 
 
@@ -226,7 +290,15 @@ void multiplication::operator() (){
             controle->pop();
 
 
+<<<<<<< HEAD
             //faire le cas d'une expression
+=======
+            //faire de le cas d'une expression
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->multiplicationExpression(L1,L2);
+              return;
+            }
+>>>>>>> origin/master
 
 
             double RN1=L1->getRNumerateur();
@@ -250,6 +322,35 @@ void multiplication::operator() (){
 }
 
 
+void multiplication::multiplicationExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"*"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
+
 void division::operator() (){
 
 
@@ -269,7 +370,10 @@ void division::operator() (){
 
 
             //faire de le cas d'une expression
-
+            if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
+              this->divisionExpression(L1,L2);
+              return;
+            }
 
             double RN1=L1->getRNumerateur();
             double RD1=L1->getRDenominateur();
@@ -291,6 +395,36 @@ void division::operator() (){
             controle->push(controle->addLitterale(creationStringLitterale(tempRN,tempRD,tempIN,tempID)));
 
 }
+
+
+void division::divisionExpression(Litterale* L1,Litterale* L2){
+  Controleur* controle=&Controleur::getInstance();
+  QString retour;
+  QString S1=L1->afficher();
+  QString S2=L2->afficher();
+
+  if (estUneExpression(S1)){
+      S1=S1.left(S1.size()-1);
+      S1=S1.insert(1,"(");
+      S1=S1+")";
+    }
+  else{
+      S1="'("+S1+")";
+    }
+  if (estUneExpression(L2->afficher())){
+      S2=S2.right(S2.size()-1);
+      S2=S2.insert(S2.size()-1,")");
+      S2="("+S2;
+    }
+  else{
+      S2="("+S2+")'";
+    }
+
+  retour=S1+"/"+S2;
+
+  controle->push(controle->addLitterale(retour));
+}
+
 
 void complexise::operator ()(){
 
@@ -407,6 +541,7 @@ void DIV::operator() (){
             if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher())){
                 controle->push(L1);
                 controle->push(L2);
+                controle->setMessage("Impossible : division entière de littéraux non entier");
                 return;
               }
 
@@ -441,6 +576,7 @@ void MOD::operator() (){
             if (!estUnEntier(L1->afficher())||!estUnEntier(L2->afficher())){
                 controle->push(L1);
                 controle->push(L2);
+                controle->setMessage("Impossible : modula de littéraux non entier");
                 return;
               }
 
@@ -550,6 +686,7 @@ void inferieur::operator() (){
             if (estUnComplexe(L2->afficher())||estUnComplexe(L1->afficher())){
                 controle->push(L1);
                 controle->push(L2);
+                controle->setMessage("Impossible : comparaison de complexe");
                 return;
               }
 
@@ -571,6 +708,225 @@ void inferieur::operator() (){
             controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
 
 }
+
+void superieur::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if (estUnComplexe(L2->afficher())||estUnComplexe(L1->afficher())){
+                controle->push(L1);
+                controle->push(L2);
+                return;
+              }
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+
+            if((RN1/RD1)>(RN2/RD2))
+              test=1;
+            else
+              test=0;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
+void inferieurOuEgale::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if (estUnComplexe(L2->afficher())||estUnComplexe(L1->afficher())){
+                controle->push(L1);
+                controle->push(L2);
+                controle->setMessage("Impossible : comparaison de complexe");
+                return;
+              }
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+
+            if((RN1/RD1)<=(RN2/RD2))
+              test=1;
+            else
+              test=0;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
+void superieurOuEgale::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if (estUnComplexe(L2->afficher())||estUnComplexe(L1->afficher())){
+                controle->push(L1);
+                controle->push(L2);
+                controle->setMessage("Impossible : comparaison de complexe");
+                return;
+              }
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+
+            double RN2=L2->getRNumerateur();
+            double RD2=L2->getRDenominateur();
+
+            if((RN1/RD1)>=(RN2/RD2))
+              test=1;
+            else
+              test=0;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
+void AND::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double IN1=L1->getINumerateur();
+
+            double RN2=L2->getRNumerateur();
+            double IN2=L2->getINumerateur();
+
+            if(((RN1==0)&&(IN1==0))||((RN2==0)&&(IN2==0)))
+              test=0;
+            else
+              test=1;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
+void OR::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double IN1=L1->getINumerateur();
+
+            double RN2=L2->getRNumerateur();
+            double IN2=L2->getINumerateur();
+
+            if(((RN1==0)&&(IN1==0))&&((RN2==0)&&(IN2==0)))
+              test=0;
+            else
+              test=1;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
+void NOT::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite1()){
+                return;
+            }
+
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            //faire de le cas d'une expression
+
+
+            double RN1=L1->getRNumerateur();
+            double IN1=L1->getINumerateur();
+
+            if(((RN1==0)&&(IN1==0)))
+              test=1;
+            else
+              test=0;
+
+            controle->push(controle->addLitterale(creationStringLitterale(test,1,0,1)));
+
+}
+
 void dup::operator ()(){
 
     Controleur* controle=&Controleur::getInstance();
