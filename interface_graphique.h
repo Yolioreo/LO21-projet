@@ -35,6 +35,19 @@ public slots :
   void slotSpace();
 };
 
+class Clavier : public QWidget{
+  Q_OBJECT
+public :
+  Clavier(QWidget* parent=nullptr) : QWidget(parent){}
+public slots :
+  void affichageClavier(bool checked){
+    if(checked)
+      this->show();
+    else
+      this->hide();
+  }
+};
+
 
 class Ui_MainWindow
 {
@@ -53,7 +66,7 @@ public:
     QLineEdit *wAffichageErreur;
     QTableWidget *wAffichagePil;
     CommandLine *wAffichageCommande;
-    QWidget *wClavier;
+    Clavier *wClavier;
     QGridLayout *gridLayout_4;
     QVBoxLayout *clavierOperateur;
     QHBoxLayout *clavierOperateurNumerique;
@@ -170,7 +183,7 @@ public:
 
         gridLayout_2->addWidget(wCommandePile, 0, 0, 1, 1);
 
-        wClavier = new QWidget(CalculatriceTab);
+        wClavier = new Clavier(CalculatriceTab);
         wClavier->setObjectName(QStringLiteral("wClavier"));
         wClavier->setEnabled(true);
         gridLayout_4 = new QGridLayout(wClavier);

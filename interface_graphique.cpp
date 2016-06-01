@@ -73,7 +73,7 @@ void Ui::MainWindow::connections(){
   //affichage optionel du clavier
   actionAffichage_clavier->setCheckable(true);
 //  connect(actionAffichage_clavier, SIGNAL(trigerred()), wClavier, SLOT(hide()));
-  connect(actionAffichage_clavier, SIGNAL(toggled(bool)), wClavier, SLOT(hide()));
+  connect(actionAffichage_clavier, SIGNAL(toggled(bool)), wClavier, SLOT(affichageClavier(bool)));
   GereurOnglet->setCurrentIndex(0);
 
   //affichage de la pile
