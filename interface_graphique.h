@@ -118,6 +118,11 @@ public:
     QPushButton *bouton0;
     QPushButton *boutonBS;
     QPushButton *boutonEspace;
+    QHBoxLayout *caractereSpeciaux;
+    QPushButton *boutonPoint;
+    QPushButton *boutonGuillemet;
+    QPushButton *boutonParentheseO;
+    QPushButton *boutonParentheseF;
     QPushButton *boutonEntree;
     QWidget *VariableTab;
     QGridLayout *gridLayout_5;
@@ -415,6 +420,30 @@ public:
 
         clavierChiffre->addLayout(ligne789);
 
+        caractereSpeciaux = new QHBoxLayout();
+        caractereSpeciaux->setObjectName(QStringLiteral("caractereSpeciaux"));
+        boutonPoint = new QPushButton(wClavier);
+        boutonPoint->setObjectName(QStringLiteral("boutonPoint"));
+
+        caractereSpeciaux->addWidget(boutonPoint);
+
+        boutonGuillemet = new QPushButton(wClavier);
+        boutonGuillemet->setObjectName(QStringLiteral("boutonGuillemet"));
+
+        caractereSpeciaux->addWidget(boutonGuillemet);
+
+        boutonParentheseO = new QPushButton(wClavier);
+        boutonParentheseO->setObjectName(QStringLiteral("boutonParentheseO"));
+
+        caractereSpeciaux->addWidget(boutonParentheseO);
+
+        boutonParentheseF = new QPushButton(wClavier);
+        boutonParentheseF->setObjectName(QStringLiteral("boutonParentheseF"));
+
+        caractereSpeciaux->addWidget(boutonParentheseF);
+
+        clavierChiffre->addLayout(caractereSpeciaux);
+
         ligne0BS = new QHBoxLayout();
         ligne0BS->setObjectName(QStringLiteral("ligne0BS"));
         bouton0 = new QPushButton(wClavier);
@@ -545,6 +574,10 @@ public:
         boutonBS->setText(QApplication::translate("MainWindow", "BACKSPACE", 0));
         boutonEspace->setText(QApplication::translate("MainWindow", "SPACE", 0));
         boutonEntree->setText(QApplication::translate("MainWindow", "Entr\303\251e", 0));
+        boutonPoint->setText(QApplication::translate("MainWindow", ",", 0));
+        boutonGuillemet->setText(QApplication::translate("MainWindow", "'", 0));
+        boutonParentheseO->setText(QApplication::translate("MainWindow", "[", 0));
+        boutonParentheseF->setText(QApplication::translate("MainWindow", "]", 0));
         GereurOnglet->setTabText(GereurOnglet->indexOf(CalculatriceTab), QApplication::translate("MainWindow", "Calculatrice", 0));
         GereurOnglet->setTabText(GereurOnglet->indexOf(VariableTab), QApplication::translate("MainWindow", "Variable", 0));
         GereurOnglet->setTabText(GereurOnglet->indexOf(ProgrammeTab), QApplication::translate("MainWindow", "Programme", 0));

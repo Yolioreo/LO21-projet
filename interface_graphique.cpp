@@ -117,6 +117,10 @@ void Ui::MainWindow::connections(){
   connect(bouton7,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
   connect(bouton8,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
   connect(bouton9,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonPoint,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonGuillemet,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonParentheseO,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonParentheseF,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
   connect(boutonBS,SIGNAL(clicked()),wAffichageCommande,SLOT(slotBackspace()));
   connect(boutonEspace,SIGNAL(clicked()),wAffichageCommande,SLOT(slotSpace()));
 
