@@ -112,6 +112,7 @@ public:
     QWidget *ProgrammeTab;
     QGridLayout *gridLayout_6;
     QPlainTextEdit *wAffichageProgramme;
+    QPushButton *sendProgram;
     QMenuBar *menubar;
     QMenu *menuOption;
     QMenu *menuOptions_d_affichage;
@@ -451,8 +452,12 @@ public:
         gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
         wAffichageProgramme = new QPlainTextEdit(ProgrammeTab);
         wAffichageProgramme->setObjectName(QStringLiteral("wAffichageProgramme"));
+        sendProgram = new QPushButton(ProgrammeTab);
+        sendProgram->setObjectName(QStringLiteral("sendProgram"));
+
 
         gridLayout_6->addWidget(wAffichageProgramme, 0, 0, 1, 1);
+        gridLayout_6->addWidget(sendProgram,1,0,1,1);
 
         GereurOnglet->addTab(ProgrammeTab, QString());
 
@@ -530,6 +535,7 @@ public:
         GereurOnglet->setTabText(GereurOnglet->indexOf(CalculatriceTab), QApplication::translate("MainWindow", "Calculatrice", 0));
         GereurOnglet->setTabText(GereurOnglet->indexOf(VariableTab), QApplication::translate("MainWindow", "Variable", 0));
         GereurOnglet->setTabText(GereurOnglet->indexOf(ProgrammeTab), QApplication::translate("MainWindow", "Programme", 0));
+        sendProgram->setText(QApplication::translate("MainWindow","Envoyer",0));
         menuOption->setTitle(QApplication::translate("MainWindow", "Options", 0));
         menuOptions_d_affichage->setTitle(QApplication::translate("MainWindow", "Options d'affichage", 0));
     } // retranslateUi
