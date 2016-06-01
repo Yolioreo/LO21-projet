@@ -167,7 +167,14 @@ public:
     }
     bool isNull() const {return expression.isEmpty();}
     ~Expression(){}
+
+
 };
+
+
+
+
+
 
 class Programme : public Litterale{
     QString programme;
@@ -210,14 +217,25 @@ class Pile : public QObject {
     unsigned int nb;
     unsigned int nbAffiche;
     friend class LitteraleManager;
-public:
     QStack<Litterale*> PileLit;
+public:
+
 
     Pile():message(""),nb(0),nbAffiche(4){
         PileLit.clear();
 
     }
+    Pile(const Pile& a):message(a.message),nb(a.nb),nbAffiche(a.nbAffiche),PileLit(a.PileLit){}
+
     ~Pile();
+    Pile& operator=(Pile& a){
+        message=a.message;
+        nb=a.nb;
+        nbAffiche=a.nbAffiche;
+        for (unsigned int i=0; i<a.getNbLitterale();i++)
+            PileLit[i]=a.PileLit[i];
+        return *this;
+    }
     void push(Litterale* e);
     void pop();
     bool estVide() const { return PileLit.isEmpty(); }
@@ -230,10 +248,58 @@ public:
     QString getMessage() const { return message; }
     unsigned int getNbLitterale(){return nb;}
 
+    class iterator{
+    QStack<Litterale*> current;
+    unsigned int index;
+    friend class Pile;
+    public:
+    iterator(QStack<Litterale*> p, unsigned int a):current(p),index(a){}
+    Litterale* operator*(){return current[index];}
+    bool operator!=(Pile::iterator a){return index!=a.index;}
+    iterator operator++(){index++; return *this;}
+    };
+
+    Pile::iterator begin(){return iterator(PileLit,0);}
+    Pile::iterator end(){return iterator(PileLit,nb);}
+
 signals:
     void modificationEtat();
 public slots:
     void afficheDivZero(){setMessage("Impossible il y a une division par zéro");}
+
+};
+
+class Memento{
+    friend class Pile;
+    QVector<Pile*> etatsPasse;
+    QVector<Pile*> etatsS;
+public:
+    Memento(Pile* P){
+        etatsPasse.push_front(P);
+    }
+    Memento():etatsPasse(0), etatsS(0){}
+    Pile& getMemento(){return *etatsPasse.front();}
+    int getNbMemento(){return etatsPasse.count();}
+    int getNbFutur(){return etatsS.count();}
+    void clearFutur(){etatsS.clear();}
+    Pile* getMementoAvant(){
+        Pile* a;
+        pushFutur(etatsPasse.front());
+        etatsPasse.pop_front();
+        a=etatsPasse.front();
+        etatsPasse.pop_front();
+        return a;
+    }
+    void pushMemento(Pile* p){etatsPasse.push_front(p);}
+    void pushFutur(Pile* p){etatsS.push_front(p);}
+
+    Pile* getMementoApres(){
+        Pile* a;
+        a=etatsS.front();
+
+        etatsS.pop_front();
+        return a;
+    }
 
 };
 
@@ -242,13 +308,15 @@ class Controleur : public QObject{
 
     LitteraleManager& LitMng;
     Pile& LitAff;
-
+    Memento memento;
     QMap<QString,operande*> faire;
     QString lastoperande;
 
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
+        pushMemento();
         connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
         initialisationMap();
+
 
     }
 
@@ -282,20 +350,29 @@ public:
     Litterale* addLitterale(QString e){return LitMng.addLitterale(e);}
     void removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
     void commande(const QString& c);
+    void setPile(Pile& P){LitAff=P; modificationEtat();}
+
+    // partie memento
+
+    Pile* getMementoAvant(){return memento.getMementoAvant();}
+    Pile* getMementoApres(){return memento.getMementoApres();}
+    void pushMemento(){memento.pushMemento(new Pile(LitAff)); qDebug("On a sauvegardé la pile");}
+    int getNbMemento(){return memento.getNbMemento();}
+    int getNbFutur(){return memento.getNbFutur();}
+    void clearFutur(){memento.clearFutur();}
+
 
     void commandeEx(const QString &c);
     void commandeP(const QString &c);
 
+signals:
+    void modificationEtat();
 public slots :
     //void slotOperator(); // à définir
 
 
 };
-bool estUnOperateurNum(const QString s);
-bool estUnOperateur1(const QString s);
-bool estUnOperateur2(const QString s);
-bool estUnOperateurLog(const QString s);
-bool estUnOperateur(const QString s);
+
 bool estUnLitteraleNum(const QString s);
 bool estUnEntier(const QString s);
 bool estUnRationnel(const QString s);
@@ -304,5 +381,11 @@ bool estUnComplexe(const QString s);
 bool estUnAtome(const QString s);
 bool estUneExpression(const QString s);
 bool estUnProgramme(const QString s);
+bool isOperator(const QString s);
+QString parseExpression(const QString& s);
+bool isHigher(QString a, QString b);
+int order(QString op);
+bool isChar(QChar a);
+bool isPartOperand(QChar a, QString s, int i);
 #endif
 

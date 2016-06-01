@@ -215,6 +215,7 @@ void multiplication::operator() (){
             QString a;
 
             if (!verifierNumArite2()){
+                controle->setMessage("Impossible de faire la multiplication");
                 return;
             }
             qDebug("On est dans addition");
@@ -225,7 +226,7 @@ void multiplication::operator() (){
             controle->pop();
 
 
-            //faire de le cas d'une expression
+            //faire le cas d'une expression
 
 
             double RN1=L1->getRNumerateur();
@@ -647,3 +648,109 @@ void lastop::operator ()(){
     }
     controle->commande(controle->getLastOperande());
 }
+
+void undo::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+
+
+    qDebug("On est dans le UNDO");
+
+    if(controle->getNbMemento()<2){
+    controle->setMessage("UNDO IMPOSSIBLE");
+    return;
+    }
+
+    controle->setPile(*(controle->getMementoAvant()));
+
+
+}
+void redo::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+
+
+    qDebug("On est dans le REDO");
+    if(controle->getNbFutur()<1){
+    controle->setMessage("REDO IMPOSSIBLE");
+    return;
+    }
+    controle->setPile(*(controle->getMementoApres()));
+
+
+
+
+}
+
+void eval::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+
+
+    qDebug("On est dans le REDO");
+    if(controle->getNbLitterale()==0)
+    controle->setMessage("La pile est Vide");
+
+
+    if(estUnProgramme(controle->top()->afficher())) EvalsurPrg();
+    else{
+        if(estUneExpression(controle->top()->afficher())) EvalsurExp();
+        else controle->setMessage("Impossible de faire Eval sur ce litterale");
+    }
+}
+void eval::EvalsurPrg(){
+    Controleur* controle=&Controleur::getInstance();
+    QString s=controle->top()->afficher();
+    controle->pop();
+    QTextStream stream(&s);
+    QString word,temp,final,ajout;
+
+    stream>>word; // on retire le premier crochet
+
+    do{
+        stream>>word;
+        if(word=="["){
+            final=word+" ";
+            do{
+                stream>>temp;
+
+                final=final+" "+temp;
+            }while(temp!="]");
+            qDebug()<<final;
+        controle->commande(final);
+        final="";
+        }
+        else{
+            if(word!="]")
+            controle->commande(word);
+
+        }
+
+    }while(word!="]");
+
+}
+
+
+
+
+
+
+
+void eval::EvalsurExp(){
+    Controleur* controle=&Controleur::getInstance();
+
+    Litterale* L1=controle->top();
+    controle->pop();
+    QString doit=parseExpression(L1->afficher().remove(' '));
+
+    QTextStream stream(&doit);
+    QString com;
+
+    do{
+        stream>>com;
+
+        if (com!="")controle->commande(com);
+    }while(com!="");
+
+}
+

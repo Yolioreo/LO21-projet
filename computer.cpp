@@ -36,23 +36,23 @@ Controleur& Controleur::getInstance(){
 Litterale* LitteraleManager::addLitterale(const QString& v){
     // analyser le string et pusher le bon litterale
    Litterale* YO;
-    qDebug()<<v;
+
     if (estUnEntier(v)&&(!v.contains("$")))
     {
         YO=new Entier(v.toInt());
 
 
-        qDebug ("C'est un entier");
+
     }
     if (estUnReel(v)&&(!v.contains("$")))
     {
         YO=new Reel(v.toDouble());
 
 
-        qDebug ("C'est un reel");
+
     }
     if (estUnRationnel(v)&&(!v.contains("$")))
-    {   qDebug ("C'est un rationnel");
+    {
 
         QStringList r;
         r=v.split("/"); // on sépare les deux parties autour du "/"
@@ -61,7 +61,7 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
             YO=new Rationnel(r[0].toInt(),r[1].toInt());
         }
         else
-        {   qDebug("denominateur nul");
+        {
             erreurDivZero();
             return nullptr;
         }
@@ -72,14 +72,14 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
     if(estUnComplexe(v)){
         QStringList ReIm,RE,IM;
         ReIm=v.split("$");
-        qDebug ("C'est un complexe");
+
 
         RE=ReIm[0].split("/");
         IM=ReIm[1].split("/");
         LitteraleNum* r;
         LitteraleNum* i;
 
-        qDebug()<<RE[0]<<IM[0];
+
 
         if(IM.count()==2){
             if(IM[1]=="1")i=new Reel(IM[0].toDouble());
@@ -87,7 +87,7 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
 
         }
         else{
-            qDebug()<<(IM[0].toDouble());
+
             i=new Reel(IM[0].toDouble());
         }
 
@@ -97,10 +97,10 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
 
         }
         else{
-            qDebug()<<RE[0].toDouble();
+
             r=new Reel(RE[0].toDouble());
         }
-        qDebug("je suis passé par là");
+
         YO=new Complexe(*r,*i);
 
 
@@ -108,12 +108,12 @@ Litterale* LitteraleManager::addLitterale(const QString& v){
     }
     if (estUneExpression(v)){
         YO =new Expression(v);
-        qDebug ("C'est une expression");
+
 
     }
     if (estUnProgramme(v)){
         YO=new Programme(v);
-        qDebug ("C'est un programme");
+
 
     }
     nb++;
@@ -172,59 +172,145 @@ Litterale* Pile::top() const {
 
 
 
-bool estUnOperateurNum(const QString s){
+bool isChar(QChar a) {
+    if (a.isLetterOrNumber())
+        return true;
+    else return false;
+}
 
-    if (s=="+") return true;
-    if (s=="-") return true;
-    if (s=="*") return true;
-    if (s=="/") return true;
-    if (s=="$") return true;
-    if (s=="DIV") return true;
-    if (s=="NEG") return true;
-    if (s=="NUM") return true;
-    if (s=="DEN") return true;
-    if (s=="IM") return true;
-    if (s=="RE") return true;
-    return false;
-}
-bool estUnOperateur2(const QString s){
-    if (s=="+") return true;
-    if (s=="-") return true;
-    if (s=="*") return true;
-    if (s=="/") return true;
-    if (s=="$") return true;
-    if (s=="DIV") return true;
-    return false;
-}
-bool estUnOperateur1(const QString s){
-    if (s=="NEG") return true;
-    if (s=="NUM") return true;
-    if (s=="DEN") return true;
-    if (s=="IM") return true;
-    if (s=="RE") return true;
-    if (s=="NOT") return true;
+bool isOperator(const QString s){
+    if(s=="+") return true;
+    if(s=="-") return true;
+    if(s=="*") return true;
+    if(s=="/") return true;
+    if(s=="NEG") return true;
+    if(s=="DIV") return true;
+    if(s=="MOD") return true;
+    if(s=="NUM") return true;
+    if(s=="DEN") return true;
+    if(s=="RE") return true;
+    if(s=="IM") return true;
+    if(s=="$") return true;
+
     return false;
 }
 
 
-bool estUnOperateurLog(const QString s){
-
-    if (s=="=") return true;
-    if (s=="!=") return true;
-    if (s=="=<") return true;
-    if (s=="=>") return true;
-    if (s=="<") return true;
-    if (s==">") return true;
-    if (s=="AND") return true;
-    if (s=="OR") return true;
-    if (s=="NOT") return true;
-
-
+bool isPartOperand(QChar a, QString s, int i){
+    if(a=='-' && (i==0 || isOperator(QString(s[i-1]))))
+        return true;
+    else if(a=='$')
+        return true;
+    else if(a=='.'){
+        return true;
+    }
     return false;
 }
-bool estUnOperateur(const QString s){
-    return (estUnOperateurLog(s)||estUnOperateurNum(s));
+
+int order(QString op) {
+    if(op=="+" || op=="-")
+        return 1;
+    else if(op=="*" || "/")
+        return 2;
+    else
+        return 0;
 }
+
+
+bool isHigher(QString a, QString b) {
+    if(order(a)>=order(b)) return true;
+    else return false;
+}
+
+QString parseExpression(const QString& s){
+    QString infix = s;
+    qDebug()<<infix;
+    QString postfix = "";
+    QStack<QString> stack;
+    int i;
+    for(i=0; i<infix.length(); i++) {
+        qDebug()<<infix[i];
+        bool isLongOperator = false;
+        //we check if it's an operator composed by more than 1 QChar
+        QString opTemp = "";
+        int k=i;
+        while(infix[k]!='(' && k-i<5 && k<infix.length()){
+            opTemp.append(infix[k]);
+            k++;
+        }
+        qDebug()<<"longOperator : "<<opTemp;
+        if(isOperator(opTemp)){
+            qDebug()<<"operator !!";
+            isLongOperator=true;
+        }
+        //if operand
+        if(!isLongOperator && (isChar(infix[i]) || isPartOperand(infix[i], infix, i))) {
+            postfix.append(infix[i]);
+            qDebug()<<"appending "<<infix[i];
+        }
+        //if operator
+        else if(isOperator(QString(infix[i])) || isLongOperator || infix[i]=='(' || infix[i]==')') {
+            QString op = QString(infix[i]);
+            if(isLongOperator)
+                op=opTemp;
+            postfix.append(' ');
+            //if stack is empty
+            if(stack.isEmpty()) {
+                stack.push(op);
+            }
+            //if stack not empty
+            else if(!stack.isEmpty()) {
+
+                //if (
+                if(infix[i]=='(') {
+                   stack.push(op);
+                   }
+                //if ) is encountered pop till ( to postfix
+                else if(infix[i]==')') {
+
+                    while(!stack.isEmpty() && *(stack.end()-1)!="(") {
+                        qDebug()<<"loop";
+                        postfix.append(*(stack.end()-1));
+                        stack.pop();
+                    }
+                stack.pop();
+                }
+                else {
+                    //pop until tos has lesser precedence or tos is null.
+                    while(!stack.isEmpty() && isHigher(*(stack.end()-1),op) && *(stack.end()-1)!="(") {
+                        qDebug()<<*(stack.end()-1);
+                        if(*(stack.end()-1)!="(" && *(stack.end()-1)!=")"){//not appending ( and )
+                            postfix.append(*(stack.end()-1));
+                            postfix.append(' ');
+                        }
+                        stack.pop_back();
+                    }
+
+                    if(stack.isEmpty() || !(isHigher(*(stack.end()-1),op)) || *(stack.end()-1)=="(")
+                        stack.push(op);
+                    }
+            }
+            if(isLongOperator){
+                qDebug()<<"op length : "<<op.length();
+                i+=op.length();
+                i--;
+            }
+        }
+        qDebug()<<"stack :"<<stack;
+    }
+
+        while(!stack.isEmpty()) {
+            QStack<QString>::iterator tos = stack.end() - 1;
+            postfix.append(' ');
+            if(*tos!="(" && *tos!=")"){
+                postfix.append(*tos);
+            }
+            stack.pop();
+        }
+    qDebug()<<postfix;
+    return postfix;
+}
+
 
 
 
@@ -259,12 +345,12 @@ bool estUnReel(const QString s){
 }
 
 bool estUnComplexe(const QString s){
-    qDebug()<<s;
+
     bool test=false;
     QRegExp r("^(-?)(\\d+)([.||/]?)(-?)(\\d*)(\\$)(-?)(\\d+)([.||/]?)(-?)(\\d*)$");
     if(s.contains(r))
             test=true;
-    qDebug()<<test;
+
     return test;
 }
 
@@ -316,6 +402,9 @@ void Controleur::initialisationMap(){
       faire["SWAP"]= new Swap;
       faire["CLEAR"]= new clear;
       faire["LASTOP"]= new lastop;
+      faire["UNDO"]=new undo;
+      faire["REDO"]=new redo;
+      faire["EVAL"]=new eval;
 
 }
 
@@ -333,36 +422,7 @@ void Controleur::commandeP(const QString& s)//gerer le cas d'un Programme
 
 
 void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
-//    if (estUnLitterale(c)){
-//        LitAff.push(LitMng.addLitterale(c.toInt()));
-//    }else{
 
-//        if (estUnOperateur(c)){
-//            if (LitAff.getNbLitterale()>=2) {
-//                Litterale& v2=LitAff.top();
-//                LitMng.removeLitterale(LitAff.top());
-//                LitAff.pop();
-//                Litterale& v1=LitAff.top();
-//                LitMng.removeLitterale(LitAff.top());
-//                LitAff.pop();
-//                Litterale& res;
-//                if (c=="+") res=v1+v2;
-//                if (c=="-") res=v1-v2;
-//                if (c=="*") res=v1*v2;
-//                if (c=="/") {
-//                    if (v2!=0) res=v1/v2;
-//                    else {
-//                        LitAff.setMessage("Erreur : division par zéro");
-//                        res=v1;
-//                    }
-//                }
-//                Litterale& e=LitMng.addLitterale(res);
-//                LitAff.push(e);
-//            }else{
-//                LitAff.setMessage("Erreur : pas assez d'arguments");
-//            }
-//        }else LitAff.setMessage("Erreur : commande inconnue");
-//    }
 
 
 
@@ -370,116 +430,16 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
 
 
        LitAff.push(LitMng.addLitterale(c));
-
+       pushMemento();
+       clearFutur();
     }else{
-        /*if (estUnOperateur(c)){
-            qDebug("C'est un opérateur");
-            if(LitAff.getNbLitterale()==0){
-                LitAff.setMessage("Erreur : Il n'y a pas d'argument dans la pile");
-            return;
-            }
-
-            Litterale* L2=LitAff.top();
-
-
-            qDebug("On vient de récupérer le top");
-            //LitMng.removeLitterale((LitAff.top()));
-
-
-            qDebug("On a détruit dans pile");
-
-            if (estUnLitteraleNum(L2->afficher())||estUnComplexe(L2->afficher())){
-                qDebug("le premier argument est un numérique ");
-                if(estUnOperateurNum(c)){
-                    qDebug("loperateur est numérique ");
-                    if((LitAff.getNbLitterale()>=2)&&(estUnOperateur2(c))){
-                        LitAff.pop();
-                        Litterale* L1=LitAff.top();
-                        LitAff.pop();
-                        qDebug("On vient de récupérer le top");
-                        //LitMng.removeLitterale(LitAff.top());
-
-
-
-                        if(estUnLitteraleNum(L1->afficher())||estUnComplexe(L1->afficher())){
-
-                            if(c=="+") addition(L1,L2);
-                            if(c=="-")  soustraction(L1,L2);;
-                            if(c=="*") multiplication(L1,L2);;
-                            if(c=="/")division(L1,L2);
-                            if(c=="DIV") divisionE(L1,L2);
-                            if(c=="$") {
-
-                                if(estUnComplexe(L2->afficher())&&estUnComplexe(L1->afficher()))complexise(L1,L2);
-                                else LitAff.setMessage("Opération impossible Il y a deja un complexe");
-                            }
-
-                            return; // j'ai fini tout bien
-
-                        }else{
-                            if(estUnProgramme(L1->afficher())||estUnComplexe(L1->afficher())){
-                                LitAff.push(LitMng.addLitterale(L1->afficher()));
-                                LitAff.push(LitMng.addLitterale(L2->afficher()));
-                                LitAff.setMessage("Erreur : Opération impossible le deuxième élément");
-                                return;
-                            }
-                            if(estUneExpression(L1->afficher())){    // C'est pas mon taff c'est celui de commandeEX
-                                LitAff.push(LitMng.addLitterale(L1->afficher()));
-                                LitAff.push(LitMng.addLitterale(L2->afficher()));
-                                commandeP(c);
-                                return;
-                            }
-                        }
-                    }
-
-                    if(LitAff.getNbLitterale()>=1&&estUnOperateur1(c)){
-
-                        if(c=="NEG") negationne(L2);
-                        if(c=="NUM") Numerateur(L2);
-                        if(c=="DEN" ) Denominateur(L2);
-
-                        if(c=="RE"){
-
-                            if(estUnComplexe(L2->afficher()))Reelise(L2);
-                            else LitAff.setMessage("Opération impossible ce n'est pas un complexe");
-                        }
-                        if(c=="IM"){
-
-                            if(estUnComplexe(L2->afficher()))Imagine(L2);
-                            else LitAff.setMessage("Opération impossible ce n'est pas un complexe");
-                        }
-
-                        return ; // j'ai fini tout bien
-                    }
-                    qDebug("Si je suis la j'ai riens reconnu");
-                    // si on arrive ici c'est pas ouf
-                    //LitAff.push(LitMng.addLitterale(L2->afficher()));
-                    LitAff.setMessage("Opération impossible sur cet/ces éléments");
-                }
-                // faire le cas d'opérateur sur la pile, opérateurs logiques
-            }else{
-               if(estUnProgramme(L2->afficher())){
-                   LitAff.pop();
-                   LitAff.setMessage("Erreur : Opération impossible sur le premier");
-                   LitAff.push(LitMng.addLitterale(L2->afficher()));
-                   return;
-               }
-               if(estUneExpression(L2->afficher())){
-                   LitAff.pop();
-                   LitAff.push(LitMng.addLitterale(L2->afficher()));
-                   commandeP(c);
-                   return;
-               }
-
-            }
-
-
-        }  */
 
         if(faire.contains(c)){
 
             faire[c]->operator ()();
             lastoperande=c;
+            pushMemento();
+            if(c!="UNDO"&&c!="REDO")clearFutur();
         }else{
 
             LitAff.setMessage("Erreur : commande inconnue");

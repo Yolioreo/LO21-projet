@@ -148,4 +148,24 @@ public:
     void operator() ();
 };
 
+class undo : public operande{
+public :
+    int typeoperande() const {return 24;}
+    void operator() ();
+};
+
+class redo : public operande{
+public :
+    int typeoperande() const {return 25;}
+    void operator() ();
+};
+
+class eval : public operande{
+public :
+    int typeoperande() const {return 27;}
+    void operator() ();
+    void EvalsurExp();
+    void EvalsurPrg();
+};
+
 #endif // OPERANDE_H
