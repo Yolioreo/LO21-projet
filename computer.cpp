@@ -359,8 +359,14 @@ bool estUnAtome(QString s){
 
     Controleur* controle=&Controleur::getInstance();
     bool test=false;
+
     QRegExp rx("^[A-Z][A-Z0-9]{,5}$");
     if(s.contains(rx))test=true;
+
+    if(controle->faitpartiedeMap(s)){
+        controle->setMessage("Impossible : "+s+" est un opérateur");
+        test=false;
+    }
     return test;
 }
 
@@ -423,7 +429,7 @@ void Controleur::commandeP(const QString& s)//gerer le cas d'un Programme
 }
 
 
-void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
+void Controleur::commande(const QString& c) { // A REVOIR : INTERPRETEUR
 
     //si la commande est un litterale
     if (estUnComplexe(c)||estUnLitteraleNum(c)||estUneExpression(c)||estUnProgramme(c)){
@@ -441,17 +447,18 @@ void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
       return;
     }
     //si la commande est un atome qui n'est pas un opérateur
-    for(QMap<Atome*,Litterale*>::ConstIterator it=variable.begin();it!=variable.end();it++){
-        if(it.first.afficher()==c){
-          LitAff.push(it.second);
-          return;
-        }
+    for (QMap<Atome *, Litterale*>::const_iterator it = variable.constBegin(); it != variable.constEnd(); ++it) {
+        if(it.key()->afficher()==c){
+            LitAff.push(it.value());
+            return;
+          }
         else{
-          QString c_exp="'"+c+"'";
-          LitAff.push(addLitterale(c_exp));
-          return;
-        }
+            QString c_exp="'"+c+"'";
+            LitAff.push(addLitterale(c_exp));
+            return;
+          }
     }
+
     //sinon
     LitAff.setMessage("Erreur : commande inconnue");
 }

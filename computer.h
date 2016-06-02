@@ -151,11 +151,9 @@ class Atome : public Litterale{
     QString atome;
 public:
     Atome(QString a): atome(a){}
-    QString afficher(){
-    return atome;
-    }
-    bool isNull(){return atome.isEmpty();}
-
+    bool isNull() const{return atome.isEmpty();}
+    QString afficher(){return atome;}
+    ~Atome(){}
 };
 
 class Expression : public Litterale{

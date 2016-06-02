@@ -1127,12 +1127,6 @@ void sto::operator() (){
                 controle->setMessage("Impossible : "+a+" n'est pas un atome");
                 return;
             }
-
-            if(faire.contains(a)){
-                controle->setMessage("Impossible : "+a+" est un opérateur");
-                return;
-            }
-
-            Atome nouvVar(a);
-            controle->creationVariable(&nouvVar,L1);
+            Atome* nouvVar=new Atome(a);
+            controle->creationVariable(nouvVar,L1);
 }
