@@ -119,6 +119,7 @@ void addition::operator() (){
             QString a;
 
             if (!verifierNumArite2()){
+                controle->setMessage("Addition Impossible");
                 return;
             }
             qDebug("On est dans addition");
@@ -290,15 +291,12 @@ void multiplication::operator() (){
             controle->pop();
 
 
-<<<<<<< HEAD
-            //faire le cas d'une expression
-=======
-            //faire de le cas d'une expression
+            //le cas d'une expression
             if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
               this->multiplicationExpression(L1,L2);
               return;
             }
->>>>>>> origin/master
+
 
 
             double RN1=L1->getRNumerateur();
@@ -1085,11 +1083,6 @@ void eval::EvalsurPrg(){
     }while(word!="]");
 
 }
-
-
-
-
-
 
 
 void eval::EvalsurExp(){
