@@ -71,7 +71,9 @@ void Ui::MainWindow::refresh(){
 void Ui::MainWindow::connections(){
 
   //affichage optionel du clavier
-  connect(actionAffichage_clavier, SIGNAL(triggered()), wClavier, SLOT(hide()));
+  actionAffichage_clavier->setCheckable(true);
+//  connect(actionAffichage_clavier, SIGNAL(trigerred()), wClavier, SLOT(hide()));
+  connect(actionAffichage_clavier, SIGNAL(toggled(bool)), wClavier, SLOT(affichageClavier(bool)));
   GereurOnglet->setCurrentIndex(0);
 
   //affichage de la pile
@@ -115,6 +117,10 @@ void Ui::MainWindow::connections(){
   connect(bouton7,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
   connect(bouton8,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
   connect(bouton9,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonPoint,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonGuillemet,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonParentheseO,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
+  connect(boutonParentheseF,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
   connect(boutonBS,SIGNAL(clicked()),wAffichageCommande,SLOT(slotBackspace()));
   connect(boutonEspace,SIGNAL(clicked()),wAffichageCommande,SLOT(slotSpace()));
 

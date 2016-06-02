@@ -290,13 +290,20 @@ void multiplication::operator() (){
             Litterale* L1=controle->top();
             controle->pop();
 
+<<<<<<< HEAD
 
             //le cas d'une expression
+=======
+            //faire de le cas d'une expression
+>>>>>>> origin/master
             if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
               this->multiplicationExpression(L1,L2);
               return;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 
 
             double RN1=L1->getRNumerateur();
@@ -619,7 +626,7 @@ void difference::operator() (){
             double IN2=L2->getINumerateur();
             double ID2=L2->getIDenominateur();
 
-            if((RN1!=RN2)||(RD1!=RD2)||(ID1!=ID2)||(IN1!=IN2))
+            if((RN1/RD1!=RN2/RD2)||(IN1/ID1!=IN2/ID2))
               test=1;
             else
               test=0;
@@ -657,7 +664,7 @@ void egalite::operator() (){
             double IN2=L2->getINumerateur();
             double ID2=L2->getIDenominateur();
 
-            if((RN1==RN2)&&(RD1==RD2)&&(ID1==ID2)&&(IN1==IN2))
+            if((RN1/RD1==RN2/RD2)&&(IN1/ID1==IN2/ID2))
               test=1;
             else
               test=0;
