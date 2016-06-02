@@ -358,12 +358,9 @@ bool estUnComplexe(const QString s){
 bool estUnAtome(QString s){
 
     Controleur* controle=&Controleur::getInstance();
-    if(controle->faitpartiedeMap(s))return false;
-
     bool test=false;
     QRegExp rx("^[A-Z][A-Z0-9]{,5}$");
     if(s.contains(rx))test=true;
-
     return test;
 }
 
@@ -383,7 +380,6 @@ bool estUnProgramme(const QString s){
 
 
 void Controleur::initialisationMap(){
-
       faire["+"]=new addition;
       faire["-"]=new soustraction;
       faire["/"]=new division;
@@ -411,7 +407,7 @@ void Controleur::initialisationMap(){
       faire["UNDO"]=new undo;
       faire["REDO"]=new redo;
       faire["EVAL"]=new eval;
-
+      faire["STO"]=new sto;
 }
 
 void Controleur::commandeEx(const QString& s) //gerer le cas d'une expression
@@ -429,28 +425,34 @@ void Controleur::commandeP(const QString& s)//gerer le cas d'un Programme
 
 void Controleur::commande(const QString& c){ // A REVOIR : INTERPRETEUR
 
-
-
-
+    //si la commande est un litterale
     if (estUnComplexe(c)||estUnLitteraleNum(c)||estUneExpression(c)||estUnProgramme(c)){
-
-
        LitAff.push(LitMng.addLitterale(c));
        pushMemento();
        clearFutur();
-    }else{
-
-        if(faire.contains(c)){
-
-            faire[c]->operator ()();
-            lastoperande=c;
-            pushMemento();
-            if(c!="UNDO"&&c!="REDO")clearFutur();
-        }else{
-
-            LitAff.setMessage("Erreur : commande inconnue");
-
+       return;
+    }
+    //si la commande est un opérateur
+    if(faire.contains(c)){
+      faire[c]->operator ()();
+      lastoperande=c;
+      pushMemento();
+      if(c!="UNDO"&&c!="REDO")clearFutur();
+      return;
+    }
+    //si la commande est un atome qui n'est pas un opérateur
+    for(QMap<Atome*,Litterale*>::ConstIterator it=variable.begin();it!=variable.end();it++){
+        if(it.first.afficher()==c){
+          LitAff.push(it.second);
+          return;
+        }
+        else{
+          QString c_exp="'"+c+"'";
+          LitAff.push(addLitterale(c_exp));
+          return;
         }
     }
+    //sinon
+    LitAff.setMessage("Erreur : commande inconnue");
 }
 

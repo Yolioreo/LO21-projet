@@ -310,6 +310,7 @@ class Controleur : public QObject{
     Pile& LitAff;
     Memento memento;
     QMap<QString,operande*> faire;
+    QMap<Atome*,Litterale*> variable;
     QString lastoperande;
 
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
@@ -364,6 +365,13 @@ public:
 
     void commandeEx(const QString &c);
     void commandeP(const QString &c);
+
+    // partie création de variables
+
+    void creationVariable(Atome* a,Litterale* l){
+        variable[a]=l;
+        setMessage(l->afficher()+" stocké dans "+a->afficher());
+    }
 
 signals:
     void modificationEtat();

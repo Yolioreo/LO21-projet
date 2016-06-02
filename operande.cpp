@@ -1082,11 +1082,6 @@ void eval::EvalsurPrg(){
 }
 
 
-
-
-
-
-
 void eval::EvalsurExp(){
     Controleur* controle=&Controleur::getInstance();
 
@@ -1105,3 +1100,39 @@ void eval::EvalsurExp(){
 
 }
 
+void sto::operator() (){
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite2()){
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if(!estUneExpression(L2->afficher())||(!estUnLitteraleNum(L1->afficher())&&!estUnProgramme(L1->afficher()))){
+              controle->setMessage("Impossible : pas les bons arguments");
+              return;
+            }
+
+            a=L2->afficher();
+            a=a.left(a.size()-1);
+            a=a.right(a.size()-1);
+
+            if(!estUnAtome(a)){
+                controle->setMessage("Impossible : "+a+" n'est pas un atome");
+                return;
+            }
+
+            if(faire.contains(a)){
+                controle->setMessage("Impossible : "+a+" est un opérateur");
+                return;
+            }
+
+            Atome nouvVar(a);
+            controle->creationVariable(&nouvVar,L1);
+}

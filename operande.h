@@ -208,4 +208,10 @@ public :
     void EvalsurPrg();
 };
 
+class sto : public operande{
+public :
+    int typeoperande() const {return 25;}
+    void operator() ();
+};
+
 #endif // OPERANDE_H
