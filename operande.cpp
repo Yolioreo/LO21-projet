@@ -290,20 +290,15 @@ void multiplication::operator() (){
             Litterale* L1=controle->top();
             controle->pop();
 
-<<<<<<< HEAD
+
 
             //le cas d'une expression
-=======
-            //faire de le cas d'une expression
->>>>>>> origin/master
+
             if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
               this->multiplicationExpression(L1,L2);
               return;
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 
 
             double RN1=L1->getRNumerateur();
