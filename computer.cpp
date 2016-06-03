@@ -1,6 +1,4 @@
 #include "computer.h"
-#include <algorithm>
-#include <QRegExp>
 
 
 //LitteraleManager::Handler LitteraleManager::handler=LitteraleManager::Handler();
@@ -414,19 +412,9 @@ void Controleur::initialisationMap(){
       faire["REDO"]=new redo;
       faire["EVAL"]=new eval;
       faire["STO"]=new sto;
+      faire["IFT"]=new ift;
 }
 
-void Controleur::commandeEx(const QString& s) //gerer le cas d'une expression
-{
-    qDebug (" Gestion de l'expression");
-
-}
-
-
-void Controleur::commandeP(const QString& s)//gerer le cas d'un Programme
-{
-    qDebug ("Gestion du Programme");
-}
 
 
 void Controleur::commande(const QString& c) { // A REVOIR : INTERPRETEUR
@@ -449,12 +437,8 @@ void Controleur::commande(const QString& c) { // A REVOIR : INTERPRETEUR
     //si la commande est un atome qui n'est pas un opérateur
     for (QMap<Atome *, Litterale*>::const_iterator it = variable.constBegin(); it != variable.constEnd(); ++it) {
         if(it.key()->afficher()==c){
+
             LitAff.push(it.value());
-            return;
-          }
-        else{
-            QString c_exp="'"+c+"'";
-            LitAff.push(addLitterale(c_exp));
             return;
           }
     }
