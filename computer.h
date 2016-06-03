@@ -370,6 +370,8 @@ public:
         variable[a]=l;
         setMessage(l->afficher()+" stocké dans "+a->afficher());
     }
+    unsigned int getNbVariable(){return variable.size();}
+    QMap<Atome*,Litterale*> getVar()const{return variable;}
 
 signals:
     void modificationEtat();

@@ -54,6 +54,8 @@ void Ui::MainWindow::getNextCommande(){
 }
 
 void Ui::MainWindow::refresh(){
+    Controleur* controle=&Controleur::getInstance();
+
     wAffichageErreur->setText(pile->getMessage());
     for(unsigned int i=0;i<pile->getNbLitteraleToAffiche();i++)
         wAffichagePil->item(i,0)->setText("");
@@ -64,7 +66,12 @@ void Ui::MainWindow::refresh(){
        wAffichagePil->item(pile->getNbLitteraleToAffiche()-nb-1,0)->setText((*it)->afficher());
         nb++;
     }
-
+    nb=0;
+    for (QMap<Atome *, Litterale*>::const_iterator it = controle->getVar().constBegin(); it != controle->getVar().constEnd(); ++it){
+       TableauVarAffi->item(nb,0)->setText(it.key()->afficher());
+       TableauVarAffi->item(nb,0)->setText(it.value()->afficher());
+        nb++;
+    }
 
 }
 
@@ -72,7 +79,6 @@ void Ui::MainWindow::connections(){
 
   //affichage optionel du clavier
   actionAffichage_clavier->setCheckable(true);
-//  connect(actionAffichage_clavier, SIGNAL(trigerred()), wClavier, SLOT(hide()));
   connect(actionAffichage_clavier, SIGNAL(toggled(bool)), wClavier, SLOT(affichageClavier(bool)));
   GereurOnglet->setCurrentIndex(0);
 
@@ -136,5 +142,19 @@ void Ui::MainWindow::connections(){
 //  connect(boutonDEN,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
 //  connect(boutonIM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
 //  connect(boutonRE,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
+
+  //afficahge variable
+  TableauVarAffi->setRowCount(controleur->getNbVariable());
+  TableauVarAffi->setColumnCount(2);
+  for(unsigned int i=0;i<controleur->getNbVariable();i++){
+      TableauVarAffi->setItem(i,0,new QTableWidgetItem(""));
+      TableauVarAffi->setItem(i,1,new QTableWidgetItem(""));
+    }
+
+  TableauVarAffi->setEditTriggers(QAbstractItemView::DoubleClicked);
+  TableauVarAffi->horizontalHeader()->setVisible(true);
+  TableauVarAffi->horizontalHeader()->setStretchLastSection(true);
+  TableauVarAffi->show();
+
 }
 
