@@ -1,6 +1,5 @@
 #include "qcomputer.h"
-#include <QStringList>
-#include <QDebug>
+
 QComputer::QComputer(QWidget* parent):QWidget(parent){
 
     this->setWindowTitle("Calculatrice"); //retranscrit

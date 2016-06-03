@@ -1,6 +1,9 @@
+
+
+#include "include.h"
 #include "operande.h"
 #include "computer.h"
-#include "interface_graphique.h"
+#include "litterale.h"
 
 
 
@@ -119,6 +122,7 @@ void addition::operator() (){
             QString a;
 
             if (!verifierNumArite2()){
+                controle->setMessage("Addition Impossible");
                 return;
             }
             qDebug("On est dans addition");
@@ -289,11 +293,15 @@ void multiplication::operator() (){
             Litterale* L1=controle->top();
             controle->pop();
 
-            //faire de le cas d'une expression
+
+
+            //le cas d'une expression
+
             if(estUneExpression(L1->afficher())||estUneExpression(L2->afficher())){
               this->multiplicationExpression(L1,L2);
               return;
             }
+
 
 
             double RN1=L1->getRNumerateur();
@@ -1038,9 +1046,12 @@ void eval::operator ()(){
     Controleur* controle=&Controleur::getInstance();
 
 
-    qDebug("On est dans le REDO");
-    if(controle->getNbLitterale()==0)
-    controle->setMessage("La pile est Vide");
+    qDebug("On est dans le EVAL");
+    if(controle->getNbLitterale()==0){
+        controle->setMessage("La pile est Vide");
+        return;
+    }
+
 
 
     if(estUnProgramme(controle->top()->afficher())) EvalsurPrg();
@@ -1102,12 +1113,10 @@ void eval::EvalsurExp(){
 
 void sto::operator() (){
             Controleur* controle=&Controleur::getInstance();
-            int test;
+
             QString a;
 
-            if (!verifierNumArite2()){
-                return;
-            }
+
 
             Litterale* L2=controle->top();
             controle->pop();
@@ -1116,6 +1125,7 @@ void sto::operator() (){
 
             if(!estUneExpression(L2->afficher())||(!estUnLitteraleNum(L1->afficher())&&!estUnProgramme(L1->afficher()))){
               controle->setMessage("Impossible : pas les bons arguments");
+
               return;
             }
 
@@ -1125,8 +1135,30 @@ void sto::operator() (){
 
             if(!estUnAtome(a)){
                 controle->setMessage("Impossible : "+a+" n'est pas un atome");
+                controle->push(L1);
+                controle->push(L2);
                 return;
             }
             Atome* nouvVar=new Atome(a);
             controle->creationVariable(nouvVar,L1);
+}
+void ift::operator() (){
+            Controleur* controle=&Controleur::getInstance();
+            QString a;
+            if(controle->getNbLitterale()<2){
+                controle->setMessage("Pas assez d'argument pour if");
+                return;
+            }
+
+            Litterale* L2=controle->top();
+            controle->pop();
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            if(L1->afficher()=="1"){
+               controle->push(L2);
+                eval a;
+                a.operator ()();
+            }
+
 }

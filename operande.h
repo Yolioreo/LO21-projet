@@ -2,19 +2,10 @@
 #define OPERANDE_H
 
 
-#include <QString>
-#include <QStringList>
-#include <QTextStream>
-#include <QObject>
-#include <QDebug>
-#include <QStack>
-#include <QVector>
-#include <QException>
-#include <qstring.h>
-#include <QMap>
 
-class Controleur;
-class Litterale;
+
+#include "include.h"
+#include "litterale.h"
 
 class operande{
 
@@ -210,8 +201,15 @@ public :
 
 class sto : public operande{
 public :
-    int typeoperande() const {return 25;}
+    int typeoperande() const {return 28;}
     void operator() ();
 };
+
+class ift : public operande{
+public :
+    int typeoperande() const {return 26;}
+    void operator() ();
+};
+
 
 #endif // OPERANDE_H
