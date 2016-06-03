@@ -84,6 +84,10 @@ public:
     QPushButton *boutonRE;
     QPushButton *boutonIM;
     QPushButton *boutonMOD;
+    QVBoxLayout *operateurExpPrgm;
+    QPushButton *boutonSTO;
+    QPushButton *boutonEVAL;
+    QPushButton *boutonEDIT;
     QVBoxLayout *operateurLogiqueLayout;
     QPushButton *boutonEgalite;
     QPushButton *boutonDIFF;
@@ -358,6 +362,25 @@ public:
 
         gridLayout_4->addLayout(operateurPileLayout, 1, 3, 1, 1);
 
+        operateurExpPrgm = new QVBoxLayout();
+        operateurExpPrgm->setObjectName(QStringLiteral("operateurExpPrgm"));
+        boutonSTO = new QPushButton(wClavier);
+        boutonSTO->setObjectName(QStringLiteral("boutonSTO"));
+
+        operateurExpPrgm->addWidget(boutonSTO);
+
+        boutonEVAL = new QPushButton(wClavier);
+        boutonEVAL->setObjectName(QStringLiteral("boutonEVAL"));
+
+        operateurExpPrgm->addWidget(boutonEVAL);
+
+        boutonEDIT = new QPushButton(wClavier);
+        boutonEDIT->setObjectName(QStringLiteral("boutonEDIT"));
+
+        operateurExpPrgm->addWidget(boutonEDIT);
+
+        gridLayout_4->addLayout(operateurExpPrgm, 1, 4, 1, 1);
+
         clavierChiffre = new QVBoxLayout();
         clavierChiffre->setObjectName(QStringLiteral("clavierChiffre"));
         ligne123 = new QHBoxLayout();
@@ -561,6 +584,9 @@ public:
         boutonSWAP->setText(QApplication::translate("MainWindow", "SWAP", 0));
         boutonLAST_OP->setText(QApplication::translate("MainWindow", "LASTOP", 0));
         boutonLAST_ARGS->setText(QApplication::translate("MainWindow", "LASTARGS", 0));
+        boutonSTO->setText(QApplication::translate("MainWindow", "STO", 0));
+        boutonEVAL->setText(QApplication::translate("MainWindow", "EVAL", 0));
+        boutonEDIT->setText(QApplication::translate("MainWindow", "EDIT", 0));
         bouton1->setText(QApplication::translate("MainWindow", "1", 0));
         bouton2->setText(QApplication::translate("MainWindow", "2", 0));
         bouton3->setText(QApplication::translate("MainWindow", "3", 0));
