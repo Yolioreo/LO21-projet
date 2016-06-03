@@ -134,18 +134,45 @@ void Ui::MainWindow::connections(){
   connect(boutonBS,SIGNAL(clicked()),wAffichageCommande,SLOT(slotBackspace()));
   connect(boutonEspace,SIGNAL(clicked()),wAffichageCommande,SLOT(slotSpace()));
 
-  //clavier operateur
-//  connect(boutonP,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonF,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonComplexe,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonD,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonDIV,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonNEG,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonNUM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonDEN,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonIM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonRE,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
+  //clavier operateur numerique
+  connect(boutonP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonM,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonF,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonComplexe,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonD,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonDIV,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonNEG,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonNUM,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonDEN,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonIM,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonRE,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonMOD,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
+  //clavier operateur exp et prgm
+  connect(boutonSTO,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonEVAL,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonEDIT,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
+
+  //clavier operateur logique
+  connect(boutonEgalite,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonDIFF,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonINF,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonSUP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonINFEG,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonSUPEG,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonAND,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonOR,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonNOT,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
+  //clavier opérateur pile
+  connect(boutonUNDO,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonREDO,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonCLEAR,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonSWAP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonLAST_OP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonLAST_ARGS,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
 
   //afficahge variable
   TableauVarAffi->setRowCount(controleur->getNbVariable());

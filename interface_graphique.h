@@ -614,6 +614,7 @@ namespace Ui {
           connections();
 
         }
+        Controleur* getControleur(){return controleur;}
         virtual ~MainWindow(){Controleur::libererInstance();}
         void connections();
     public slots:

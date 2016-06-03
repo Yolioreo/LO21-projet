@@ -180,7 +180,7 @@ public:
 signals:
     void modificationEtat();
 public slots :
-    //void slotOperator(); // à définir
+    void slotOperator(); // à définir
 
 
 };

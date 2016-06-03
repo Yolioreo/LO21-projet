@@ -85,6 +85,18 @@ public :
     void operator() ();
 };
 
+class RE : public operande{
+public :
+    int typeoperande() const {return 7;}
+    void operator() ();
+};
+
+class IM : public operande{
+public :
+    int typeoperande() const {return 7;}
+    void operator() ();
+};
+
 class DIV : public operande{
 public :
     int typeoperande() const {return 9;}
