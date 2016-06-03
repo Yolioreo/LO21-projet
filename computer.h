@@ -162,6 +162,14 @@ public:
 
     // partie création de variables
 
+    bool estUneVariable(QString& c)const {
+      for (QMap<Atome *, Litterale*>::const_iterator it = variable.constBegin(); it != variable.constEnd(); ++it) {
+          if(it.key()->afficher()==c){
+              return true;
+            }
+      }
+      return false;
+    }
     void creationVariable(Atome* a,Litterale* l){
         variable[a]=l;
         setMessage(l->afficher()+" stocké dans "+a->afficher());
@@ -191,5 +199,6 @@ bool isHigher(QString a, QString b);
 int order(QString op);
 bool isChar(QChar a);
 bool isPartOperand(QChar a, QString s, int i);
+
 #endif
 

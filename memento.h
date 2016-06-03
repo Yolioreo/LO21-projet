@@ -3,6 +3,7 @@
 
 
 #include "include.h"
+class Pile;
 
 class Memento{
     friend class Pile;

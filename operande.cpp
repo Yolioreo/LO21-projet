@@ -1139,6 +1139,12 @@ void sto::operator() (){
                 controle->push(L2);
                 return;
             }
+            if(controle->estUneVariable(a)) {
+                controle->setMessage("Cette variable existe déjà");
+                controle->push(L1);
+                controle->push(L2);
+                return;
+              }
             Atome* nouvVar=new Atome(a);
             controle->creationVariable(nouvVar,L1);
 }

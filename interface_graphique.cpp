@@ -63,11 +63,18 @@ void Ui::MainWindow::refresh(){
        wAffichagePil->item(pile->getNbLitteraleToAffiche()-nb-1,0)->setText((*it)->afficher());
         nb++;
     }
-    nb=0;
-    for (QMap<Atome *, Litterale*>::const_iterator it = controle->getVar().constBegin(); it != controle->getVar().constEnd(); ++it){
-       TableauVarAffi->item(nb,0)->setText(it.key()->afficher());
-       TableauVarAffi->item(nb,0)->setText(it.value()->afficher());
-        nb++;
+    int nb1=0;
+    TableauVarAffi->setRowCount(controle->getNbVariable());
+    for(unsigned int i=0;i<controle->getNbVariable();i++){
+        TableauVarAffi->setItem(i,0,new QTableWidgetItem(""));
+        TableauVarAffi->setItem(i,1,new QTableWidgetItem(""));
+      }
+
+    for (QMap<Atome *, Litterale*>::const_iterator it = controle->getVar().cbegin(); it != controle->getVar().cend(); it++){
+       TableauVarAffi->item(nb1,0)->setText(it.key()->afficher());
+       TableauVarAffi->item(nb1,1)->setText(it.value()->afficher());
+
+       nb1++;
     }
 
 }
