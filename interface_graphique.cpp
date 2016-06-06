@@ -101,7 +101,7 @@ void Ui::MainWindow::connections(){
 
   // actualisation de la pile
   connect(pile,SIGNAL(modificationEtat()),this,SLOT(refresh()));
-  connect(controleur,SIGNAL(modificationEtat()),this,SLOT(refresh()));
+  //connect(controleur,SIGNAL(modificationEtat()),this,SLOT(refresh()));
 
   //connection clavier numérique
   connect(bouton0,SIGNAL(clicked()),wAffichageCommande,SLOT(ajoute_commande()));
@@ -133,5 +133,13 @@ void Ui::MainWindow::connections(){
 //  connect(boutonDEN,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
 //  connect(boutonIM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
 //  connect(boutonRE,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
+
+  // chargement contexte
+
+  //connect(pile,SIGNAL(chargementcontexte()),&XML,SLOT(charger_contexte()));
+//sauvegarde contexte
+    //connect(bouton0,SIGNAL(clicked()),&XML,SLOT(enregistrer_contexte()));
+
+
 }
 

@@ -39,7 +39,7 @@
 #include <QException>
 #include <qstring.h>
 #include <QMap>
-
+#include <QtXml>
 
 
 

@@ -12,7 +12,6 @@
 //    delete handler.instance;
 //    handler.instance=nullptr;
 //}
-
 Controleur::Handler1 Controleur::handler=Controleur::Handler1();
 
 void Controleur::libererInstance(){

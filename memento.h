@@ -3,6 +3,7 @@
 
 
 #include "include.h"
+class Pile;
 
 class Memento{
     friend class Pile;
@@ -20,9 +21,12 @@ public:
     Pile* getMementoAvant(){
         Pile* a;
         pushFutur(etatsPasse.front());
+
         etatsPasse.pop_front();
         a=etatsPasse.front();
+
         etatsPasse.pop_front();
+
         return a;
     }
     void pushMemento(Pile* p){etatsPasse.push_front(p);}

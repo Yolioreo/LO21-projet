@@ -1,5 +1,6 @@
 QT += widgets
 QT += core
+QT += xml
 
 SOURCES += \
     main.cpp \
@@ -13,6 +14,7 @@ HEADERS += \
     interface_graphique.h\
     include.h \
     litterale.h \
-    memento.h
+    memento.h \
+    sauvergarde.h
 
 

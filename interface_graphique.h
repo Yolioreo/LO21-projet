@@ -4,6 +4,7 @@
 
 #include "include.h"
 #include "computer.h"
+#include "sauvergarde.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -605,6 +606,8 @@ namespace Ui {
         Controleur* controleur;
         //gére les expressions
         LitteraleManager* manager;
+        save_and_load_xml XML;
+
     public:
         MainWindow(QWidget *parent = nullptr) : QMainWindow(parent){
 
@@ -612,7 +615,10 @@ namespace Ui {
           manager=new LitteraleManager;
           controleur=&Controleur::getInstance(*manager,*pile);
           Ui_MainWindow::setupUi(this);
-          connections();
+           connections();
+           pile->chargementcontexte();
+
+
 
         }
         virtual ~MainWindow(){Controleur::libererInstance();}
@@ -620,6 +626,7 @@ namespace Ui {
     public slots:
         void refresh();
         void getNextCommande();
+
     };
 } // namespace Ui
 

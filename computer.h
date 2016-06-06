@@ -7,6 +7,7 @@
 #include "litterale.h"
 #include "operande.h"
 
+
 using namespace std;
 
 class ComputerException {
@@ -53,6 +54,8 @@ public:
 
     Pile():message(""),nb(0),nbAffiche(4){
         PileLit.clear();
+        qDebug()<<"Initialisation pile";
+        chargementcontexte();
 
     }
     Pile(const Pile& a):message(a.message),nb(a.nb),nbAffiche(a.nbAffiche),PileLit(a.PileLit){}
@@ -62,6 +65,7 @@ public:
         message=a.message;
         nb=a.nb;
         nbAffiche=a.nbAffiche;
+        PileLit.resize(a.getNbLitterale());
         for (unsigned int i=0; i<a.getNbLitterale();i++)
             PileLit[i]=a.PileLit[i];
         return *this;
@@ -94,6 +98,7 @@ public:
 
 signals:
     void modificationEtat();
+    void chargementcontexte();
 public slots:
     void afficheDivZero(){setMessage("Impossible il y a une division par zéro");}
 
@@ -115,6 +120,9 @@ class Controleur : public QObject{
         pushMemento();
         connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
         initialisationMap();
+
+
+
 
 
     }
@@ -149,7 +157,7 @@ public:
     Litterale* addLitterale(QString e){return LitMng.addLitterale(e);}
     void removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
     void commande(const QString& c);
-    void setPile(Pile& P){LitAff=P; modificationEtat();}
+    void setPile(Pile& P){ LitAff=P; modificationEtat();}
 
     // partie memento
 
@@ -166,9 +174,18 @@ public:
         variable[a]=l;
         setMessage(l->afficher()+" stocké dans "+a->afficher());
     }
+    class iterator_variable : public QMap<Atome*,Litterale*>::const_iterator {
+    public :
+        iterator_variable(QMap<Atome*,Litterale*>::const_iterator it):QMap<Atome*,Litterale*>::const_iterator(it){}
+    };
+    iterator_variable begin_variable(){return iterator_variable(variable.constBegin());}
+
+    iterator_variable end_variable(){return iterator_variable(variable.constEnd());}
 
 signals:
+
     void modificationEtat();
+
 public slots :
     //void slotOperator(); // à définir
 
