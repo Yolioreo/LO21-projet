@@ -1,4 +1,3 @@
-
 #ifndef INTERFACE_GRAPHIQUETT5446_H
 #define INTERFACE_GRAPHIQUETT5446_H
 
@@ -621,6 +620,7 @@ namespace Ui {
 
 
         }
+        Controleur* getControleur(){return controleur;}
         virtual ~MainWindow(){Controleur::libererInstance();}
         void connections();
     public slots:

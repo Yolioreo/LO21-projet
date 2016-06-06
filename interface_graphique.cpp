@@ -51,6 +51,8 @@ void Ui::MainWindow::getNextCommande(){
 }
 
 void Ui::MainWindow::refresh(){
+    Controleur* controle=&Controleur::getInstance();
+
     wAffichageErreur->setText(pile->getMessage());
     for(unsigned int i=0;i<pile->getNbLitteraleToAffiche();i++)
         wAffichagePil->item(i,0)->setText("");
@@ -61,7 +63,19 @@ void Ui::MainWindow::refresh(){
        wAffichagePil->item(pile->getNbLitteraleToAffiche()-nb-1,0)->setText((*it)->afficher());
         nb++;
     }
+    int nb1=0;
+    TableauVarAffi->setRowCount(controle->getNbVariable());
+    for(unsigned int i=0;i<controle->getNbVariable();i++){
+        TableauVarAffi->setItem(i,0,new QTableWidgetItem(""));
+        TableauVarAffi->setItem(i,1,new QTableWidgetItem(""));
+      }
 
+    for (QMap<Atome *, Litterale*>::const_iterator it = controle->getVar().cbegin(); it != controle->getVar().cend(); it++){
+       TableauVarAffi->item(nb1,0)->setText(it.key()->afficher());
+       TableauVarAffi->item(nb1,1)->setText(it.value()->afficher());
+
+       nb1++;
+    }
 
 }
 
@@ -69,7 +83,6 @@ void Ui::MainWindow::connections(){
 
   //affichage optionel du clavier
   actionAffichage_clavier->setCheckable(true);
-//  connect(actionAffichage_clavier, SIGNAL(trigerred()), wClavier, SLOT(hide()));
   connect(actionAffichage_clavier, SIGNAL(toggled(bool)), wClavier, SLOT(affichageClavier(bool)));
   GereurOnglet->setCurrentIndex(0);
 
@@ -121,6 +134,7 @@ void Ui::MainWindow::connections(){
   connect(boutonBS,SIGNAL(clicked()),wAffichageCommande,SLOT(slotBackspace()));
   connect(boutonEspace,SIGNAL(clicked()),wAffichageCommande,SLOT(slotSpace()));
 
+<<<<<<< HEAD
   //clavier operateur
 //  connect(boutonP,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
 //  connect(boutonM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
@@ -140,6 +154,60 @@ void Ui::MainWindow::connections(){
 //sauvegarde contexte
     //connect(bouton0,SIGNAL(clicked()),&XML,SLOT(enregistrer_contexte()));
 
+=======
+  //clavier operateur numerique
+  connect(boutonP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonM,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonF,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonComplexe,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonD,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonDIV,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonNEG,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonNUM,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonDEN,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonIM,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonRE,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonMOD,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
+  //clavier operateur exp et prgm
+  connect(boutonSTO,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonEVAL,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonEDIT,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
+
+  //clavier operateur logique
+  connect(boutonEgalite,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonDIFF,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonINF,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonSUP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonINFEG,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonSUPEG,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonAND,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonOR,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonNOT,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
+  //clavier opérateur pile
+  connect(boutonUNDO,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonREDO,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonCLEAR,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonSWAP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonLAST_OP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+  connect(boutonLAST_ARGS,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
+
+
+  //afficahge variable
+  TableauVarAffi->setRowCount(controleur->getNbVariable());
+  TableauVarAffi->setColumnCount(2);
+  for(unsigned int i=0;i<controleur->getNbVariable();i++){
+      TableauVarAffi->setItem(i,0,new QTableWidgetItem(""));
+      TableauVarAffi->setItem(i,1,new QTableWidgetItem(""));
+    }
+
+  TableauVarAffi->setEditTriggers(QAbstractItemView::DoubleClicked);
+  TableauVarAffi->horizontalHeader()->setVisible(true);
+  TableauVarAffi->horizontalHeader()->setStretchLastSection(true);
+  TableauVarAffi->show();
+>>>>>>> origin/master
 
 }
 

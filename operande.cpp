@@ -525,6 +525,46 @@ qDebug("numérateur");
 
 }
 
+void RE::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite1()){
+                return;
+            }
+
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            double RN1=L1->getRNumerateur();
+            double RD1=L1->getRDenominateur();
+
+            controle->push(controle->addLitterale(creationStringLitterale(RN1,RD1,0,1)));
+
+}
+
+void IM::operator() (){
+
+            Controleur* controle=&Controleur::getInstance();
+            int test;
+            QString a;
+
+            if (!verifierNumArite1()){
+                return;
+            }
+
+            Litterale* L1=controle->top();
+            controle->pop();
+
+            double IN1=L1->getINumerateur();
+            double ID1=L1->getIDenominateur();
+
+            controle->push(controle->addLitterale(creationStringLitterale(IN1,ID1,0,1)));
+
+}
+
 void DIV::operator() (){
 
 
@@ -1116,7 +1156,10 @@ void sto::operator() (){
 
             QString a;
 
-
+            if (!verifierNumArite2()){
+                controle->setMessage("Pas assez d'arguments");
+                return;
+            }
 
             Litterale* L2=controle->top();
             controle->pop();
@@ -1139,6 +1182,12 @@ void sto::operator() (){
                 controle->push(L2);
                 return;
             }
+            if(controle->estUneVariable(a)) {
+                controle->setMessage("Cette variable existe déjà");
+                controle->push(L1);
+                controle->push(L2);
+                return;
+              }
             Atome* nouvVar=new Atome(a);
             controle->creationVariable(nouvVar,L1);
 }

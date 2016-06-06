@@ -12,6 +12,22 @@
 //    delete handler.instance;
 //    handler.instance=nullptr;
 //}
+<<<<<<< HEAD
+=======
+
+void Controleur::slotOperator(){
+  QPushButton* btn = qobject_cast<QPushButton*>(sender());
+  if(btn==nullptr) {
+      return;
+  }
+  if(!faitpartiedeMap(btn->text())){
+      setMessage("Operateur n'existe pas");
+      return;
+    }
+  faire[btn->text()]->operator ()();
+}
+
+>>>>>>> origin/master
 Controleur::Handler1 Controleur::handler=Controleur::Handler1();
 
 void Controleur::libererInstance(){
@@ -393,6 +409,8 @@ void Controleur::initialisationMap(){
       faire["NUM"]= new NUM;
       faire["DIV"]= new DIV;
       faire["MOD"]= new MOD;
+      faire["RE"]=new RE;
+      faire["IM"]=new IM;
       faire["!="]= new difference;
       faire["="]= new egalite;
       faire["<"]= new inferieur; 

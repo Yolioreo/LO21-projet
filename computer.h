@@ -170,10 +170,19 @@ public:
 
     // partie création de variables
 
+    bool estUneVariable(QString& c)const {
+      for (QMap<Atome *, Litterale*>::const_iterator it = variable.constBegin(); it != variable.constEnd(); ++it) {
+          if(it.key()->afficher()==c){
+              return true;
+            }
+      }
+      return false;
+    }
     void creationVariable(Atome* a,Litterale* l){
         variable[a]=l;
         setMessage(l->afficher()+" stocké dans "+a->afficher());
     }
+<<<<<<< HEAD
     class iterator_variable : public QMap<Atome*,Litterale*>::const_iterator {
     public :
         iterator_variable(QMap<Atome*,Litterale*>::const_iterator it):QMap<Atome*,Litterale*>::const_iterator(it){}
@@ -181,13 +190,17 @@ public:
     iterator_variable begin_variable(){return iterator_variable(variable.constBegin());}
 
     iterator_variable end_variable(){return iterator_variable(variable.constEnd());}
+=======
+    unsigned int getNbVariable(){return variable.size();}
+    QMap<Atome*,Litterale*> getVar()const{return variable;}
+>>>>>>> origin/master
 
 signals:
 
     void modificationEtat();
 
 public slots :
-    //void slotOperator(); // à définir
+    void slotOperator(); // à définir
 
 
 };
@@ -206,5 +219,6 @@ bool isHigher(QString a, QString b);
 int order(QString op);
 bool isChar(QChar a);
 bool isPartOperand(QChar a, QString s, int i);
+
 #endif
 
