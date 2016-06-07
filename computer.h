@@ -1,3 +1,4 @@
+
 #ifndef _COMPUTER_H
 #define _COMPUTER_H
 
@@ -78,7 +79,10 @@ public:
     Litterale* top() const;
     void setNbLitteraleToAffiche(unsigned int n) { nbAffiche=n; }
     unsigned int getNbLitteraleToAffiche() const { return nbAffiche; }
-    void setMessage(const QString& m) { message=m; modificationEtat(); }
+    void setMessage(const QString& m) {
+      message=m;
+      modificationEtat();
+    }
     QString getMessage() const { return message; }
     unsigned int getNbLitterale(){return nb;}
 
