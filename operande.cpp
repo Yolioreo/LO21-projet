@@ -6,6 +6,17 @@
 #include "litterale.h"
 
 
+bool operande::operateurunaire(QString c){
+
+    if (c=="NEG") return true;
+    if (c=="NUM") return true;
+    if (c=="DEN") return true;
+    if (c=="RE") return true;
+    if (c=="IM") return true;
+    if (c=="DUP") return true;
+
+    return false;
+}
 
 bool operande::verifierNumArite2(){
 
@@ -1156,10 +1167,7 @@ void sto::operator() (){
 
             QString a;
 
-            if (!verifierNumArite2()){
-                controle->setMessage("Pas assez d'arguments");
-                return;
-            }
+
 
             Litterale* L2=controle->top();
             controle->pop();
@@ -1209,5 +1217,48 @@ void ift::operator() (){
                 eval a;
                 a.operator ()();
             }
+
+}
+void lastargs::operator ()(){
+
+    Controleur* controle=&Controleur::getInstance();
+    QString lastop=controle->getLastOperande();
+
+
+    if(controle->getNbMemento()<2){
+    controle->setMessage("Operation impossible");
+    return;
+    }
+
+    Pile* p=controle->montremoilepasse();
+
+    if(operateurunaire(lastop)){
+        if(p->getNbLitterale()<1){
+            controle->setMessage("Il n'y avait pas assez d'arguments");
+            return;
+        }
+        Litterale* L1=p->top();
+        controle->push(L1);
+        qDebug()<<"1";
+    }
+    else{
+        if(p->getNbLitterale()<2){
+            controle->setMessage("Il n'y avait pas assez d'arguments");
+            return;
+        }
+
+        Litterale* L1=p->top();
+        p->pop();
+        Litterale* L2=p->top();
+
+        controle->push(L2);
+
+        controle->push(L1);
+
+        p->push(L2);
+
+
+
+    }
 
 }

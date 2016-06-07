@@ -134,19 +134,7 @@ void Ui::MainWindow::connections(){
   connect(boutonBS,SIGNAL(clicked()),wAffichageCommande,SLOT(slotBackspace()));
   connect(boutonEspace,SIGNAL(clicked()),wAffichageCommande,SLOT(slotSpace()));
 
-<<<<<<< HEAD
-  //clavier operateur
-//  connect(boutonP,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonF,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonComplexe,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonD,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonDIV,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonNEG,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonNUM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonDEN,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonIM,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
-//  connect(boutonRE,SIGNAL(clicked()),this,SLOT(ajoute_commande()));
+
 
   // chargement contexte
 
@@ -154,7 +142,7 @@ void Ui::MainWindow::connections(){
 //sauvegarde contexte
     //connect(bouton0,SIGNAL(clicked()),&XML,SLOT(enregistrer_contexte()));
 
-=======
+
   //clavier operateur numerique
   connect(boutonP,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
   connect(boutonM,SIGNAL(clicked()),getControleur(),SLOT(slotOperator()));
@@ -207,7 +195,7 @@ void Ui::MainWindow::connections(){
   TableauVarAffi->horizontalHeader()->setVisible(true);
   TableauVarAffi->horizontalHeader()->setStretchLastSection(true);
   TableauVarAffi->show();
->>>>>>> origin/master
+
 
 }
 

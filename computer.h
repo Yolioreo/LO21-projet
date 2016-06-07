@@ -167,6 +167,7 @@ public:
     int getNbMemento(){return memento.getNbMemento();}
     int getNbFutur(){return memento.getNbFutur();}
     void clearFutur(){memento.clearFutur();}
+    Pile* montremoilepasse(){return memento.montremoilepasse();}
 
     // partie création de variables
 
@@ -182,7 +183,7 @@ public:
         variable[a]=l;
         setMessage(l->afficher()+" stocké dans "+a->afficher());
     }
-<<<<<<< HEAD
+
     class iterator_variable : public QMap<Atome*,Litterale*>::const_iterator {
     public :
         iterator_variable(QMap<Atome*,Litterale*>::const_iterator it):QMap<Atome*,Litterale*>::const_iterator(it){}
@@ -190,10 +191,10 @@ public:
     iterator_variable begin_variable(){return iterator_variable(variable.constBegin());}
 
     iterator_variable end_variable(){return iterator_variable(variable.constEnd());}
-=======
+
     unsigned int getNbVariable(){return variable.size();}
     QMap<Atome*,Litterale*> getVar()const{return variable;}
->>>>>>> origin/master
+
 
 signals:
 

@@ -12,8 +12,7 @@
 //    delete handler.instance;
 //    handler.instance=nullptr;
 //}
-<<<<<<< HEAD
-=======
+
 
 void Controleur::slotOperator(){
   QPushButton* btn = qobject_cast<QPushButton*>(sender());
@@ -27,7 +26,6 @@ void Controleur::slotOperator(){
   faire[btn->text()]->operator ()();
 }
 
->>>>>>> origin/master
 Controleur::Handler1 Controleur::handler=Controleur::Handler1();
 
 void Controleur::libererInstance(){
@@ -430,6 +428,7 @@ void Controleur::initialisationMap(){
       faire["EVAL"]=new eval;
       faire["STO"]=new sto;
       faire["IFT"]=new ift;
+      faire["LASTARGS"]=new lastargs;
 }
 
 

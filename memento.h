@@ -18,6 +18,16 @@ public:
     int getNbMemento(){return etatsPasse.count();}
     int getNbFutur(){return etatsS.count();}
     void clearFutur(){etatsS.clear();}
+    Pile* montremoilepasse(){
+        Pile * a;
+        Pile* temp;
+        temp=etatsPasse.front();
+        etatsPasse.pop_front();
+        a=etatsPasse.front();
+        etatsPasse.push_front(temp);
+        return a;
+    }
+
     Pile* getMementoAvant(){
         Pile* a;
         pushFutur(etatsPasse.front());

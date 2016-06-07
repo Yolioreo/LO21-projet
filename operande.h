@@ -17,7 +17,7 @@ public:
     virtual bool verifierL(){return false ;}
     virtual bool verifierPile(){return false ;}
     const QString creationStringLitterale(int tempRN, int tempRD, int tempIN, int tempID);
-
+    bool operateurunaire(QString c);
 
 
 };
@@ -191,15 +191,21 @@ public:
     void operator() ();
 };
 
+class lastargs : public operande{
+public:
+    int typeoperande() const {return 30;}
+    void operator() ();
+};
+
 class undo : public operande{
 public :
-    int typeoperande() const {return 24;}
+    int typeoperande() const {return 25;}
     void operator() ();
 };
 
 class redo : public operande{
 public :
-    int typeoperande() const {return 25;}
+    int typeoperande() const {return 26;}
     void operator() ();
 };
 
@@ -219,7 +225,7 @@ public :
 
 class ift : public operande{
 public :
-    int typeoperande() const {return 26;}
+    int typeoperande() const {return 29;}
     void operator() ();
 };
 
