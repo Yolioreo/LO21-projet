@@ -87,10 +87,12 @@ void Ui::MainWindow::refresh(){
       }
 
     for (QMap<Atome *, Litterale*>::const_iterator it = controle->getVar().cbegin(); it != controle->getVar().cend(); it++){
-       TableauVarAffi->item(nb1,0)->setText(it.key()->afficher());
+       if(it.key()!=nullptr){
+        TableauVarAffi->item(nb1,0)->setText(it.key()->afficher());
        TableauVarAffi->item(nb1,1)->setText(it.value()->afficher());
 
        nb1++;
+       }
     }
 
 }
@@ -101,6 +103,8 @@ void Ui::MainWindow::connections(){
   actionAffichage_clavier->setCheckable(true);
   connect(actionAffichage_clavier, SIGNAL(toggled(bool)), wClavier, SLOT(affichageClavier(bool)));
   GereurOnglet->setCurrentIndex(0);
+  actionActivation_Bip_Sonore->setCheckable(true);
+  //actionActivation_Bip_Sonore->setChecked(false);
 
 
   //affichage de la pile

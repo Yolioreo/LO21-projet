@@ -632,7 +632,7 @@ namespace Ui {
           if(actionActivation_Bip_Sonore->isChecked()){
             QApplication::beep();
             qDebug("beeep!");
-            }
+          }
         }
 
     };

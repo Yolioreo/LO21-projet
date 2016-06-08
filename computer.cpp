@@ -1,6 +1,6 @@
 #include "computer.h"
 
-
+// [ DUP 1 - DUP 1 > PROG IFT * ]
 //LitteraleManager::Handler LitteraleManager::handler=LitteraleManager::Handler();
 
 //LitteraleManager& LitteraleManager::getInstance(){
@@ -430,6 +430,7 @@ void Controleur::initialisationMap(){
       faire["IFT"]=new ift;
       faire["LASTARGS"]=new lastargs;
       faire["EDIT"]=new edit;
+      faire["FORGET"]=new forget;
 }
 
 
