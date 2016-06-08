@@ -82,6 +82,7 @@ public:
     void setMessage(const QString& m) {
       message=m;
       modificationEtat();
+      bipsonore();
     }
     QString getMessage() const { return message; }
     unsigned int getNbLitterale(){return nb;}
@@ -103,6 +104,7 @@ public:
 signals:
     void modificationEtat();
     void chargementcontexte();
+    void bipsonore();
 public slots:
     void afficheDivZero(){setMessage("Impossible il y a une division par zéro");}
 

@@ -107,7 +107,7 @@ void Ui::MainWindow::connections(){
   wAffichagePil->show();
 
   //bip sonore
-  connect(pile,SIGNAL(modificationEtat()),this,SLOT(bip_sonore()));
+  connect(pile,SIGNAL(bipsonore()),this,SLOT(bip_sonore()));
 
   //affichage des erreurs
   wAffichageErreur->setReadOnly(true);
