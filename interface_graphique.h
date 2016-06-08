@@ -626,6 +626,11 @@ namespace Ui {
     public slots:
         void refresh();
         void getNextCommande();
+        void bip_sonore(){
+          if(actionActivation_Bip_Sonore->isChecked())
+            QApplication::beep();
+            qDebug("beeep!");
+        }
 
     };
 } // namespace Ui

@@ -53,7 +53,7 @@ void Ui::MainWindow::getNextCommande(){
 void Ui::MainWindow::refresh(){
     Controleur* controle=&Controleur::getInstance();
 
-    wAffichageErreur->setText(pile->getMessage());
+    wAffichageErreur->setText(pile->getMessage());   
     for(unsigned int i=0;i<pile->getNbLitteraleToAffiche();i++)
         wAffichagePil->item(i,0)->setText("");
 
@@ -85,6 +85,8 @@ void Ui::MainWindow::connections(){
   actionAffichage_clavier->setCheckable(true);
   connect(actionAffichage_clavier, SIGNAL(toggled(bool)), wClavier, SLOT(affichageClavier(bool)));
   GereurOnglet->setCurrentIndex(0);
+  actionActivation_Bip_Sonore->setCheckable(true);
+  actionActivation_Bip_Sonore->setChecked(false);
 
   //affichage de la pile
   wAffichagePil->setRowCount(pile->getNbLitteraleToAffiche());
@@ -103,6 +105,9 @@ void Ui::MainWindow::connections(){
   wAffichagePil->horizontalHeader()->setVisible(false);
   wAffichagePil->horizontalHeader()->setStretchLastSection(true);
   wAffichagePil->show();
+
+  //bip sonore
+  connect(pile,SIGNAL(bipsonore()),this,SLOT(bip_sonore()));
 
   //affichage des erreurs
   wAffichageErreur->setReadOnly(true);
@@ -195,7 +200,7 @@ void Ui::MainWindow::connections(){
   TableauVarAffi->horizontalHeader()->setVisible(true);
   TableauVarAffi->horizontalHeader()->setStretchLastSection(true);
   TableauVarAffi->show();
-
-
+  QApplication::beep();
+  //QSound::play();
 }
 
