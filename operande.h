@@ -229,5 +229,12 @@ public :
     void operator() ();
 };
 
+class forget: public operande{
+public:
+    int typeoperande() const {return 31;}
+    void operator() ();
+
+};
+
 
 #endif // OPERANDE_H
