@@ -205,6 +205,7 @@ public:
 signals:
 
     void modificationEtat();
+    void sendPrgm();
 
 public slots :
     void slotOperator(); // à définir

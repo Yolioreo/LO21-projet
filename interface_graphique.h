@@ -625,11 +625,14 @@ namespace Ui {
         void connections();
     public slots:
         void refresh();
+        void afficheProgramme();
+        void sendProgrammePile();
         void getNextCommande();
         void bip_sonore(){
-          if(actionActivation_Bip_Sonore->isChecked())
+          if(actionActivation_Bip_Sonore->isChecked()){
             QApplication::beep();
             qDebug("beeep!");
+            }
         }
 
     };

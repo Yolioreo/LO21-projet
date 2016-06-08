@@ -429,6 +429,7 @@ void Controleur::initialisationMap(){
       faire["STO"]=new sto;
       faire["IFT"]=new ift;
       faire["LASTARGS"]=new lastargs;
+      faire["EDIT"]=new edit;
 }
 
 

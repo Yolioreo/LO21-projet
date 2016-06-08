@@ -229,5 +229,12 @@ public :
     void operator() ();
 };
 
+class edit : public operande{
+public :
+    int typeoperande() const {return 30;}
+    void operator() ();
+signals :
+    void send();
+};
 
 #endif // OPERANDE_H

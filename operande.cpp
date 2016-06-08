@@ -1262,3 +1262,29 @@ void lastargs::operator ()(){
     }
 
 }
+
+void edit::operator ()(){
+  Controleur* controle=&Controleur::getInstance();
+  int test;
+  QString a;
+  qDebug("dans edit!");
+
+  if (controle->getNbLitterale()<1){
+      qDebug("pas assez d'argument");
+      return;
+  }
+
+  Litterale* L1=controle->top();
+  controle->pop();
+
+  if(!estUnProgramme(L1->afficher())){
+      controle->setMessage("Le littérale n'est pas un programme");
+      controle->push(L1);
+      return;
+    }
+  controle->push(L1);
+  controle->sendPrgm();
+  qDebug("prgm send!");
+
+
+}
