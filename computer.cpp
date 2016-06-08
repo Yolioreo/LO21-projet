@@ -1,6 +1,6 @@
 #include "computer.h"
 
-
+// [ DUP 1 - DUP 1 > PROG IFT * ]
 //LitteraleManager::Handler LitteraleManager::handler=LitteraleManager::Handler();
 
 //LitteraleManager& LitteraleManager::getInstance(){

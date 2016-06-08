@@ -1266,6 +1266,10 @@ void lastargs::operator ()(){
 void forget::operator ()(){
 
     Controleur* controle=&Controleur::getInstance();
+    if(controle->getNbLitterale()<1){
+        controle->setMessage("Pas d'éléments dans la pile");
+        return;
+    }
 
     if(!estUneExpression(controle->top()->afficher())){
         controle->setMessage("On ne peut pas effacer ça");

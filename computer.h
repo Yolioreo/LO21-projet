@@ -82,6 +82,7 @@ public:
     void setMessage(const QString& m) {
       message=m;
       modificationEtat();
+      if(m!="")
       bipsonore();
     }
     QString getMessage() const { return message; }
@@ -193,15 +194,8 @@ public:
     void effacevariable(QString s) const{
 
 
-        Atome* temp;
-        for ( auto it = variable.begin(); it != variable.end();)
-            if (it.key()->afficher() == s){
 
-                variable.erase(it++);
 
-            }else{
-                ++it;
-            }
     }
 
     class iterator_variable : public QMap<Atome*,Litterale*>::const_iterator {
