@@ -3,11 +3,15 @@
 
 #include "include.h"
 #include "computer.h"
+
+///\brief Cette partie concerne la sauvegarde et la récupération des informations de la dernière utilisation de la calculatrice
 class save_and_load_xml : public QObject{
+    ///\brief Cette Classe ne possède pas d'attributs ni de méthodes mais seulement deux slots connectés à la pile et à l'interface graphique
     Q_OBJECT
 public:
     save_and_load_xml(){}
 public slots:
+    /// ce Slot permet de sauvergarder l'ensemble des élements de la pile et les variables dans un XML
     void enregistrer_contexte(){
          QDomDocument dom("mon_xml");
 
@@ -52,6 +56,7 @@ public slots:
          stream<<writeur;
          doc_xml.close();
     }
+    /// Ce Slot permet de charger l'ensemble des élements de la pile et les variables depuis un XML
     void charger_contexte(){
         qDebug()<<"YO ? ";
         QDomDocument dom("mon_xml");

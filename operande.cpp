@@ -539,7 +539,7 @@ qDebug("numérateur");
 void RE::operator() (){
 
             Controleur* controle=&Controleur::getInstance();
-            int test;
+
             QString a;
 
             if (!verifierNumArite1()){
@@ -559,7 +559,7 @@ void RE::operator() (){
 void IM::operator() (){
 
             Controleur* controle=&Controleur::getInstance();
-            int test;
+
             QString a;
 
             if (!verifierNumArite1()){
@@ -1263,35 +1263,59 @@ void lastargs::operator ()(){
 
 }
 
-void forget::operator ()(){
 
-    Controleur* controle=&Controleur::getInstance();
-    if(controle->getNbLitterale()<1){
-        controle->setMessage("Pas d'éléments dans la pile");
-        return;
+void edit::operator ()(){
+  Controleur* controle=&Controleur::getInstance();
+
+  QString a;
+  qDebug("dans edit!");
+
+  if (controle->getNbLitterale()<1){
+      qDebug("pas assez d'argument");
+      return;
+  }
+
+  Litterale* L1=controle->top();
+  controle->pop();
+
+  if(!estUnProgramme(L1->afficher())){
+      controle->setMessage("Le littérale n'est pas un programme");
+      controle->push(L1);
+      return;
     }
-
-    if(!estUneExpression(controle->top()->afficher())){
-        controle->setMessage("On ne peut pas effacer ça");
-        return;
-    }
-
-    QString var = controle->top()->afficher();
-    controle->pop();
-
-
-    var =var.right(var.size()-1);
-    var =var.left(var.size()-1);
-
-    if(controle->estUneVariable(var)){
-
-        controle->effacevariable(var);
-        controle->setMessage("Variable bien effacé");
-    }
-    else{
-    controle->setMessage("Cette variable n'existe pas");
-    }
+  controle->push(L1);
+  controle->sendPrgm();
+  qDebug("prgm send!");
 
 
 }
+
+//void forget::operator ()(){
+//    Controleur* controle=&Controleur::getInstance();
+//    if(controle->getNbLitterale()<1){
+//        controle->setMessage("Pas d'éléments dans la pile");
+//        return;
+//    }
+
+//    if(!estUneExpression(controle->top()->afficher())){
+//        controle->setMessage("On ne peut pas effacer ça");
+//        return;
+//    }
+
+//    QString var = controle->top()->afficher();
+//    controle->pop();
+
+
+//    var =var.right(var.size()-1);
+//    var =var.left(var.size()-1);
+
+//    if(controle->estUneVariable(var)){
+
+//        controle->effacevariable(var);
+//        controle->setMessage("Variable bien effacé");
+//    }
+//    else{
+//    controle->setMessage("Cette variable n'existe pas");
+//    }
+//}
 

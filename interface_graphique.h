@@ -8,6 +8,7 @@
 QT_BEGIN_NAMESPACE
 
 class CommandLine : public QLineEdit{
+    ///\brief Cette classe permet de récupérer les commandes
   Q_OBJECT
 public :
   CommandLine(QWidget* parent=nullptr) : QLineEdit(parent){}
@@ -19,6 +20,7 @@ public slots :
 
 class Clavier : public QWidget{
   Q_OBJECT
+    ///\brief Cette classe permet de gérer le clavier, affiché ou non
 public :
   Clavier(QWidget* parent=nullptr) : QWidget(parent){}
 public slots :
@@ -33,6 +35,8 @@ public slots :
 
 class Ui_MainWindow
 {
+    ///\brief Cette classe permet de disposer l'ensemble des widgets que l'on veut pour la calculatrice
+    /// Tout le contenu de cette classe ne sert qu'a nommer, placer, arranger les affichages de la calculatrice
 public:
     QAction *actionAffichage_clavier;
     QAction *actionActivation_Bip_Sonore;
@@ -598,6 +602,7 @@ public:
 
 namespace Ui {
     class MainWindow: public QMainWindow, public Ui_MainWindow {
+        ///\brief Cette classe est notre interface graphique complète avec tous les éléments nécessaires pour être fonctionnel
       Q_OBJECT
         //pile dans laquelle on stockent les littéraux
         Pile* pile;
@@ -609,22 +614,20 @@ namespace Ui {
 
     public:
         MainWindow(QWidget *parent = nullptr) : QMainWindow(parent){
-
           pile=new Pile;
           manager=new LitteraleManager;
           controleur=&Controleur::getInstance(*manager,*pile);
           Ui_MainWindow::setupUi(this);
            connections();
            pile->chargementcontexte();
-
-
-
         }
-        Controleur* getControleur(){return controleur;}
+        Controleur* getControleur() const{return controleur;}
         virtual ~MainWindow(){Controleur::libererInstance();}
         void connections();
     public slots:
         void refresh();
+        void afficheProgramme();
+        void sendProgrammePile();
         void getNextCommande();
         void bip_sonore(){
           if(actionActivation_Bip_Sonore->isChecked()){

@@ -17,6 +17,22 @@ void CommandLine::slotBackspace(){
     this->backspace();
 }
 
+void Ui::MainWindow::afficheProgramme(){
+  qDebug("dans le afficheProgramme!");
+  GereurOnglet->setCurrentIndex(GereurOnglet->currentIndex()+2);
+  Litterale* L=controleur->top();
+  controleur->pop();
+
+  qDebug()<<L->afficher();
+  wAffichageProgramme->setPlainText(L->afficher());
+}
+
+void Ui::MainWindow::sendProgrammePile(){
+  controleur->push(controleur->addLitterale(wAffichageProgramme->toPlainText()));
+  wAffichageProgramme->setPlainText("");
+  GereurOnglet->setCurrentIndex(GereurOnglet->currentIndex()-2);
+}
+
 void Ui::MainWindow::getNextCommande(){
     pile->setMessage("");
     QString c=wAffichageCommande->text();
@@ -90,6 +106,7 @@ void Ui::MainWindow::connections(){
   actionActivation_Bip_Sonore->setCheckable(true);
   //actionActivation_Bip_Sonore->setChecked(false);
 
+
   //affichage de la pile
   wAffichagePil->setRowCount(pile->getNbLitteraleToAffiche());
   wAffichagePil->setColumnCount(1);
@@ -109,6 +126,8 @@ void Ui::MainWindow::connections(){
   wAffichagePil->show();
 
   //bip sonore
+  actionActivation_Bip_Sonore->setCheckable(true);
+  //SactionActivation_Bip_Sonore->setChecked(false);
   connect(pile,SIGNAL(bipsonore()),this,SLOT(bip_sonore()));
 
   //affichage des erreurs
@@ -148,6 +167,10 @@ void Ui::MainWindow::connections(){
   //connect(pile,SIGNAL(chargementcontexte()),&XML,SLOT(charger_contexte()));
 //sauvegarde contexte
     //connect(bouton0,SIGNAL(clicked()),&XML,SLOT(enregistrer_contexte()));
+
+  //edit programme
+  connect(controleur,SIGNAL(sendPrgm()),this,SLOT(afficheProgramme()));
+  connect(sendProgram,SIGNAL(clicked()),this,SLOT(sendProgrammePile()));
 
 
   //clavier operateur numerique

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_H
 #define INCLUDE_H
 
-
+///\brief ce fichier permet de rassembler l'ensemble des includes nécessaires pour centraliser l'information
 /*//////////////////////////////////////Les includes ////////////////////////////*/
 #include <algorithm>
 #include <QRegExp>

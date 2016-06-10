@@ -3,27 +3,34 @@
 
 
 #include "include.h"
-
+///\brief tout ce fichier concerne l'ensemble des éléments que l'on manipule dans la calculatrice : les litteraux
+/// Tous les classes en dessours ne sont que des classes hérités de la classe litterale
+/// Et donc définissent et redéfinissent  les méthodes virtuelles et virtuelles pures
 class Litterale {
-
-
+    /// \brief Cette classe est la mère de tous les litteraux
     Litterale(const Litterale& e);
     Litterale& operator=(const Litterale& e);
     friend class LitteraleManager;
 
 public:
-    virtual QString afficher()=0;
+    ///permet d'afficher le litteral
+    virtual QString afficher()const =0;
+    /// permet de récupérer le numérateur réel
     virtual double getRNumerateur() const {return 0;}
+    /// permet de récupérer le dénominateur réel
     virtual double getRDenominateur() const {return 1;}
+    /// permet de récupérer le numérateur imaginaire
     virtual double getINumerateur() const {return 0;}
+    /// permet de récupérer le dénominateur imaginaire
     virtual double getIDenominateur() const {return 1;}
+
     virtual bool isNull()const =0;
     Litterale(){}
     virtual ~Litterale(){}
 
 
 };
-
+/// permet de regrouper l'ensemble des litteraux numériques
 class LitteraleNum : public Litterale{
 
     LitteraleNum(const Litterale& e);
@@ -31,7 +38,7 @@ class LitteraleNum : public Litterale{
     friend class LitteraleManager;
 public:
     LitteraleNum(){}
-    virtual QString afficher()=0;
+    virtual QString afficher() const =0;
 
     virtual bool isNull() const =0;
     virtual ~LitteraleNum(){}
@@ -43,7 +50,7 @@ class Entier : public LitteraleNum{
 
 public :
     Entier(int a ): nombre(a){}
-    QString afficher(){
+    QString afficher() const{
 
         return QString::number(nombre);
     }
@@ -81,9 +88,7 @@ public:
 
         setRationnel(n,d);
     }
-
-
-     QString afficher(){
+     QString afficher() const{
     return QString::number(numerateur)+"/"+QString::number(denominateur);
     }
 
@@ -99,24 +104,20 @@ public:
 class Reel : public LitteraleNum {
     double nombre;
 public :
-    QString afficher(){
+    QString afficher() const{
     return QString::number(nombre);
     }
     Reel(double d):nombre(d){}
     bool isNull() const {return nombre==0;}
     double getRNumerateur() const {return nombre;}
     double getRDenominateur() const {return 1;}
-
-
-
-
 };
 
 class Complexe : public Litterale{
     LitteraleNum& reel;
     LitteraleNum& imaginaire;
 public:
-    QString afficher(){
+    QString afficher() const{
 
     return reel.afficher()+"$"+imaginaire.afficher();
     }
@@ -132,9 +133,9 @@ public:
 class Atome : public Litterale{
     QString atome;
 public:
-    Atome(QString a): atome(a){}
+    Atome(const QString& a): atome(a){}
     bool isNull() const{return atome.isEmpty();}
-    QString afficher(){return atome;}
+    QString afficher()const{return atome;}
     ~Atome(){}
 };
 
@@ -142,7 +143,7 @@ class Expression : public Litterale{
     QString expression;
 public:
     Expression(const QString& s): expression(s){}
-    QString afficher(){
+    QString afficher() const{
     return expression;
     }
     bool isNull() const {return expression.isEmpty();}
@@ -155,8 +156,8 @@ public:
 class Programme : public Litterale{
     QString programme;
 public:
-    Programme(QString s): programme(s){}
-    QString afficher(){
+    Programme(const QString& s): programme(s){}
+    QString afficher() const{
     return programme;
     }
     bool isNull() const {return programme.isEmpty();}

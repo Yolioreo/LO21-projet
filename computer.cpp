@@ -429,7 +429,8 @@ void Controleur::initialisationMap(){
       faire["STO"]=new sto;
       faire["IFT"]=new ift;
       faire["LASTARGS"]=new lastargs;
-      faire["FORGET"]=new forget;
+      faire["EDIT"]=new edit;
+      //faire["FORGET"]=new forget;
 }
 
 
