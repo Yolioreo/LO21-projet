@@ -5,14 +5,12 @@
 #include "include.h"
 
 class Litterale {
-
-
     Litterale(const Litterale& e);
     Litterale& operator=(const Litterale& e);
     friend class LitteraleManager;
 
 public:
-    virtual QString afficher()=0;
+    virtual QString afficher()=0;//à mettre const
     virtual double getRNumerateur() const {return 0;}
     virtual double getRDenominateur() const {return 1;}
     virtual double getINumerateur() const {return 0;}
@@ -81,8 +79,6 @@ public:
 
         setRationnel(n,d);
     }
-
-
      QString afficher(){
     return QString::number(numerateur)+"/"+QString::number(denominateur);
     }
@@ -106,10 +102,6 @@ public :
     bool isNull() const {return nombre==0;}
     double getRNumerateur() const {return nombre;}
     double getRDenominateur() const {return 1;}
-
-
-
-
 };
 
 class Complexe : public Litterale{
@@ -132,7 +124,7 @@ public:
 class Atome : public Litterale{
     QString atome;
 public:
-    Atome(QString a): atome(a){}
+    Atome(const QString& a): atome(a){}
     bool isNull() const{return atome.isEmpty();}
     QString afficher(){return atome;}
     ~Atome(){}
@@ -155,7 +147,7 @@ public:
 class Programme : public Litterale{
     QString programme;
 public:
-    Programme(QString s): programme(s){}
+    Programme(const QString& s): programme(s){}
     QString afficher(){
     return programme;
     }

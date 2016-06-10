@@ -14,9 +14,9 @@ public:
         etatsPasse.push_front(P);
     }
     Memento():etatsPasse(0), etatsS(0){}
-    Pile& getMemento(){return *etatsPasse.front();}
-    int getNbMemento(){return etatsPasse.count();}
-    int getNbFutur(){return etatsS.count();}
+    Pile& getMemento() const{return *etatsPasse.front();}
+    int getNbMemento()const {return etatsPasse.count();}
+    int getNbFutur()const{return etatsS.count();}
     void clearFutur(){etatsS.clear();}
     Pile* montremoilepasse(){
         Pile * a;

@@ -18,10 +18,9 @@ public:
     QString getInfo() const { return info; }
 };
 
+
 class LitteraleManager : public QObject {
     Q_OBJECT
-
-
     unsigned int nb;
 public:
     LitteraleManager():nb(0){}
@@ -30,29 +29,19 @@ public:
     Litterale* addLitterale(const QString& v);
     void removeLitterale(Litterale* e);
     unsigned int getNbLiterrale(){return nb;}
-    static LitteraleManager& getInstance();
-    static void libererInstance();
 signals :
     void erreurDivZero();
-
-
-
-
 };
+
 
 class Pile : public QObject {
     Q_OBJECT
-
-
-
     QString message;
     unsigned int nb;
     unsigned int nbAffiche;
     friend class LitteraleManager;
     QStack<Litterale*> PileLit;
 public:
-
-
     Pile():message(""),nb(0),nbAffiche(4){
         PileLit.clear();
         qDebug()<<"Initialisation pile";
@@ -74,7 +63,6 @@ public:
     void push(Litterale* e);
     void pop();
     bool estVide() const { return PileLit.isEmpty(); }
-
     void affiche(QTextStream& f) const;
     Litterale* top() const;
     void setNbLitteraleToAffiche(unsigned int n) { nbAffiche=n; }
@@ -89,14 +77,14 @@ public:
     unsigned int getNbLitterale(){return nb;}
 
     class iterator{
-    QStack<Litterale*> current;
-    unsigned int index;
-    friend class Pile;
+        QStack<Litterale*> current;
+        unsigned int index;
+        friend class Pile;
     public:
-    iterator(QStack<Litterale*> p, unsigned int a):current(p),index(a){}
-    Litterale* operator*(){return current[index];}
-    bool operator!=(Pile::iterator a){return index!=a.index;}
-    iterator operator++(){index++; return *this;}
+        iterator(QStack<Litterale*> p, unsigned int a):current(p),index(a){}
+        Litterale* operator*(){return current[index];}
+        bool operator!=(Pile::iterator a){return index!=a.index;}
+        iterator operator++(){index++; return *this;}
     };
 
     Pile::iterator begin(){return iterator(PileLit,0);}
@@ -122,18 +110,11 @@ class Controleur : public QObject{
     QMap<QString,operande*> faire;
     QMap<Atome*,Litterale*> variable;
     QString lastoperande;
-
     Controleur(LitteraleManager& m, Pile& v):LitMng(m), LitAff(v){
         pushMemento();
         connect(&LitMng,SIGNAL(erreurDivZero()),&LitAff,SLOT(afficheDivZero()));
         initialisationMap();
-
-
-
-
-
     }
-
     struct Handler1{
         Controleur* instance;
         Handler1():instance(nullptr){}
@@ -142,8 +123,6 @@ class Controleur : public QObject{
     };
     static Handler1 handler;
     ~Controleur(){}
-
-
     Controleur(const Controleur& m);
     Controleur& operator=(const Controleur& m);
 public:
@@ -152,16 +131,16 @@ public:
     static Controleur& getInstance();
     static void libererInstance();
 
-    unsigned int getNbLitterale(){
+    unsigned int getNbLitterale() const{
         return LitAff.getNbLitterale();
     }
-    bool faitpartiedeMap(const QString s){return faire.contains(s);}
+    bool faitpartiedeMap(const QString& s){return faire.contains(s);}
     void push(Litterale* e){ LitAff.push(e);}
     Litterale* top(){ return LitAff.top();}
     void pop(){LitAff.pop();}
     void setMessage(const QString& s) const {LitAff.setMessage(s);}
     QString getLastOperande(){return lastoperande;}
-    Litterale* addLitterale(QString e){return LitMng.addLitterale(e);}
+    Litterale* addLitterale(QString e){return LitMng.addLitterale(e);}//vérifier si modifie e
     void removeLitterale(Litterale* e){LitMng.removeLitterale(e);}
     void commande(const QString& c);
     void setPile(Pile& P){ LitAff=P; modificationEtat();}
@@ -170,15 +149,15 @@ public:
 
     Pile* getMementoAvant(){return memento.getMementoAvant();}
     Pile* getMementoApres(){return memento.getMementoApres();}
-    void pushMemento(){memento.pushMemento(new Pile(LitAff)); qDebug("On a sauvegardé la pile");}
-    int getNbMemento(){return memento.getNbMemento();}
-    int getNbFutur(){return memento.getNbFutur();}
+    void pushMemento(){memento.pushMemento(new Pile(LitAff));}
+    int getNbMemento(){return memento.getNbMemento();}//mettre const
+    int getNbFutur(){return memento.getNbFutur();}//mettre const
     void clearFutur(){memento.clearFutur();}
     Pile* montremoilepasse(){return memento.montremoilepasse();}
 
     // partie création de variables
 
-    bool estUneVariable(QString& c)const {
+    bool estUneVariable(const QString& c)const {
       for (QMap<Atome *, Litterale*>::const_iterator it = variable.constBegin(); it != variable.constEnd(); ++it) {
           if(it.key()->afficher()==c){
               return true;
@@ -190,14 +169,8 @@ public:
         variable[a]=l;
         setMessage(l->afficher()+" stocké dans "+a->afficher());
     }
-
-    void effacevariable(QString s) const{
-
-
-
-
-    }
-
+    unsigned int getNbVariable(){return variable.size();}
+    QMap<Atome*,Litterale*> getVar()const{return variable;}
     class iterator_variable : public QMap<Atome*,Litterale*>::const_iterator {
     public :
         iterator_variable(QMap<Atome*,Litterale*>::const_iterator it):QMap<Atome*,Litterale*>::const_iterator(it){}
@@ -206,19 +179,13 @@ public:
 
     iterator_variable end_variable(){return iterator_variable(variable.constEnd());}
 
-    unsigned int getNbVariable(){return variable.size();}
-    QMap<Atome*,Litterale*> getVar()const{return variable;}
-
-
 signals:
 
     void modificationEtat();
     void sendPrgm();
 
 public slots :
-    void slotOperator(); // à définir
-
-
+    void slotOperator();
 };
 
 bool estUnLitteraleNum(const QString s);

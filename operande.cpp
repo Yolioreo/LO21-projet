@@ -1293,32 +1293,32 @@ void edit::operator ()(){
 void forget::operator ()(){
 
 
-    Controleur* controle=&Controleur::getInstance();
-    if(controle->getNbLitterale()<1){
-        controle->setMessage("Pas d'éléments dans la pile");
-        return;
-    }
+//    Controleur* controle=&Controleur::getInstance();
+//    if(controle->getNbLitterale()<1){
+//        controle->setMessage("Pas d'éléments dans la pile");
+//        return;
+//    }
 
-    if(!estUneExpression(controle->top()->afficher())){
-        controle->setMessage("On ne peut pas effacer ça");
-        return;
-    }
+//    if(!estUneExpression(controle->top()->afficher())){
+//        controle->setMessage("On ne peut pas effacer ça");
+//        return;
+//    }
 
-    QString var = controle->top()->afficher();
-    controle->pop();
+//    QString var = controle->top()->afficher();
+//    controle->pop();
 
 
-    var =var.right(var.size()-1);
-    var =var.left(var.size()-1);
+//    var =var.right(var.size()-1);
+//    var =var.left(var.size()-1);
 
-    if(controle->estUneVariable(var)){
+//    if(controle->estUneVariable(var)){
 
-        controle->effacevariable(var);
-        controle->setMessage("Variable bien effacé");
-    }
-    else{
-    controle->setMessage("Cette variable n'existe pas");
-    }
+//        controle->effacevariable(var);
+//        controle->setMessage("Variable bien effacé");
+//    }
+//    else{
+//    controle->setMessage("Cette variable n'existe pas");
+//    }
 
 
 }

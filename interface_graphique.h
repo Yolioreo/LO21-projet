@@ -620,7 +620,7 @@ namespace Ui {
 
 
         }
-        Controleur* getControleur(){return controleur;}
+        Controleur* getControleur() const{return controleur;}
         virtual ~MainWindow(){Controleur::libererInstance();}
         void connections();
     public slots:
