@@ -622,7 +622,10 @@ namespace Ui {
            pile->chargementcontexte();
         }
         Controleur* getControleur() const{return controleur;}
-        virtual ~MainWindow(){Controleur::libererInstance();}
+        virtual ~MainWindow(){
+            jemeferme();
+            Controleur::libererInstance();
+        }
         void connections();
     public slots:
         void refresh();
@@ -635,6 +638,8 @@ namespace Ui {
             qDebug("beeep!");
           }
         }
+    signals:
+        void jemeferme();
 
     };
 } // namespace Ui

@@ -164,9 +164,9 @@ void Ui::MainWindow::connections(){
 
   // chargement contexte
 
-  //connect(pile,SIGNAL(chargementcontexte()),&XML,SLOT(charger_contexte()));
+  connect(pile,SIGNAL(chargementcontexte()),&XML,SLOT(charger_contexte()));
 //sauvegarde contexte
-    //connect(bouton0,SIGNAL(clicked()),&XML,SLOT(enregistrer_contexte()));
+  connect(this,SIGNAL(jemeferme()),&XML,SLOT(enregistrer_contexte()));
 
   //edit programme
   connect(controleur,SIGNAL(sendPrgm()),this,SLOT(afficheProgramme()));

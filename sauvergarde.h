@@ -13,6 +13,7 @@ public:
 public slots:
     /// ce Slot permet de sauvergarder l'ensemble des élements de la pile et les variables dans un XML
     void enregistrer_contexte(){
+        qDebug()<<"YA ? ";
          QDomDocument dom("mon_xml");
 
          QFile doc_xml("xml_doc.xml");
